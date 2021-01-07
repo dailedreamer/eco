@@ -5,7 +5,7 @@
         <vessel>
           <vessel-header>
             <center>
-              <h2 class="mb-1">Blank</h2>
+              <h2 class="mb-1">Test</h2>
             </center>
           </vessel-header>
           <vessel-body>
