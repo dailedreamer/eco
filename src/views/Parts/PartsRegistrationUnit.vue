@@ -5,7 +5,7 @@
         <vessel>
           <vessel-header>
             <center>
-              <h2 class="mb-1">Dashboard</h2>
+              <h2 class="mb-1">Parts Registration Unit</h2>
             </center>
           </vessel-header>
           <vessel-body>

@@ -1,0 +1,73 @@
+.custom_card
+{
+  background-color:transparent; 
+  border:0;
+}
+.custom_header
+{
+  background-color:transparent; 
+  padding-top:0px;
+  margin-left:-20px;
+  margin-top:-20px;
+  border:0;
+}
+.custom_body
+{
+    border-top:1px solid #87878736;
+    border-left:1px solid #87878736;
+    border-right:1px solid #87878736;
+    box-shadow: 0 4px 8px 0 rgba(107, 107, 107, 0.2), 1px 20px 20px 0 rgba(255, 255, 255, 0.19);
+    margin-left:-20px;
+    margin-right:-20px;
+    background-color:white; 
+    
+    
+}
+.nav-tabs .nav-link {
+    border: 1px solid transparent;
+    font-size: 0.87rem;
+    color: #585858;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 0.9rem;
+    padding-bottom: 0.65rem;
+    margin-right: 0.4rem;
+    background:#e8e8e8;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    border-top:1px solid #87878736;
+    border-left:1px solid #87878736;
+    border-right:1px solid #87878736;
+}
+
+.nav-tabs .nav-link.active:before {
+    position:absolute; 
+    width:80%; 
+    padding:0.07rem; 
+    bottom:0; 
+    content: '';
+    left:10%;
+    background:#e84656; 
+    height:1px;
+    animation: grow_line .25s;
+}
+@keyframes grow_line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.nav-tabs .nav-link.active {
+    border-bottom:0;
+    position:relative;
+    color:black;
+    padding-bottom: 0.70rem;
+    background:white;
+}
+.card-header:first-child {
+    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+    padding-left:0.63rem;
+   
+}
