@@ -1,9 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-
+// import auth from './middleware/auth';
 // Main Layout Component
 const TheContainer = () =>
 	import(/*webpackChunkName: "layout"*/ "@/template/layout/TheContainer");
+
+// Splash Screen/ Others
+const LoadLocalStorage = () =>import("@/views/SplashScreen/LoadLocalStorage");
+const LoggedOut = () =>import("@/views/SplashScreen/LoggedOut");
 // Pages
 const Dashboard = () =>import("@/views/Dashboard");
 const Parts = () =>import("@/views/Parts");
@@ -23,12 +27,23 @@ const Simultaneous = () =>import("@/views/Simultaneous");
 const UnitRev = () =>import("@/views/UnitRev");
 const VPSApplication = () =>import("@/views/VPSApplication");
 const ECOActionItems = () =>import("@/views/ECOActionItems");
+
 const ManagementParts = () =>import("@/views/Management/Parts");
 const ManagementUsers = () =>import("@/views/Management/Users");
 const ManagementEmail = () =>import("@/views/Management/Email");
 Vue.use(VueRouter);
 
 const routes = [
+	{
+		path: "/load-localstorage/:token",
+		name: "LoadLocalStorage",
+		component: LoadLocalStorage ,
+	},
+	{
+		path: "/logged-out",
+		name: "LoggedOut",
+		component: LoggedOut ,
+	},
 	{
 		path: "/",
 		name: "TheContainer",
@@ -38,6 +53,7 @@ const routes = [
 				path: "/dashboard",
 				name: "Dashboard",
 				component: Dashboard ,
+				meta: { requiresAuth: true }
 			},
 			{
 				path: "/parts",
@@ -133,5 +149,22 @@ const router = new VueRouter({
 	base: process.env.BASE_URL,
 	routes,
 });
+router.beforeEach((to, from, next) => {
+	if (to.matched.some(record => record.meta.requiresAuth)) {
+		if(localStorage.getItem('auth_token') == null)
+		{
+			next({name:'LoggedOut'});
+		}
+		else
+		{
+			next();
+			console.log('Logged In');
+		}
+	}
+	else
+	{
+		next()
+	}
+  })
 
 export default router;

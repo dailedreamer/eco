@@ -11,7 +11,6 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import "../src/template/assets/sass/views/custom-tabs.scss";
 import "../src/template/assets/sass/views/custom-cards.scss";
-
 Vue.use(BootstrapVue);
 
 
@@ -24,8 +23,7 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
 import axios from "axios";
-
-axios.defaults.baseURL  = 'http://10.164.58.52/tms/public/api/';
+axios.defaults.baseURL  = 'http://10.164.58.92/eco-cms-v2/server/public/api/';
 // axios.defaults.baseURL  = 'http://10.164.58.43/tms/server/public/api/';
 
 const options = {

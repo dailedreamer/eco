@@ -20,7 +20,7 @@
     </b-row>
     <b-row>
       <b-col cols="12">
-                    <b-row>
+                <b-row>
                    <b-col cols="3">
                             <b-card 
                             class="custom_card_filter">
