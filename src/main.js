@@ -14,6 +14,8 @@ import "../src/template/assets/sass/views/custom-cards.scss";
 
 Vue.use(BootstrapVue);
 
+import ToggleButton from "vue-js-toggle-button";
+Vue.use(ToggleButton);
 
 import "./template/alpha.js";
 import "./assets/icons.js";
