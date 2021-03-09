@@ -20,7 +20,9 @@ faCheckDouble,
 faThumbsUp,
 faHandHoldingUsd,
 faPallet,
-faFlagCheckered
+faFlagCheckered,
+faFileExcel,
+faSave
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -43,8 +45,9 @@ library.add(
 	faThumbsUp,
 	faPallet,
 	faHandHoldingUsd,
-	faFlagCheckered
-
+	faFlagCheckered,
+	faFileExcel,
+	faSave
 );
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);

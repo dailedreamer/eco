@@ -11,8 +11,10 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import "../src/template/assets/sass/views/custom-tabs.scss";
 import "../src/template/assets/sass/views/custom-cards.scss";
+import VuePapaParse from 'vue-papa-parse'
 
 Vue.use(BootstrapVue);
+Vue.use(VuePapaParse)
 
 
 import "./template/alpha.js";
