@@ -25,7 +25,7 @@
                                 </small>
                             </b-media>
 
-                            <b-table outlined hover fixed :items="items" :fields="fields" primary-key="id">
+                            <!-- <b-table outlined hover fixed :items="items" :fields="fields" primary-key="id">
                                 <template #cell(actions)="data">
                                     <b-button variant="primary" size="sm" 
                                         :disabled="disable" 
@@ -39,7 +39,23 @@
                                         :labels="{checked: 'On', unchecked: 'Off'}" 
                                         :color="{checked: '#118f22', unchecked: '#FF0000'}"/>
                                 </template>   
-                            </b-table>
+                            </b-table> -->
+
+                             <b-table outlined hover fixed :items="email_masterlists" :fields="email_fields" primary-key="id">
+                                  <template #cell(actions)="data">
+                                    <b-button variant="primary" size="sm" 
+                                        :disabled="disable" 
+                                        :id="'btn_actions_'+data.item.id">
+                                        <font-awesome-icon icon="edit" />
+                                    </b-button>
+                                </template>
+                                <template #cell(status)="data">
+                                    <toggle-button @change="toggle(data.item.id, $event)"
+                                        :value="true" 
+                                        :labels="{checked: 'On', unchecked: 'Off'}" 
+                                        :color="{checked: '#118f22', unchecked: '#FF0000'}"/>
+                                </template>   
+                             </b-table>    
                         </b-card>
                     </b-card-body>   
                 </b-card>
@@ -49,32 +65,67 @@
 </template>
 
 <script>
+
 export default {
     data() {
       return {
-        items: [
-            { id: 1, subject: 'Email1', classification: 'FTEC'},
-            { id: 2, subject: 'Email2', classification: 'ECAS'}
-        ],
-        fields: [
-            { key: "id", label: "NO", sortable: true },
+        // items: [
+        //     { id: 1, subject: 'Email1', classification: 'FTEC'},
+        //     { id: 2, subject: 'Email2', classification: 'ECAS'}
+        // ],
+        // fields: [
+        //     { key: "id", label: "NO", sortable: true },
+        //     { key: "actions"},
+        //     { key: "subject", sortable: true },
+        //     { key: "classification", sortable: true},
+        //     { key: "status"}
+        // ],
+        email_masterlists: [],
+        email_fields: [
+            { key: "id", label: "No", sortable: true },
             { key: "actions"},
-            { key: "subject", sortable: true },
-            { key: "classification", sortable: true},
-            { key: "status"}
+            { key: "first_name", label: "Subject", sortable: true },
+            { key: "last_name", label: "Classification", sortable: true },
+            { key: "status"},
         ],
         disable: false,
       }
     },
+    mounted(){
+        this.loadEmailMasterlist();
+    },
     methods: {
-        toggle(data) 
+        loadEmailMasterlist() {
+            this.$store.dispatch("loadEmailMasterlist")
+            .then((response) => {
+                // console.log(response);
+                 this.email_masterlists = response.data;
+            })
+        },
+
+        // toggle(data) 
+        // {
+        //     console.log(data);
+        //     if (!this.isActive) {
+        //         this.isActive = true;
+        //         document.getElementById(`btn_action_${data}`).disabled = true;
+        //     } else {
+        //         this.isActive = false;
+        //         document.getElementById(`btn_action_${data}`).disabled = false;
+        //     }
+        // },
+
+        toggle(data, event) 
         {
-            if (!this.isActive) {
-                this.isActive = true;
-                document.getElementById(`btn_action_${data}`).disabled = true;
+            console.log(data);
+            let event_status = event.value;
+            console.log(event_status);
+             if (event_status != true) {
+                this.event_status = true;
+                document.getElementById(`btn_actions_${data}`).disabled = true;
             } else {
-                this.isActive = false;
-                document.getElementById(`btn_action_${data}`).disabled = false;
+                this.event_status = false;
+                document.getElementById(`btn_actions_${data}`).disabled = false;
             }
         },
     }
