@@ -16,6 +16,8 @@ import VuePapaParse from 'vue-papa-parse'
 Vue.use(BootstrapVue);
 Vue.use(VuePapaParse)
 
+import ToggleButton from "vue-js-toggle-button";
+Vue.use(ToggleButton);
 
 import "./template/alpha.js";
 import "./assets/icons.js";

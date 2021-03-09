@@ -4,11 +4,12 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 import alpha from "../template/modules/alpha";
+import email from "./modules/email.js";
 export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
   modules: {
-    alpha
+    alpha, email
   }
 });
