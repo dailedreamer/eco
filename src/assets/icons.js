@@ -22,6 +22,7 @@ faHandHoldingUsd,
 faPallet,
 faFlagCheckered,
 <<<<<<< HEAD
+<<<<<<< HEAD
 faEdit
 =======
 faFileExcel,
@@ -29,6 +30,13 @@ faSave,
 faUpload
 
 >>>>>>> part_registration_unit
+=======
+faSave,
+faTrash,
+faPen,
+faClipboardList,
+faBook
+>>>>>>> local
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -53,7 +61,15 @@ library.add(
 	faHandHoldingUsd,
 	faFlagCheckered,
 <<<<<<< HEAD
+<<<<<<< HEAD
 	faEdit
+=======
+	faSave,
+	faTrash,
+	faPen,
+	faClipboardList,
+	faBook
+>>>>>>> local
 
 =======
 	faFileExcel,
