@@ -6,7 +6,7 @@ import store from "./store";
 
 Vue.config.productionTip = false;
 
-import { BootstrapVue } from "bootstrap-vue";
+import { BootstrapVue,BootstrapVueIcons } from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import "../src/template/assets/sass/views/custom-tabs.scss";
@@ -18,6 +18,8 @@ Vue.use(VuePapaParse)
 
 import ToggleButton from "vue-js-toggle-button";
 Vue.use(ToggleButton);
+Vue.use(BootstrapVue);
+Vue.use(BootstrapVueIcons)
 
 import "./template/alpha.js";
 import "./assets/icons.js";
@@ -28,8 +30,7 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
 import axios from "axios";
-
-axios.defaults.baseURL  = 'http://10.164.58.52/tms/public/api/';
+axios.defaults.baseURL  = 'http://10.164.58.93/eco-cms-v2/server/public/api/';
 // axios.defaults.baseURL  = 'http://10.164.58.43/tms/server/public/api/';
 
 const options = {
