@@ -167,7 +167,12 @@
               <b-col class="m-3 div_upload_data"><br>
                 <div class="media">
                   <div class="media-aside align-self-start">
-                    <img src="/img/cubes.5abf071a.svg" alt="placeholder" width="44" height="37" class="">
+                    <b-img 
+                        :src="require('../../assets/icon_images/excel.svg')" 
+                        width="44" 
+                        height="37" 
+                        alt="placeholder">
+                    </b-img>
                   </div>
                   <div>
                     <h5 class="mb-0">Upload Data</h5>
@@ -177,15 +182,25 @@
                
                   <b-col lg="12">
                      <b-row>
-                    <b-col lg="4" class="md-2">
-                        <b-form-file multiple :file-name-formatter="formatNames" @change="previewFiles" ></b-form-file>
-                    </b-col>
-                    <b-col lg="4" class="md-2">
-                      <label>Device: </label>      <label id="lbl_device"></label>
-                    </b-col>
-                    <b-col lg="4" class="md-2">    <label id="lbl_model"></label>
-                      <label>Model: </label>
-                    </b-col>
+                        <b-col lg="3" class="md-2">
+                            <b-form-file id="file"  v-on:change="FileUpload()"></b-form-file>
+                        </b-col>
+                        <b-col lg="3" class="2">
+                          <AButton
+                              id="button-submit"
+                              type="submit"
+                              title="Click to add budget"
+                              variant="success"
+                            >
+                              <font-awesome-icon icon="upload" size="sm" class="icon" /> Upload
+                            </AButton>
+                        </b-col>
+                        <b-col lg="3" class="md-2">
+                          <label>Device: </label>      <label id="lbl_device"></label>
+                        </b-col>
+                        <b-col lg="3" class="md-2">    <label id="lbl_model"></label>
+                          <label>Model: </label>
+                        </b-col>
                      </b-row>
                   </b-col>
                <br>
@@ -216,6 +231,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "partsRegistration",
    data() {
@@ -314,17 +330,33 @@ export default {
     //   ...mapGetters([""]),
     // },
     methods: {
-       loadTable: function () {
-       this.$store.dispatch("loadparts").then((result) => {
-       this.toast(result.status, result.message);
-      });
-   
-    },
-    previewFiles: function (event) {
-      console.log(event.target.files);
-    //axios
-    }
+      //  loadTable: function () {
+      //  this.$store.dispatch("loadparts").then((result) => {
+      //  this.toast(result.status, result.message);
+      // });
+        submitFile()
+      {
+        let formData = new FormData();
+        formData.append('file', this.file);
 
+        axios.post('/parts-registration',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        ).then(function(){
+          console.log('success');
+        })
+        .catch(function() {
+          console.log('fail');
+        });
+      },
+      FileUpload(){
+        this.file = this.$refs.file.files[0];
+      }
+   
     }
 };
 </script>
@@ -332,10 +364,13 @@ export default {
 <style lang="scss">
 @import "../../template/assets/sass/imports/general";
 
-.b-col{
+.b-col
+{
   text-align: left;
 }
-.div_upload_data {
+
+.div_upload_data 
+{
   border : 1px solid black;
   border-radius: 10px;
   box-shadow: 0px 0px 5px 0px #5f4646;
@@ -343,13 +378,15 @@ export default {
   height: 900px;
   font-size: 13px;
 }
+
 .page-item.active .page-link
 {
-  background-color: #e84656;
-  border-color: #e22a3c;
+  background-color: #A30B1A;
+  border-color: #A30B1A;
 }
 
-hr {
+hr 
+{
   border-bottom: 3px solid #e84656;
   margin-top: 0;
   margin-bottom: 2rem;
