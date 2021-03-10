@@ -20,7 +20,12 @@ faCheckDouble,
 faThumbsUp,
 faHandHoldingUsd,
 faPallet,
-faFlagCheckered
+faFlagCheckered,
+faSave,
+faTrash,
+faPen,
+faClipboardList,
+faBook
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -43,7 +48,12 @@ library.add(
 	faThumbsUp,
 	faPallet,
 	faHandHoldingUsd,
-	faFlagCheckered
+	faFlagCheckered,
+	faSave,
+	faTrash,
+	faPen,
+	faClipboardList,
+	faBook
 
 );
 

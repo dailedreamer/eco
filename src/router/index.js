@@ -29,6 +29,10 @@ const VPSApplication = () =>import("@/views/VPSApplication");
 const ECOActionItems = () =>import("@/views/ECOActionItems");
 
 const ManagementParts = () =>import("@/views/Management/Parts");
+const ManagementPartsDevice = () =>import("@/views/Management/Parts/Device");
+const ManagementPartsModel = () =>import("@/views/Management/Parts/Model");
+const ManagementPartsUnit= () =>import("@/views/Management/Parts/Unit");
+
 const ManagementUsers = () =>import("@/views/Management/Users");
 const ManagementEmail = () =>import("@/views/Management/Email");
 Vue.use(VueRouter);
@@ -126,9 +130,27 @@ const routes = [
 				component: ECOActionItems ,
 			},
 			{
-				path: "/management_parts",
+				path: "/management-parts",
 				name: "ManagementParts ",
 				component: ManagementParts ,
+				children:
+				[
+					{
+						path: "/management-parts-device",
+						name: "ManagementPartsDevice ",
+						component: ManagementPartsDevice ,
+					},
+					{
+						path: "/management-parts-model",
+						name: "ManagementPartsModel ",
+						component: ManagementPartsModel ,
+					},
+					{
+						path: "/management-parts-unit",
+						name: "ManagementPartsUnit ",
+						component: ManagementPartsUnit ,
+					},
+				]
 			},
 			{
 				path: "/management_users",
@@ -151,7 +173,7 @@ const router = new VueRouter({
 });
 router.beforeEach((to, from, next) => {
 	if (to.matched.some(record => record.meta.requiresAuth)) {
-		if(localStorage.getItem('auth_token') == null)
+		if(localStorage.getItem('auth_token') === null)
 		{
 			next({name:'LoggedOut'});
 		}

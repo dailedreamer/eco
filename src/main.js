@@ -6,13 +6,13 @@ import store from "./store";
 
 Vue.config.productionTip = false;
 
-import { BootstrapVue } from "bootstrap-vue";
+import { BootstrapVue,BootstrapVueIcons } from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import "../src/template/assets/sass/views/custom-tabs.scss";
 import "../src/template/assets/sass/views/custom-cards.scss";
 Vue.use(BootstrapVue);
-
+Vue.use(BootstrapVueIcons)
 
 import "./template/alpha.js";
 import "./assets/icons.js";

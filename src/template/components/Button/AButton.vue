@@ -132,7 +132,7 @@ export default {
   }
 
   &--md {
-    padding: .375rem .75rem;
+    padding: .325rem .75rem;
     font-size: 1rem;
     span:nth-child(1){
       height: 2px;
