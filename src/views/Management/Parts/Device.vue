@@ -58,7 +58,7 @@
                         bordered 
                         head-variant="light"
                         :fields="fields"
-                        :items="getDevice.data"
+                        :items="items"
                         :busy="isBusy" 
                     >
                     <template #table-busy>
@@ -129,7 +129,12 @@ export default {
                 key: 'actions', 
                 label: 'Actions' 
             }],
-        // items: [],
+        items: [
+        { no: '1', device: 'Macdonald', model_name: 'Model Name', model_code: 'Model Code', id:1},
+        { no: '2', device: 'Shaw', model_name: 'Model Name', model_code: 'Model Code', id:2},
+        { no: '3', device: 'Wilson', model_name: 'Model Name', model_code: 'Model Code', id:3},
+        { no: '4', device: 'Carney', model_name: 'Model Name', model_code: 'Model Code', id:4},
+        ],
       }
     },
     computed: {
@@ -143,7 +148,6 @@ export default {
         {
            this.$store.dispatch("loadDevice")
             .then((response) => {
-        //   alert(response);    
             this.toast(response.status, response.message);
            });  
         },
@@ -157,9 +161,9 @@ export default {
     },
     },
     mounted() {
-        // this.loadDevice();
-        // console.log(this.getDevice);
-        // console.log(this.getDevice.data);
+        this.loadDevice();
+        console.log(this.getDevice);
+        console.log(this.getDevice.data);
     }
 };
 </script>
