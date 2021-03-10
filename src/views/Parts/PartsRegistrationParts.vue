@@ -12,37 +12,25 @@
               <h4>SINGLE ITEM REGISTRATION</h4>
                 <hr />
                 <div class="red-line"></div>
-                  <b-form-group
-                  id="input-group-device-name"
-                  label="Device Name"
-                  label-class="alpha__form__label"
-                  label-for="device-name"
-                >
-                  <b-form-select
-                    id="select-device-name"
-                    name="device_id"
-                    v-model="form.device_id.value"
-                    :options="device_options"
-                    requried
-                    class="alpha-input"
-                  ></b-form-select>
-                </b-form-group>
+                  <b-label>Device Name</b-label>
+                  <Select2 class="alpha-input" 
+                  placeholder="Please Select Device" 
+                  v-model="deviceValue" 
+                  :options="deviceOptions" 
+                  :settings="{ settingOption: value, settingOption: value }" 
+                  @change="myChangeEvent($event)" 
+                  @select="mySelectEvent($event)" 
+                  required/>
+                  <!-- <h4>Value: {{ myValue }}</h4> -->
 
-                  <b-form-group
-                  id="input-group-model-name"
-                  label="Model Name"
-                  label-class="alpha__form__label"
-                  label-for="model-name"
-                >
-                  <b-form-select
-                    id="select-model-name"
-                    name="model_id"
-                    v-model="form.model_id.value"
-                    :options="model_options"
-                    requried
-                    class="alpha-input"
-                  ></b-form-select>
-                </b-form-group>
+                  <b-label>Model Name</b-label>
+                  <Select2 class="alpha-input" 
+                  placeholder="Please Select Model" 
+                  v-model="modelValue" 
+                  :options="modelOptions"
+                  :settings="{ settingOption: value, settingOption: value }" 
+                  @change="myChangeEvent($event)" @select="mySelectEvent($event)"
+                  required/>
 
                   <b-form-group
                   id="input-group-batch-number"
@@ -105,11 +93,11 @@
                 /></b-form-group>
 
                     <b-form-group
-                  id="input-group-part-number-revision"
-                  label="Revision"
-                  label-class="alpha__form__label"
-                  label-for="input-part-number-revision"
-                >
+                    id="input-group-part-number-revision"
+                    label="Revision"
+                    label-class="alpha__form__label"
+                    label-for="input-part-number-revision"
+                  >
                   <b-form-input
                     class="alpha-input"
                     id="input-part-number-revision"
@@ -162,7 +150,6 @@
               </div>
               </b-form>
             </b-col>
-
             <b-col cols="9">
               <b-col class="m-3 div_upload_data"><br>
                 <div class="media">
@@ -179,21 +166,33 @@
                   <small class="text-secondary">Upload Data Description</small>
                   </div>
                  </div><br>
-               
+                 <b-form
+                  class="pl-4 pr-4"
+                  id="form-upload"
+                  @submit.prevent="uploadFile"
+                  method="post"
+                 >
                   <b-col lg="12">
                      <b-row>
                         <b-col lg="3" class="md-2">
-                            <b-form-file id="file"  v-on:change="FileUpload()"></b-form-file>
+                                <input
+                                class="alpha-input"
+                                id="input-file"
+                                name="file"
+                                type="file"
+                                accept=".csv"
+                                required
+                              />
                         </b-col>
                         <b-col lg="3" class="2">
                           <AButton
-                              id="button-submit"
+                              id="button-upload"
                               type="submit"
-                              title="Click to add budget"
+                              title="Click to Upload"
                               variant="success"
                             >
-                              <font-awesome-icon icon="upload" size="sm" class="icon" /> Upload
-                            </AButton>
+                            <font-awesome-icon icon="upload" size="sm" class="icon" /> Upload
+                          </AButton>
                         </b-col>
                         <b-col lg="3" class="md-2">
                           <label>Device: </label>      <label id="lbl_device"></label>
@@ -203,6 +202,7 @@
                         </b-col>
                      </b-row>
                   </b-col>
+                  </b-form>
                <br>
                  <b-col cols="12">
                     <b-table class="alpha__table text-nowrap"
@@ -211,14 +211,14 @@
                         responsive
                         :fields="fields">
                     </b-table>
-                     <b-pagination
+                     <!-- <b-pagination
                       align="right"
                       class="alpha__table__pagination"
                       pills
                       v-model="currentPage"
                       :total-rows="rows"
                       :per-page="perPage"
-                    ></b-pagination>
+                    ></b-pagination> -->
                  </b-col>
                 
               </b-col>
@@ -231,17 +231,17 @@
 </template>
 
 <script>
-import axios from "axios";
+import Select2 from 'v-select2-component';
 export default {
+  components: {Select2},
   name: "partsRegistration",
    data() {
       return {
+        deviceValue: '',
+        deviceOptions: ['Device 1', 'Device 2', 'Device 3'],// 
+        modelValue: '',
+        modelOptions: ['Model 1', 'Model 2', 'Model 3'],// or [{id: key, textor [{id: key, text: value}, {id: key, text: value}]
         form: {
-          device_id: {
-            value: 0,
-            state: null,
-            validation:"",
-          },
           model_id: {
             value: 0,
             state: null,
@@ -283,8 +283,8 @@ export default {
             validation:"",
           },
         },
-        currentPage: 1,
-        perPage: 10,
+        // currentPage: 1,
+        // perPage: 10,
         fields: [
         {
           key: "no",
@@ -323,44 +323,28 @@ export default {
       model_options:[],
       }
     },
-    mounted(){
-      this.loadTable();
-    },
-    // computed:{
-    //   ...mapGetters([""]),
-    // },
     methods: {
-      //  loadTable: function () {
-      //  this.$store.dispatch("loadparts").then((result) => {
-      //  this.toast(result.status, result.message);
-      // });
-        submitFile()
+      uploadFile: function()
       {
-        let formData = new FormData();
-        formData.append('file', this.file);
-
-        axios.post('/parts-registration',
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          }
-        ).then(function(){
-          console.log('success');
-        })
-        .catch(function() {
-          console.log('fail');
-        });
+          document.getElementById("button-upload").disabled = true;
+          let formData = new FormData(document.getElementById("form-upload")); 
+          
+          this.$store.dispatch("uploadExcel",formData)
+          .then((response) => {
+              console.log(response)
+          });
       },
-      FileUpload(){
-        this.file = this.$refs.file.files[0];
-      }
-   
-    }
+      myChangeEvent: function(val){
+            console.log(val);
+        },
+        mySelectEvent: function({id, text}){
+            console.log({id, text})
+        }
+    },
 };
 </script>
 
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style lang="scss">
 @import "../../template/assets/sass/imports/general";
 
@@ -369,8 +353,7 @@ export default {
   text-align: left;
 }
 
-.div_upload_data 
-{
+.div_upload_data {
   border : 1px solid black;
   border-radius: 10px;
   box-shadow: 0px 0px 5px 0px #5f4646;
@@ -385,8 +368,7 @@ export default {
   border-color: #A30B1A;
 }
 
-hr 
-{
+hr {
   border-bottom: 3px solid #e84656;
   margin-top: 0;
   margin-bottom: 2rem;
