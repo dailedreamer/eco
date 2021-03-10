@@ -6,11 +6,12 @@ import auth from "./auth";
 
 import alpha from "../template/modules/alpha";
 import email from "./modules/email.js";
+import parts from "./modules/management/parts.js";
 export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
   modules: {
-    alpha, email, auth
+    alpha, email, auth, parts
   }
 });

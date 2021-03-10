@@ -58,13 +58,16 @@
                         bordered 
                         head-variant="light"
                         :fields="fields"
-                      :items="items"
+                        :items="getDevice.data"
                         :busy="isBusy" 
                     >
                     <template #table-busy>
                         <div class="text-center text-default my-2">
                         <b-spinner class="align-middle"></b-spinner>
                         </div>
+                    </template>
+                    <template #cell(No)="data">
+                           {{data.index+1}}
                     </template>
                         <template #cell(actions)="data">
                             <AButton
@@ -98,7 +101,7 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  name: "Parts Management (Device)",
+  name: "PartsManagementDevice",
     data() {
       return {
         //select
@@ -119,19 +122,14 @@ export default {
                 sortable: true,
             }, 
             {
-                key: "device",
+                key: "device_name",
                 sortable: true,
             }, 
             { 
                 key: 'actions', 
                 label: 'Actions' 
             }],
-        items: [
-        { no: '1', device: 'Macdonald', id:1},
-        { no: '2', device: 'Shaw', id:2},
-        { no: '3', device: 'Wilson', id:3},
-        { no: '4', device: 'Carney', id:4},
-        ],
+        // items: [],
       }
     },
     computed: {
@@ -141,6 +139,27 @@ export default {
         removeDevice: function (id) {
             alert(id);
         },
+        loadDevice: function()
+        {
+           this.$store.dispatch("loadDevice")
+            .then((response) => {
+        //   alert(response);    
+            this.toast(response.status, response.message);
+           });  
+        },
+        toast: function (status, message) {
+        this.$toast(message, {
+            type: status,
+            toastClassName: `toastification--${status}`,
+            position: "bottom-right",
+      });
+    
+    },
+    },
+    mounted() {
+        // this.loadDevice();
+        // console.log(this.getDevice);
+        // console.log(this.getDevice.data);
     }
 };
 </script>

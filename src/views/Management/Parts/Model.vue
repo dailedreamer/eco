@@ -52,19 +52,34 @@
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, illum.
                         </small>
                     </b-media>
+                    
+                    <b-pagination
+                        align="right"
+                        class="alpha__table__pagination"
+                        pills
+                        v-model="currentPage"
+                        :total-rows="rows"
+                        :per-page="perPage"
+                    ></b-pagination>
                     <b-table 
                         responsive 
                         hover 
                         bordered 
                         head-variant="light"
                         :fields="fields"
-                        :items="getModel.data" 
+                        :items="getModel.data"
                         :busy="isBusy" 
+                        :total-rows="rows"
                     >
+                   
+                           
                     <template #table-busy>
                         <div class="text-center text-default my-2">
                         <b-spinner class="align-middle"></b-spinner>
                         </div>
+                    </template>
+                    <template #cell(No)="data">
+                           {{data.index+1}}
                     </template>
                         <template #cell(actions)="data">
                             <AButton
@@ -98,11 +113,15 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  name: "Parts Management (Model)",
+  name: "PartsManagementModel",
     data() {
       return {
         //select
         selected: 1,
+        value: '',
+        currentPage: 1,
+        perPage: 10,
+        
         options: [
           { value: 1, text: 'Model 1' },
           { value: 2, text: 'Model 2' },
@@ -114,9 +133,10 @@ export default {
         isBusy: false,
         device_name: '',
         fields: [ 
-            {
-                key: "no", sortable: true,
-            }, 
+            'No',
+            // {
+            //     key: "no", sortable: true,
+            // }, 
             {
                 key: "device",sortable: true,
             }, 
@@ -130,20 +150,41 @@ export default {
                 key: 'actions',label: 'Actions' 
             }],
         items: [
-        { no: '1', device: 'Macdonald', model_name: 'Model Name', model_code: 'Model Code', id:1},
-        { no: '2', device: 'Shaw', model_name: 'Model Name', model_code: 'Model Code', id:2},
-        { no: '3', device: 'Wilson', model_name: 'Model Name', model_code: 'Model Code', id:3},
-        { no: '4', device: 'Carney', model_name: 'Model Name', model_code: 'Model Code', id:4},
+        // { no: '1', device: 'Macdonald', model_name: 'Model Name', model_code: 'Model Code', id:1},
+        // { no: '2', device: 'Shaw', model_name: 'Model Name', model_code: 'Model Code', id:2},
+        // { no: '3', device: 'Wilson', model_name: 'Model Name', model_code: 'Model Code', id:3},
+        // { no: '4', device: 'Carney', model_name: 'Model Name', model_code: 'Model Code', id:4},
         ],
       }
     },
     computed: {
     ...mapGetters(["getModel"]),
+    rows() {
+        return this.items.length
+    }
+    },
+    mounted() {
+         this.loadModel();
+     
     },
     methods: {
         removeDevice: function (id) {
             alert(id);
         },
+         loadModel: function()
+        {
+           this.$store.dispatch("loadModel")
+            .then((response) => {
+            this.toast(response.status, response.message);
+           });  
+        },
+        toast: function (status, message) {
+        this.$toast(message, {
+            type: status,
+            toastClassName: `toastification--${status}`,
+            position: "bottom-right",
+      });
+    },
     },
 };
 </script>
