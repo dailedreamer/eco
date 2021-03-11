@@ -51,14 +51,13 @@
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, illum.
                         </small>
                     </b-media>
-                      <!-- :items="getDevice.data"  -->
                     <b-table 
                         responsive 
                         hover 
                         bordered 
                         head-variant="light"
                         :fields="fields"
-                        :items="items"
+                        :items="getDevice.data"
                         :busy="isBusy" 
                     >
                     <template #table-busy>
@@ -117,10 +116,7 @@ export default {
         isBusy: false,
         device_name: '',
         fields: [ 
-            {
-                key: "no",
-                sortable: true,
-            }, 
+           'No',
             {
                 key: "device_name",
                 sortable: true,
@@ -146,24 +142,24 @@ export default {
         },
         loadDevice: function()
         {
-           this.$store.dispatch("loadDevice")
-            .then((response) => {
+           this.$store.dispatch("loadDevice").then((response) => {
             this.toast(response.status, response.message);
+            alert('asdasd');
            });  
         },
-        toast: function (status, message) {
-        this.$toast(message, {
-            type: status,
-            toastClassName: `toastification--${status}`,
-            position: "bottom-right",
-      });
+    //     toast: function (status, message) {
+    //     this.$toast(message, {
+    //         type: status,
+    //         // toastClassName: `toastification--default`,
+    //         position: "bottom-right",
+    //   });
     
-    },
+    // },
     },
     mounted() {
         this.loadDevice();
-        console.log(this.getDevice);
         console.log(this.getDevice.data);
+        // console.log(this.getDevice.data);
     }
 };
 </script>
