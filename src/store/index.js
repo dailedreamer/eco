@@ -4,11 +4,14 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 import alpha from "../template/modules/alpha";
+import parts_monitoring from "./modules/Parts/PartsMonitoring/parts_monitoring";
+
 export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
   modules: {
-    alpha
+    alpha,
+    parts_monitoring
   }
 });
