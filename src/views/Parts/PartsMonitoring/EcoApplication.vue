@@ -3,9 +3,9 @@
         <b-media>
             <template #aside>
             <b-img 
-                :src="require('../../../assets/icon_images/cubes.svg')" 
-                width="44" 
-                height="37" 
+                :src="require('../../../assets/icon_images/settings.svg')" 
+                width="47" 
+                height="45" 
                 alt="placeholder">
             </b-img>
             </template>
