@@ -5,6 +5,7 @@ Vue.use(Vuex);
 import auth from "./auth";
 
 import alpha from "../template/modules/alpha";
+import parts_monitoring from "./modules/Parts/PartsMonitoring/parts_monitoring";
 import email from "./modules/email.js";
 import parts from "./modules/management/parts.js";
 export default new Vuex.Store({
@@ -12,6 +13,10 @@ export default new Vuex.Store({
   mutations: {},
   actions: {},
   modules: {
-    alpha, email, auth, parts
+    alpha,
+    parts_monitoring,
+     email, 
+     auth, 
+     parts
   }
 });
