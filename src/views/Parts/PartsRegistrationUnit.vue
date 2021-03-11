@@ -67,6 +67,7 @@
 
 <script>
 import axios from "axios";
+import { mapGetters } from "vuex";
 export default {
   name: "partsRegistrationUnits",
   data(){
@@ -115,6 +116,9 @@ export default {
   {
       // this.loadTable();
   },
+   computed: {
+    ...mapGetters(["getPartsRegistrationUnits"]),
+    },
    methods: 
    {
       loadTable: function () 

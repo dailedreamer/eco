@@ -12,25 +12,39 @@
               <h4>SINGLE ITEM REGISTRATION</h4>
                 <hr />
                 <div class="red-line"></div>
-                  <b-label>Device Name</b-label>
+      
+                  <b-form-group
+                  id="select_device"
+                  label="Device Name"
+                  label-class="alpha__form__label"
+                  label-for="input-device-name"
+                >
                   <Select2 class="alpha-input" 
                   placeholder="Please Select Device" 
-                  v-model="deviceValue" 
+                  name="device_id"
+                  v-model="form.device_id.value" 
+                  :state="form.device_id.state"
                   :options="deviceOptions" 
-                  :settings="{ settingOption: value, settingOption: value }" 
                   @change="myChangeEvent($event)" 
                   @select="mySelectEvent($event)" 
                   required/>
-                  <!-- <h4>Value: {{ myValue }}</h4> -->
-
-                  <b-label>Model Name</b-label>
+                  </b-form-group>
+     
+                 <b-form-group
+                  id="select_model"
+                  label="Model Name"
+                  label-class="alpha__form__label"
+                  label-for="input-model-name"
+                >
                   <Select2 class="alpha-input" 
-                  placeholder="Please Select Model" 
-                  v-model="modelValue" 
+                  placeholder="Please Select Model"
+                  name="model_id" 
+                  v-model="form.model_id.value" 
+                  :state="form.model_id.state"
                   :options="modelOptions"
-                  :settings="{ settingOption: value, settingOption: value }" 
                   @change="myChangeEvent($event)" @select="mySelectEvent($event)"
                   required/>
+                 </b-form-group>
 
                   <b-form-group
                   id="input-group-batch-number"
@@ -39,12 +53,14 @@
                   label-for="input-batch-number"
                 >
                   <b-form-input
-                    class="alpha-input"
-                    id="input-batch-number"
-                    name="batch-number"
-                    type="text"
-                    placeholder="Enter Batch Number"
-                    required
+                  class="alpha-input"
+                  id="input-batch-number"
+                  name="batch_number"
+                  v-model="form.batch_number.value"
+                  :state="form.batch_number.state"
+                  type="text"
+                  placeholder="Enter Batch Number"
+                  required
                 /></b-form-group>
 
                  <b-form-group
@@ -54,12 +70,14 @@
                   label-for="input-parent-number"
                 >
                   <b-form-input
-                    class="alpha-input"
-                    id="input-parent-number"
-                    name="parent-number"
-                    type="text"
-                    placeholder="Enter Parent Number"
-                    required
+                  class="alpha-input"
+                  id="input-parent-number"
+                  name="parent_drawing_number"
+                   v-model="form.parent_drawing_number.value"
+                  :state="form.parent_drawing_number.state"
+                  type="text"
+                  placeholder="Enter Parent Number"
+                  required
                 /></b-form-group>
 
                  <b-form-group
@@ -69,12 +87,14 @@
                   label-for="input-revision"
                 >
                   <b-form-input
-                    class="alpha-input"
-                    id="input-parent-number"
-                    name="input-revision"
-                    type="text"
-                    placeholder="Enter Revision"
-                    required
+                  class="alpha-input"
+                  id="input-parent-number"
+                  name="drawing_number_current_revision"
+                  v-model="form.drawing_number_current_revision.value"
+                  :state="form.drawing_number_current_revision.state"
+                  type="text"
+                  placeholder="Enter Revision"
+                  required
                 /></b-form-group>
 
                 <b-form-group
@@ -84,57 +104,65 @@
                   label-for="input-part-number"
                 >
                   <b-form-input
-                    class="alpha-input"
-                    id="input-part-number"
-                    name="input-part-number"
-                    type="text"
-                    placeholder="Enter Part Number"
-                    required
+                  class="alpha-input"
+                  id="input-part-number"
+                  name="part_number"
+                  v-model="form.part_number.value"
+                  :state="form.part_number.state"
+                  type="text"
+                  placeholder="Enter Part Number"
+                  required
                 /></b-form-group>
 
-                    <b-form-group
-                    id="input-group-part-number-revision"
-                    label="Revision"
-                    label-class="alpha__form__label"
-                    label-for="input-part-number-revision"
-                  >
+                  <b-form-group
+                  id="input-group-part-number-revision"
+                  label="Revision"
+                  label-class="alpha__form__label"
+                  label-for="input-part-number-revision"
+                >
                   <b-form-input
-                    class="alpha-input"
-                    id="input-part-number-revision"
-                    name="input-part-number-revision"
-                    type="text"
-                    placeholder="Enter Revision"
-                    required
+                  class="alpha-input"
+                  id="input-part-number-revision"
+                  name="part_number_current_revision"
+                  v-model="form.part_number_current_revision.value"
+                  :state="form.part_number_current_revision.state"
+                  type="text"
+                  placeholder="Enter Revision"
+                  required
                 /></b-form-group>
 
-                <b-form-group
+                  <b-form-group
                   id="input-group-class"
                   label="Class"
                   label-class="alpha__form__label"
                   label-for="input-class"
-                >
+                  >
                   <b-form-input
-                    class="alpha-input"
-                    id="input-class"
-                    name="input-class"
-                    type="text"
-                    placeholder="Enter class"
-                    required
+                  class="alpha-input"
+                  id="input-class"
+                  name="class"
+                  v-model="form.class.value"
+                  :state="form.class.state"
+                  type="text"
+                  placeholder="Enter class"
+                  required
                 /></b-form-group>
 
-                 <b-form-group
+                  <b-form-group
                   id="input-group-die-details"
                   label="Die Details"
                   label-class="alpha__form__label"
                   label-for="input-die-details"
-                >
+                  >
                   <b-form-input
-                    class="alpha-input"
-                    id="input-die-details"
-                    name="input-die-details"
-                    type="text"
-                    placeholder="Enter Die Details"
-                    required
+                  class="alpha-input"
+                  id="input-die-details"
+                  name="die_details"
+                  v-model="form.die_details.value"
+                  :state="form.die_details.state"
+                  type="text"
+                  placeholder="Enter Die Details"
+                  required
                 /></b-form-group>
               <div>
                 <center>
@@ -175,14 +203,14 @@
                   <b-col lg="12">
                      <b-row>
                         <b-col lg="3" class="md-2">
-                                <input
-                                class="alpha-input"
-                                id="input-file"
-                                name="file"
-                                type="file"
-                                accept=".csv"
-                                required
-                              />
+                          <input
+                              class="alpha-input"
+                              id="input-file"
+                              name="file"
+                              type="file"
+                              accept=".csv"
+                              required
+                            />
                         </b-col>
                         <b-col lg="3" class="2">
                           <AButton
@@ -237,11 +265,14 @@ export default {
   name: "partsRegistration",
    data() {
       return {
-        deviceValue: '',
-        deviceOptions: ['Device 1', 'Device 2', 'Device 3'],// 
-        modelValue: '',
-        modelOptions: ['Model 1', 'Model 2', 'Model 3'],// or [{id: key, textor [{id: key, text: value}, {id: key, text: value}]
+        deviceOptions: ['Device 1', 'Device 2', 'Device 3'],
+        modelOptions: ['Model 1', 'Model 2', 'Model 3'],
         form: {
+          device_id: {
+            value: 0,
+            state: null,
+            validation:"",
+          },
           model_id: {
             value: 0,
             state: null,
@@ -319,27 +350,39 @@ export default {
           sortable: true,
         },
       ],
-      device_options:[],
-      model_options:[],
       }
     },
-    methods: {
-      uploadFile: function()
-      {
+    methods: 
+    {
+        uploadFile: function()
+        {
           document.getElementById("button-upload").disabled = true;
-          let formData = new FormData(document.getElementById("form-upload")); 
-          
-          this.$store.dispatch("uploadExcel",formData)
-          .then((response) => {
-              console.log(response)
-          });
-      },
-      myChangeEvent: function(val){
-            console.log(val);
+            let formData = new FormData(document.getElementById("form-upload")); 
+            
+            this.$store.dispatch("uploadExcel",formData)
+            .then((response) => {
+                console.log(response)
+            });
         },
-        mySelectEvent: function({id, text}){
-            console.log({id, text})
-        }
+        myChangeEvent: function(val)
+        {
+          console.log(val);
+        },
+        mySelectEvent: function({id, text})
+        {
+          console.log({id, text})
+        },
+        submitForm: function()
+        {
+            var formData = new FormData(document.getElementById('form-parts-registration'));
+            document.getElementById('button-submit').disabled.true;
+            this.$store
+            .dispatch("insertPartsRegistrationPe", formData)
+            .then((response) => {
+                console.log(JSON.stringify(this.form));
+                console.log(response)
+            });
+        },
     },
 };
 </script>
