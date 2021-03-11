@@ -20,7 +20,7 @@
 export default {
   name: "Blank",
   mounted(){
-      	// localStorage.setItem('user_info','adasd');
+      
   }
 };
 </script>

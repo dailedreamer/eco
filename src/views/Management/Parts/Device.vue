@@ -51,7 +51,6 @@
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, illum.
                         </small>
                     </b-media>
-                      <!-- :items="getDevice.data"  -->
                     <b-table 
                         responsive 
                         hover 
@@ -117,10 +116,7 @@ export default {
         isBusy: false,
         device_name: '',
         fields: [ 
-            {
-                key: "no",
-                sortable: true,
-            }, 
+           'No',
             {
                 key: "device_name",
                 sortable: true,
@@ -129,7 +125,12 @@ export default {
                 key: 'actions', 
                 label: 'Actions' 
             }],
-        // items: [],
+        items: [
+        { no: '1', device: 'Macdonald', model_name: 'Model Name', model_code: 'Model Code', id:1},
+        { no: '2', device: 'Shaw', model_name: 'Model Name', model_code: 'Model Code', id:2},
+        { no: '3', device: 'Wilson', model_name: 'Model Name', model_code: 'Model Code', id:3},
+        { no: '4', device: 'Carney', model_name: 'Model Name', model_code: 'Model Code', id:4},
+        ],
       }
     },
     computed: {
@@ -141,24 +142,23 @@ export default {
         },
         loadDevice: function()
         {
-           this.$store.dispatch("loadDevice")
-            .then((response) => {
-        //   alert(response);    
+           this.$store.dispatch("loadDevice").then((response) => {
             this.toast(response.status, response.message);
+            alert('asdasd');
            });  
         },
-        toast: function (status, message) {
-        this.$toast(message, {
-            type: status,
-            toastClassName: `toastification--${status}`,
-            position: "bottom-right",
-      });
+    //     toast: function (status, message) {
+    //     this.$toast(message, {
+    //         type: status,
+    //         // toastClassName: `toastification--default`,
+    //         position: "bottom-right",
+    //   });
     
-    },
+    // },
     },
     mounted() {
-        // this.loadDevice();
-        // console.log(this.getDevice);
+        this.loadDevice();
+        console.log(this.getDevice.data);
         // console.log(this.getDevice.data);
     }
 };
