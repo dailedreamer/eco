@@ -22,12 +22,12 @@ export default {
 				axios
 					.get("devices")
 					.then(function(response) {
-						commit("SET_DEVICE", response);
+						commit("SET_DEVICE", response.data);
 						let result = {
-							code: response.data.status_code,
+							code: response.data.code,
 							status: response.data.status,
 							message: response.data.message,
-							data: response.data.data
+							data: response.data.data,
 						};
 						resolve(result);
 					})
@@ -42,13 +42,12 @@ export default {
 				axios
 					.get("model-names")
 					.then(function(response) {
-						
 						commit("SET_MODEL", response.data);
 						let result = {
-							code: response.data.status_code,
+							code: response.data.code,
 							status: response.data.status,
 							message: response.data.message,
-							data: response.data.data
+							data: response.data.data,
 						};
 						resolve(result);
 					})
@@ -56,31 +55,30 @@ export default {
 						reject(error);
 					});
 			});
-        }
-    //     async loadUnit({ commit }) {
-	// 		return new Promise((resolve, reject) => {
-	// 			axios
-	// 				.get("model-names")
-	// 				.then(function(response) {
-	// 					commit("SET_UNIT", response.data);
-	// 					let result = {
-	// 						code: response.data.code,
-	// 						status: response.data.status,
-	// 						message: response.data.message,
-	// 						data: response.data.data,
-	// 					};
-	// 					resolve(result);
-						
-	// 				})
-	// 				.catch(function(error) {
-	// 					reject(error);
-	// 				});
-	// 		});
-	// 	},
+        },
+        // async loadUnit({ commit }) {
+		// 	return new Promise((resolve, reject) => {
+		// 		axios
+		// 			.get("load-all-unit")
+		// 			.then(function(response) {
+		// 				commit("SET_UNIT", response.data);
+		// 				let result = {
+		// 					code: response.data.code,
+		// 					status: response.data.status,
+		// 					message: response.data.message,
+		// 					data: response.data.data,
+		// 				};
+		// 				resolve(result);
+		// 			})
+		// 			.catch(function(error) {
+		// 				reject(error);
+		// 			});
+		// 	});
+		// },
     },
     getters: {
         getDevice: (state) => state.device,
         getModel: (state) => state.model,
-        // getUnit: (state) => state.unit,
+        getUnit: (state) => state.unit,
     },
 };
