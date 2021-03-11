@@ -21,7 +21,9 @@ faThumbsUp,
 faHandHoldingUsd,
 faPallet,
 faFlagCheckered,
-faEdit
+faEdit,
+faSave,
+faTimesCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -45,7 +47,9 @@ library.add(
 	faPallet,
 	faHandHoldingUsd,
 	faFlagCheckered,
-	faEdit
+	faEdit,
+	faSave,
+	faTimesCircle
 
 );
 
