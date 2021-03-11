@@ -21,9 +21,18 @@ faThumbsUp,
 faHandHoldingUsd,
 faPallet,
 faFlagCheckered,
+faTimesCircle,
+faFile,
+faDownload,
 faEdit,
+faFileExcel,
+faUpload,
+faTrash,
+faPen,
+faClipboardList,
+faBook,
 faSave,
-faTimesCircle
+faCopy
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -47,10 +56,18 @@ library.add(
 	faPallet,
 	faHandHoldingUsd,
 	faFlagCheckered,
+	faTimesCircle,
+	faFile,
+	faDownload,
 	faEdit,
+	faTrash,
+	faPen,
+	faClipboardList,
+	faBook,
+	faFileExcel,
+	faUpload,
 	faSave,
-	faTimesCircle
-
+	faCopy
 );
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);

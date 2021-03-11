@@ -5,11 +5,11 @@
         <vessel>
           <vessel-header>
             <center>
-              <h2 class="mb-1">Monitoring</h2>
+              <h2 class="mb-1">Logged Out</h2>
             </center>
           </vessel-header>
-          <!-- <vessel-body>
-          </vessel-body> -->
+          <vessel-body>
+          </vessel-body>
         </vessel>
       </b-col>
     </b-row>
@@ -19,6 +19,9 @@
 <script>
 export default {
   name: "Blank",
+  mounted(){
+      
+  }
 };
 </script>
 

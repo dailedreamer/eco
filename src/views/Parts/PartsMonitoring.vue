@@ -1,26 +1,42 @@
 <template>
-  <b-container fluid>
-    <b-row>
-      <b-col cols="12">
-        <vessel>
-          <vessel-header>
-            <center>
-              <h2 class="mb-1">Parts Monitoring</h2>
-            </center>
-          </vessel-header>
-          <!-- <vessel-body>
-          </vessel-body> -->
-        </vessel>
-      </b-col>
-    </b-row>
-  </b-container>
+  <b-row>
+    <b-col class="sidetab" cols="1">
+      <Side/>
+    </b-col>
+    <b-col cols="11">
+      <EcoApplication v-if="getShowEcoPartsStatus"/>
+      <!-- DITO ILAGAY YUNG PARTS MANUFACTURING VIEW -->
+      <PartsManufacturing v-if="getShowPartsManufacturingStatus"/>
+          
+      <Body/>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import Side from "../../components/Parts/PartsMonitoring/Side.vue";
+import Body from "../../components/Parts/PartsMonitoring/Body.vue";
+import EcoApplication from "./PartsMonitoring/EcoApplication.vue";
+import PartsManufacturing from "./PartsMonitoring/PartsManufacturing.vue";
+
+
 export default {
-  name: "Blank",
+  name: "PartsMonitoring",
+  components: {
+    EcoApplication,
+    PartsManufacturing,
+    Side,
+    Body
+  },
+  computed: {
+    ...mapGetters(["getShowEcoPartsStatus","getShowPartsManufacturingStatus"])
+  }
 };
 </script>
 
-<style>
+<style scoped>
+  .sidetab {
+    height: 460px;
+  }
 </style>
