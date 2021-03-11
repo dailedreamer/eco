@@ -30,7 +30,8 @@ faTrash,
 faPen,
 faClipboardList,
 faBook,
-faSave
+faSave,
+faCopy
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -63,7 +64,8 @@ library.add(
 	faBook,
 	faFileExcel,
 	faUpload,
-	faSave
+	faSave,
+	faCopy
 );
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
