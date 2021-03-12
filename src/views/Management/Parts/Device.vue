@@ -9,34 +9,54 @@
                 <hr class="hr_device">
             </b-media>
             <b-container  class="p-3" fluid>
-                <b-row>
-                    <b-col cols="12">
-                    
-                        <b-form-group label-for="txt_device_name" label="Name:">
-                            <b-form-input id="txt_device_name" v-model="device_name" placeholder="Enter Device Name"></b-form-input>
-                        </b-form-group>
-                    </b-col>
-                </b-row>
-                <b-row class="mb-5 pl-2 pr-2">
-                    <b-col>
-                        <b-button variant="danger" block>
-                            <font-awesome-icon
-                                icon="save"
-                                class="icon"
-                            />
-                        Save Values
-                        </b-button>
-                    </b-col>
-                    <b-col>
-                        <b-button block>
-                            <font-awesome-icon
-                                icon="trash"
-                                class="icon"
-                            />
-                            Clear 
-                        </b-button>
-                    </b-col>
-                </b-row>
+                <b-form
+                    id="form-registration"
+                    @submit.prevent="submitForm"
+                    method="post"
+                >
+                    <b-row>
+                        <b-col cols="12">
+                            <b-form-group label-for="device_name" label="Name:">
+                                <b-form-input 
+                                    id="device_name" 
+                                    name="device_name"
+                                    placeholder="Enter Device Name"
+                                    v-model="form.device_name.value"
+                                    :state="form.device_name.state"
+                                    required
+                                ></b-form-input>
+                            </b-form-group>
+                        </b-col>
+                        <b-form-invalid-feedback id="input-area-feedback" :state="form.device_name.state">
+                            {{ form.device_name.validation }}
+                        </b-form-invalid-feedback>
+                    </b-row>
+                    <b-row class="mb-5 pl-2 pr-2">
+                        <b-col>
+                            <b-button 
+                                variant="danger" 
+                                block
+                                type="submit"
+                                id="button-submit"
+                                >
+                                <font-awesome-icon
+                                    icon="save"
+                                    class="icon"
+                                />
+                            Save Values
+                            </b-button>
+                        </b-col>
+                        <b-col>
+                            <b-button block>
+                                <font-awesome-icon
+                                    icon="trash"
+                                    class="icon"
+                                />
+                                Clear 
+                            </b-button>
+                        </b-col>
+                    </b-row>
+                </b-form>
             </b-container>
         </b-col>
         <b-col cols="8" class="custom_col_model_container">
@@ -59,15 +79,17 @@
                         :fields="fields"
                         :items="getDevice.data"
                         :busy="isBusy" 
+                        :per-page="perPage"
+                        :current-page="currentPage"
                     >
-                    <template #table-busy>
-                        <div class="text-center text-default my-2">
-                        <b-spinner class="align-middle"></b-spinner>
-                        </div>
-                    </template>
-                    <template #cell(No)="data">
-                           {{data.index+1}}
-                    </template>
+                        <template #table-busy>
+                            <div class="text-center text-default my-2">
+                            <b-spinner class="align-middle"></b-spinner>
+                            </div>
+                        </template>
+                        <template #cell(No)="data">
+                            {{data.index+1}}
+                        </template>
                         <template #cell(actions)="data">
                             <AButton
                                 variant="default"
@@ -91,7 +113,15 @@
                             </AButton>
                            
                         </template>
-                    </b-table>
+                    </b-table>               
+                    <b-pagination
+                        align="right"
+                        class="alpha__table__pagination"
+                        pills
+                        v-model="currentPage"
+                        :total-rows="rows"
+                        :per-page="perPage"
+                    ></b-pagination>
                 </b-col>
             </b-row>
         </b-col>
@@ -103,20 +133,16 @@ export default {
   name: "PartsManagementDevice",
     data() {
       return {
-        //select
-        selected: 1,
-        options: [
-          { value: 1, text: 'Device 1' },
-          { value: 2, text: 'Device 2' },
-          { value: 3, text: 'Device 3' },
-          { value: 4, text: 'Device 4' },
-        ],
-
         //device table
-        isBusy: false,
-        device_name: '',
+
+        //loading
+        isBusy: true,
+
+        //table info
+        
         fields: [ 
            'No',
+           
             {
                 key: "device_name",
                 sortable: true,
@@ -125,41 +151,95 @@ export default {
                 key: 'actions', 
                 label: 'Actions' 
             }],
-        items: [
-        { no: '1', device: 'Macdonald', model_name: 'Model Name', model_code: 'Model Code', id:1},
-        { no: '2', device: 'Shaw', model_name: 'Model Name', model_code: 'Model Code', id:2},
-        { no: '3', device: 'Wilson', model_name: 'Model Name', model_code: 'Model Code', id:3},
-        { no: '4', device: 'Carney', model_name: 'Model Name', model_code: 'Model Code', id:4},
-        ],
+
+        //pagination
+        currentPage: 1,
+        perPage: 10,
+
+        //saving
+        form: {
+                device_name: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+      },
       }
     },
     computed: {
     ...mapGetters(["getDevice"]),
+    rows() {
+      if (!this.getDevice.data) {
+        return 1;
+      } else {
+        return this.getDevice.data.length;
+      }
+    },
     },
     methods: {
+
+        submitForm: function () {
+            var formData = new FormData(document.getElementById("form-registration"));
+            document.getElementById("button-submit").disabled = true;
+            this.$store
+            .dispatch("insertDevice", formData)
+            .then((response) => {
+                let status = response.data.status;
+                if (status == "Success") {
+                this.toast(status, response.data.message);
+                this.clearForm();
+                this.loadDevice();
+                } else if (status == "Warning") {
+                    Object.keys(response.data.data).forEach((key) => {
+                    this.form[key]["state"] = false;
+                    this.form[key]["validation"] = response.data.data[key][0];
+                    });
+                    this.toast(status, "Please review your inputs.");
+                } else if (status == "Error") {
+                    this.toast(status, response.data.message);
+                }
+            })
+            .catch((error) => {
+                this.toast("error", "Something went wrong");
+                console.log(error);
+            })
+            .finally(() => {
+                document.getElementById("button-submit").disabled = false;
+            });
+        },
+
         removeDevice: function (id) {
             alert(id);
         },
+
         loadDevice: function()
         {
            this.$store.dispatch("loadDevice").then((response) => {
-            this.toast(response.status, response.message);
-            alert('asdasd');
+            this.toast(response.status,response.message);
+            this.isBusy=false;
            });  
         },
-    //     toast: function (status, message) {
-    //     this.$toast(message, {
-    //         type: status,
-    //         // toastClassName: `toastification--default`,
-    //         position: "bottom-right",
-    //   });
-    
-    // },
+        clearForm: function () {
+            this.form = {
+                device_name: {
+                value: '',
+                state: null,
+                validation: "",
+                },
+            };
+        },
+
+        toast: function (status, message){
+            this.$toast(message, {
+                type:status.toLowerCase().trim(),
+                position: "bottom-right",
+            });
+        }
     },
     mounted() {
         this.loadDevice();
-        console.log(this.getDevice.data);
-        // console.log(this.getDevice.data);
+        console.log(this.getDevice);
     }
 };
 </script>

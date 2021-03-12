@@ -12,14 +12,15 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import "../src/template/assets/sass/views/custom-tabs.scss";
 import "../src/template/assets/sass/views/custom-cards.scss";
 import VuePapaParse from 'vue-papa-parse'
-
-Vue.use(BootstrapVue);
-Vue.use(VuePapaParse)
-
+import VueConfirmDialog from 'vue-confirm-dialog'
 import ToggleButton from "vue-js-toggle-button";
-Vue.use(ToggleButton);
+
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons)
+Vue.use(VuePapaParse)
+Vue.use(VueConfirmDialog)
+Vue.use(ToggleButton);
+
 
 import Multiselect from 'vue-multiselect';
 import "vue-multiselect/dist/vue-multiselect.min.css";
