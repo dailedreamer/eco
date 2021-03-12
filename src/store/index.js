@@ -7,7 +7,11 @@ import auth from "./auth";
 import alpha from "../template/modules/alpha";
 import parts_monitoring from "./modules/Parts/PartsMonitoring/parts_monitoring";
 import email from "./modules/email.js";
-import parts from "./modules/management/parts.js";
+import parts_device from "./modules/management/parts_device.js";
+import parts_model from "./modules/management/parts_model.js";
+import parts_unit from "./modules/management/parts_unit.js";
+
+
 export default new Vuex.Store({
   state: {},
   mutations: {},
@@ -17,6 +21,9 @@ export default new Vuex.Store({
     parts_monitoring,
      email, 
      auth, 
-     parts
+     parts_device,
+     parts_model,
+     parts_unit
+
   }
 });

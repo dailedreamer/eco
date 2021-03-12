@@ -10,7 +10,7 @@
             </b-media>
             <b-container fluid>
             <b-form-group label-for="txt_device_name" class="mb-4" label="Device Name:">
-                <b-form-select v-model="selected" :options="options"></b-form-select>
+                <b-form-select v-model="selected" :options="options_device"></b-form-select>
             </b-form-group>
             <b-form-group label-for="txt_model_name" class="mb-4" label="Model Name:">
                 <b-form-input id="txt_model_name" v-model="device_name" placeholder="Enter Model Name"></b-form-input>
@@ -52,15 +52,6 @@
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, illum.
                         </small>
                     </b-media>
-                    
-                    <b-pagination
-                        align="right"
-                        class="alpha__table__pagination"
-                        pills
-                        v-model="currentPage"
-                        :total-rows="rows"
-                        :per-page="perPage"
-                    ></b-pagination>
                     <b-table 
                         responsive 
                         hover 
@@ -70,20 +61,18 @@
                         :items="getModel.data"
                         :busy="isBusy" 
                         :total-rows="rows"
-                    >
-                   
-                           
-                    <template #table-busy>
-                        <div class="text-center text-default my-2">
-                        <b-spinner class="align-middle"></b-spinner>
-                        </div>
-                    </template>
-                    <template #cell(No)="data">
-                           {{data.index+1}}
-                    </template>
+                    >              
+                        <template #table-busy>
+                            <div class="text-center text-default my-2">
+                            <b-spinner class="align-middle"></b-spinner>
+                            </div>
+                        </template>
+                        <template #cell(No)="data">
+                            {{data.index+1}}
+                        </template>
                         <template #cell(actions)="data">
                             <AButton
-                                variant="primary"
+                                variant="default"
                                 class="mr-2"
                             >
                                 <font-awesome-icon
@@ -94,7 +83,7 @@
                             </AButton>
                              <AButton
                                 variant="defualt"
-                                 @click.native="removeDevice(data.item.id)"
+                                 @click.native="removeModel(data.item.id)"
                             >
                                 <font-awesome-icon
                                     icon="trash"
@@ -102,9 +91,16 @@
                                 />
                                 Delete
                             </AButton>
-                           
                         </template>
-                    </b-table>
+                    </b-table>           
+                    <b-pagination
+                        align="right"
+                        class="alpha__table__pagination"
+                        pills
+                        v-model="currentPage"
+                        :total-rows="rows"
+                        :per-page="perPage"
+                    ></b-pagination>
                 </b-col>
             </b-row>
         </b-col>
@@ -118,27 +114,21 @@ export default {
       return {
         //select
         selected: 1,
-        value: '',
-        currentPage: 1,
-        perPage: 10,
+      
         
-        options: [
-          { value: 1, text: 'Model 1' },
-          { value: 2, text: 'Model 2' },
-          { value: 3, text: 'Model 3' },
-          { value: 4, text: 'Model 4' },
-        ],
+        options_device: [],
 
         //device table
-        isBusy: false,
+
+        //loading
+        isBusy: true,
+
+        //table info
         device_name: '',
         fields: [ 
             'No',
-            // {
-            //     key: "no", sortable: true,
-            // }, 
             {
-                key: "device",sortable: true,
+                key: "device_name",sortable: true,
             }, 
             {
                 key: "model_name",sortable: true,
@@ -149,42 +139,59 @@ export default {
             { 
                 key: 'actions',label: 'Actions' 
             }],
-        items: [
-        // { no: '1', device: 'Macdonald', model_name: 'Model Name', model_code: 'Model Code', id:1},
-        // { no: '2', device: 'Shaw', model_name: 'Model Name', model_code: 'Model Code', id:2},
-        // { no: '3', device: 'Wilson', model_name: 'Model Name', model_code: 'Model Code', id:3},
-        // { no: '4', device: 'Carney', model_name: 'Model Name', model_code: 'Model Code', id:4},
-        ],
+        
+        //pagination
+        currentPage: 1,
+        perPage: 10,
+
       }
     },
     computed: {
     ...mapGetters(["getModel"]),
     rows() {
-        return this.items.length
-    }
+        if (!this.getModel.data) {
+        return 1;
+        } else {
+        return this.getModel.data.length;
+        }
+    },
     },
     mounted() {
-         this.loadModel();
-     
+        this.loadModel();
+        this.loadDevice();
     },
     methods: {
-        removeDevice: function (id) {
+        removeModel: function (id) {
             alert(id);
         },
-         loadModel: function()
+
+        loadDevice: function()
+        {
+           this.$store.dispatch("loadDevice")
+            .then((response) => {
+            let information = response.data;
+                Object.keys(information).forEach((key) => {
+                    this.options_device.push({
+                        'value':information[key].id, 
+                        'text':information[key].device_name
+                    })
+                });
+           });  
+        },
+        loadModel: function()
         {
            this.$store.dispatch("loadModel")
             .then((response) => {
             this.toast(response.status, response.message);
+            this.isBusy=false;
            });  
         },
-        toast: function (status, message) {
-        this.$toast(message, {
-            type: status,
-            toastClassName: `toastification--${status}`,
-            position: "bottom-right",
-      });
-    },
+        toast: function (status, message){
+            this.$toast(message, {
+                type:status.toLowerCase().trim(),
+                position: "bottom-right",
+            });
+        }
     },
 };
 </script>
