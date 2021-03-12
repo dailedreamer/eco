@@ -32,9 +32,11 @@
 
                              <b-table outlined hover fixed :items="email_masterlists" :fields="email_fields" primary-key="id">
                                 <template #cell(actions)="data">
-                                    <b-button variant="primary" size="sm"  v-b-modal.email_modal_id
+                                    <b-button variant="primary" size="sm"
+                                        v-b-modal.email_modal_id 
                                         :disabled="disable" 
-                                        :id="'btn_actions_'+data.item.id">
+                                        :id="'btn_actions_'+data.item.id"
+                                        @click="test=data.item">
                                         <font-awesome-icon icon="edit" />
                                     </b-button>
                                 </template>
@@ -50,7 +52,7 @@
                 </b-card>
             </b-col>  
         </b-row>
-        <EmailUpdateModal />
+        <EmailUpdateModal/>
     </b-container>
 </template>
 
@@ -62,23 +64,12 @@ export default {
     },
     data() {
       return {
-        // email_masterlists: [
-        //     { id: 1, subject: 'Email1', classification: 'FTEC'},
-        //     { id: 2, subject: 'Email2', classification: 'ECAS'}
-        // ],
-        // email_fields: [
-        //     { key: "id", label: "NO", sortable: true },
-        //     { key: "actions"},
-        //     { key: "subject", sortable: true },
-        //     { key: "classification", sortable: true},
-        //     { key: "status"}
-        // ],
         email_masterlists: [],
         email_fields: [
             { key: "id", label: "No", sortable: true },
             { key: "actions"},
-            { key: "id_number", label: "Subject", sortable: true },
-            { key: "last_name", label: "Classification", sortable: true },
+            { key: "id_number", label: "Subject", sortable: true }, //change yung key to key:"id_number" to key:"subject"
+            { key: "last_name", label: "Classification", sortable: true }, //change yung key:"last_name" to key:"classification"
             { key: "status"},
         ],
         disable: false,
@@ -88,14 +79,14 @@ export default {
         this.loadEmailMasterlist();
     },
     methods: {
+        
         loadEmailMasterlist() {
             this.$store.dispatch("loadEmailMasterlist")
             .then((response) => {
-                // console.log(response);
                  this.email_masterlists = response.data;
+                //  console.log(this.email_masterlists);
             })
         },
-
         toggle(data, event) {
             console.log(data);
             let event_status = event.value;
@@ -107,7 +98,7 @@ export default {
                 this.event_status = false;
                 document.getElementById(`btn_actions_${data}`).disabled = false;
             }
-        }
+        },
     }
 }
 </script>
