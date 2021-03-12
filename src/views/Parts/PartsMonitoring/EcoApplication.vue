@@ -41,10 +41,10 @@
                     </b-row>
                 </b-card>
             </b-col>
-            <b-col cols="4">
+            <b-col cols="3">
                 <b-card class="custom_card_filter">
                     <b-row class="mt-0">
-                        <b-col cols="6">
+                        <b-col cols="8">
                             <b-media>
                                 <template #aside>
                                     <b-img class='mt-2'
@@ -58,7 +58,7 @@
                                 <p class="mb-0  text-left custom_p_percentage text-muted text-left"><strong>64%</strong></p>
                             </b-media>
                         </b-col>
-                        <b-col cols="6">
+                        <b-col cols="4">
                             <p class="mb-0  text-right custom_p_count text-muted">150</p>
                         </b-col>
                     </b-row>
