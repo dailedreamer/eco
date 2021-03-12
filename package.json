@@ -15,12 +15,19 @@
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.19.0",
     "core-js": "^3.6.5",
+<<<<<<< HEAD
+    "v-select2-component": "^0.4.3",
+=======
+    "v-select2-multiple-component": "^0.1.1",
+>>>>>>> 18743fd3f47e32c3adefdccf48f877aba12bdd56
     "vue": "^2.6.12",
     "vue-confirm-dialog": "^1.0.2",
     "vue-js-toggle-button": "^1.3.3",
     "vue-loading-overlay": "^3.4.2",
+    "vue-multiselect": "^2.1.6",
     "vue-papa-parse": "^2.0.0",
     "vue-router": "^3.2.0",
+    "vue-select": "^3.11.2",
     "vue-toastification": "^1.7.8",
     "vue2-animate": "^2.1.4",
     "vuex": "^3.4.0"

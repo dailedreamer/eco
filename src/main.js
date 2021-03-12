@@ -22,6 +22,10 @@ Vue.use(VueConfirmDialog)
 Vue.use(ToggleButton);
 
 
+import Multiselect from 'vue-multiselect';
+import "vue-multiselect/dist/vue-multiselect.min.css";
+Vue.use(Multiselect);
+
 import "./template/alpha.js";
 import "./assets/icons.js";
 

@@ -22,7 +22,7 @@
                 <b-col lg="12">
                      <b-row>
                         <b-col lg="3" class="md-2">
-                            <b-form-file id="file"  v-on:change="FileUpload()"></b-form-file>
+                            <b-form-file id="file" accept=".csv" v-on:change="FileUpload()"></b-form-file>
                         </b-col>
                         <b-col lg="2" class="md-2">
                           <AButton
@@ -38,7 +38,7 @@
                 </b-col>
                  <br>
                  <b-col cols="12"
-                 v-if="countread > 0"
+                v-if="countread > 0"
                  >
                     <b-table class="alpha__table text-nowrap"
                         hover
@@ -67,6 +67,7 @@
 
 <script>
 import axios from "axios";
+import { mapGetters } from "vuex";
 export default {
   name: "partsRegistrationUnits",
   data(){
@@ -115,6 +116,9 @@ export default {
   {
       // this.loadTable();
   },
+   computed: {
+    ...mapGetters(["getPartsRegistrationUnits"]),
+    },
    methods: 
    {
       loadTable: function () 

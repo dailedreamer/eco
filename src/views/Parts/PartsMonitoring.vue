@@ -6,6 +6,8 @@
     <b-col cols="11">
       <EcoApplication v-if="getShowEcoPartsStatus"/>
       <!-- DITO ILAGAY YUNG PARTS MANUFACTURING VIEW -->
+      <PartsManufacturing v-if="getShowPartsManufacturingStatus"/>
+          
       <Body/>
     </b-col>
   </b-row>
@@ -16,11 +18,14 @@ import { mapGetters } from "vuex";
 import Side from "../../components/Parts/PartsMonitoring/Side.vue";
 import Body from "../../components/Parts/PartsMonitoring/Body.vue";
 import EcoApplication from "./PartsMonitoring/EcoApplication.vue";
+import PartsManufacturing from "./PartsMonitoring/PartsManufacturing.vue";
+
 
 export default {
   name: "PartsMonitoring",
   components: {
     EcoApplication,
+    PartsManufacturing,
     Side,
     Body
   },
