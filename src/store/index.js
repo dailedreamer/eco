@@ -4,6 +4,7 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 //Template
 import alpha from "../template/modules/alpha";
+<<<<<<< HEAD
 
 //Login
 import auth from "./auth";
@@ -58,6 +59,17 @@ import management_parts_management_unit from "./modules/management/parts_managem
 import management_email from "./modules/management/email";
 
 
+=======
+import parts_monitoring from "./modules/Parts/PartsMonitoring/parts_monitoring";
+import email from "./modules/email.js";
+
+import parts_device from "./modules/management/parts_device.js";
+import parts_model from "./modules/management/parts_model.js";
+import parts_unit from "./modules/management/parts_unit.js";
+
+import partsRegistrationUnit from "./modules/Parts/PartsRegistrationUnit";
+import partsRegistration from "./modules/Parts/PartsRegistration";
+>>>>>>> a2f2911193cd20baa7aa52b7cb81f11600b5c964
 
 
 export default new Vuex.Store({
@@ -65,6 +77,7 @@ export default new Vuex.Store({
   mutations: {},
   actions: {},
   modules: {
+<<<<<<< HEAD
     //Template
     alpha,
 
@@ -119,5 +132,16 @@ export default new Vuex.Store({
     management_parts_management_model,
     management_parts_management_unit,
     management_email
+=======
+      alpha,
+      parts_monitoring,
+     email, 
+     auth, 
+     parts_device,
+     parts_model,
+     parts_unit,
+     partsRegistrationUnit,
+     partsRegistration
+>>>>>>> a2f2911193cd20baa7aa52b7cb81f11600b5c964
   }
 });
