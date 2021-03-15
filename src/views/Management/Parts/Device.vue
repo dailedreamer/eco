@@ -47,7 +47,9 @@
                             </b-button>
                         </b-col>
                         <b-col>
-                            <b-button block>
+                            <b-button 
+                                @click="clearForm();"
+                                block>
                                 <font-awesome-icon
                                     icon="trash"
                                     class="icon"
@@ -73,6 +75,7 @@
                     </b-media>
                     <b-table 
                         responsive 
+                        class="alpha__table text-nowrap"
                         hover 
                         bordered 
                         head-variant="light"
@@ -94,6 +97,8 @@
                             <AButton
                                 variant="default"
                                 class="mr-2"
+                                v-b-modal.device-modal-update
+                                @click.native="loadDeviceInfo(data.item.id, data.item.device_name)"
                             >
                                 <font-awesome-icon
                                     icon="pen"
@@ -125,18 +130,63 @@
                 </b-col>
             </b-row>
         </b-col>
+        <b-modal
+            id="device-modal-update"
+            size="md"
+            hide-footer
+            title="Update Device"
+            title-class="alpha__modal__title"
+        >
+                <b-form
+                    class="pl-4 pr-4"
+                    id="form-update"
+                    @submit.prevent="updateForm"
+                    method="post"
+                >
+                    <b-row>
+                        <b-col lg="12" class="mb-2">    
+                            <b-form-group label-for="device_name" label="Name:">
+                            <b-form-input
+                                id="device_name"
+                                name="device_name"
+                                type="text"
+                                v-model="device.device_name.value"
+                                :state="device.device_name.state"
+                                required
+                            />
+                            </b-form-group>
+                        </b-col>
+                    </b-row>
+                    <b-row class="mb-1 pl-2 pr-2">
+                        <b-col>
+                            <b-button 
+                                variant="danger" 
+                                block
+                                type="submit"
+                                id="button-submit"
+                                >
+                                <font-awesome-icon
+                                    icon="save"
+                                    class="icon"
+                                />
+                            Update Values
+                            </b-button>
+                        </b-col>
+                    </b-row>
+                </b-form>
+            </b-modal>
     </b-row>
 </template>
 <script>
 import { mapGetters } from "vuex";
 export default {
-  name: "PartsManagementDevice",
+    name: "PartsManagementDevice",
     data() {
       return {
         //device table
 
         //loading
-        isBusy: true,
+        isBusy: false,
 
         //table info
         
@@ -163,9 +213,19 @@ export default {
                     value: "",
                     state: null,
                     validation: "",
-                },
-      },
-      }
+                }
+        },
+        //updating
+        update_id:'',
+        device: {
+                device_name: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                }
+        }
+        }
     },
     computed: {
     ...mapGetters(["getDevice"]),
@@ -178,7 +238,78 @@ export default {
     },
     },
     methods: {
+        //delete
+        removeDevice: function (id) {
+            this.$store
+            .dispatch("deleteDevice", id)
+            .then((response) => {
+                let status = response.data.status;
+                if (status == "Success") {
+                    this.loadDevice();  
+                    this.toast(status, response.data.message);
+                } else if (status == "Warning") {
+                    this.toast(status, response.data.message);
+                } else if (status == "Error") {
+                    this.toast(status, response.data.message);
+                }
+            })
+            .catch((error) => {
+            let error_data = error.data;
+                    let status = error.data.status;
+                    console.log(error_data.error);
+                    for(const[key] of Object.entries(error_data.error))
+                    {
+                        this.toast(status,error_data.error[key][0]);
+                    };
+            });
+        },
 
+        //update
+        loadDeviceInfo: function (id, device_name) {
+            this.update_id = id;
+            this.device.device_name.value = device_name;
+        },
+
+        updateForm: function () {
+        var formData = new FormData(document.getElementById("form-update"));
+        var patchData = {
+            id: this.update_id,
+            formData : formData,
+        };
+        this.$store
+            .dispatch("updateDevice", patchData)
+            .then((response) => {
+            let status = response.data.status;
+                if (status == "Success") {
+                    this.toast(status, response.data.message);
+                    this.clearForm();
+                    this.$bvModal.hide("device-modal-update");
+                     this.loadDevice();
+                } else if (status == "Warning") {
+                    Object.keys(response.data.data).forEach((key) => {
+                    this.form[key]["state"] = false;
+                    this.form[key]["validation"] = response.data.data[key][0];
+                    });
+                    this.toast(status, "Please review your inputs.");
+                } else if (status == "Error") {
+                    this.toast(status, response.data.message);
+                }
+            })
+            .catch((error) => {
+            let error_data = error.data;
+                    let status = error.data.status;
+                    console.log(error_data.error);
+                    for(const[key] of Object.entries(error_data.error))
+                    {
+                        this.toast(status,error_data.error[key][0]);
+                    };
+                    this.clearForm();
+                })
+            .finally(() => {
+            });
+        },
+        
+        //save
         submitForm: function () {
             var formData = new FormData(document.getElementById("form-registration"));
             document.getElementById("button-submit").disabled = true;
@@ -201,27 +332,36 @@ export default {
                 }
             })
             .catch((error) => {
-                this.toast("error", "Something went wrong");
-                console.log(error);
+                let error_data = error.data;
+                let status = error.data.status;
+                console.log(error_data.error);
+                for(const[key] of Object.entries(error_data.error))
+                {
+                    this.toast(status,error_data.error[key][0]);
+                };
+                this.clearForm();
             })
             .finally(() => {
                 document.getElementById("button-submit").disabled = false;
             });
         },
 
-        removeDevice: function (id) {
-            alert(id);
-        },
-
         loadDevice: function()
         {
            this.$store.dispatch("loadDevice").then((response) => {
-            this.toast(response.status,response.message);
-            this.isBusy=false;
+                this.toast(response.status,response.message);
+                this.isBusy=false;
            });  
         },
         clearForm: function () {
             this.form = {
+                device_name: {
+                value: '',
+                state: null,
+                validation: "",
+                },
+            };
+            this.device = {
                 device_name: {
                 value: '',
                 state: null,
@@ -239,7 +379,6 @@ export default {
     },
     mounted() {
         this.loadDevice();
-        console.log(this.getDevice);
     }
 };
 </script>

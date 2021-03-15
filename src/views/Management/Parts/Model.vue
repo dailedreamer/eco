@@ -169,7 +169,7 @@ export default {
         {
            this.$store.dispatch("loadDevice")
             .then((response) => {
-            let information = response.data;
+            let information = response.data.data;
                 Object.keys(information).forEach((key) => {
                     this.options_device.push({
                         'value':information[key].id, 

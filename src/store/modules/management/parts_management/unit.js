@@ -1,20 +1,20 @@
 import axios from "axios";
 export default {
     state: {
-        unit: [],
+        management_unit: [],
     },
     mutations: {
-        SET_UNIT(state, unit) {
-			state.unit = unit;
+        SET_MANAGENT_UNIT(state, unit) {
+			state.management_unit = unit;
 		},
     },
     actions: {
-        async loadModel({ commit }) {
+        async loadUnit({ commit }) {
 			return new Promise((resolve, reject) => {
 				axios
 					.get("model-names")
 					.then(function(response) {
-						commit("SET_MODEL", response.data);
+						commit("SET_MANAGENT_UNIT", response.data);
 						let result = {
 							code: response.data.code,
 							status: response.data.status,
@@ -30,6 +30,6 @@ export default {
 		},
     },
     getters: {
-        getUnit: (state) => state.unit,
+        getUnit: (state) => state.management_unit,
     },
 };

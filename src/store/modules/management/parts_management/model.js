@@ -1,11 +1,11 @@
 import axios from "axios";
 export default {
     state: {
-        model: [],
+        management_model: [],
     },
     mutations: {
-		SET_MODEL(state, model) {
-			state.model = model;
+		SET_MANAGEMENT_MODEL(state, model) {
+			state.management_model = model;
         },
     },
     actions: {
@@ -14,14 +14,14 @@ export default {
 				axios
 					.get("model-names")
 					.then(function(response) {
-						commit("SET_MODEL", response.data);
+						commit("SET_MANAGEMENT_MODEL", response.data);
 						let result = {
 							code: response.data.code,
 							status: response.data.status,
 							message: response.data.message,
 							data: response.data.data,
 						};
-						resolve(result);
+                        resolve(result);
 					})
 					.catch(function(error) {
 						reject(error);
@@ -30,6 +30,6 @@ export default {
 		},
     },
     getters: {
-        getModel: (state) => state.model,
+        getModel: (state) => state.management_model,
     },
 };
