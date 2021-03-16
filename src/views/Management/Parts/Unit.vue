@@ -9,38 +9,44 @@
                 <hr class="hr_device">
             </b-media>
             <b-container fluid>
-            <b-form-group label-for="slc_device_name" class="mb-4" label="Device Name:">
-                <b-form-select v-model="selected_device" :options="options_device"></b-form-select>
-            </b-form-group>
-            <b-form-group label-for="slc_model_name" class="mb-4" label="Model Name:">
-                <b-form-select v-model="selected_model" :options="options_model"></b-form-select>
-            </b-form-group>
-            <b-form-group label-for="txt_unit_number" class="mb-4" label="Unit Number:">
-                <b-form-input id="txt_unit_number" v-model="device_name" placeholder="Enter Unit Number"></b-form-input>
-            </b-form-group>
-            <b-form-group label-for="txt_unit_name" class="mb-5" label="Unit Name:">
-                <b-form-input id="txt_unit_name" v-model="device_name" placeholder="Enter Unit Name"></b-form-input>
-            </b-form-group>
-                <b-row class="pl-2 pr-2">
-                <b-col>
-                    <b-button variant="danger" block>
-                        <font-awesome-icon
-                            icon="save"
-                            class="icon"
-                        />
-                        Save Values
-                    </b-button>
-                </b-col>
-                <b-col>
-                    <b-button block>
-                        <font-awesome-icon
-                            icon="trash"
-                            class="icon"
-                        />
-                        Clear
-                    </b-button>
-                </b-col>
-            </b-row>
+                <b-form
+                    id="form-registration"
+                    @submit.prevent="submitForm"
+                    method="post"
+                >
+                    <b-form-group label-for="slc_device_name" class="mb-4" label="Device Name:">
+                        <b-form-select v-model="selected_device" :options="options_device"></b-form-select>
+                    </b-form-group>
+                    <b-form-group label-for="slc_model_name" class="mb-4" label="Model Name:">
+                        <b-form-select v-model="selected_model" :options="options_model"></b-form-select>
+                    </b-form-group>
+                    <b-form-group label-for="txt_unit_number" class="mb-4" label="Unit Number:">
+                        <b-form-input id="txt_unit_number" v-model="device_name" placeholder="Enter Unit Number"></b-form-input>
+                    </b-form-group>
+                    <b-form-group label-for="txt_unit_name" class="mb-5" label="Unit Name:">
+                        <b-form-input id="txt_unit_name" v-model="device_name" placeholder="Enter Unit Name"></b-form-input>
+                    </b-form-group>
+                        <b-row class="pl-2 pr-2">
+                        <b-col>
+                            <b-button variant="danger" block>
+                                <font-awesome-icon
+                                    icon="save"
+                                    class="icon"
+                                />
+                                Save Values
+                            </b-button>
+                        </b-col>
+                        <b-col>
+                            <b-button block>
+                                <font-awesome-icon
+                                    icon="trash"
+                                    class="icon"
+                                />
+                                Clear
+                            </b-button>
+                        </b-col>
+                    </b-row>
+                </b-form>
         </b-container> 
         </b-col>
            <b-col cols="8">
@@ -181,7 +187,7 @@ export default {
         {
            this.$store.dispatch("loadDevice")
             .then((response) => {
-            let information = response.data;
+            let information = response.data.data;
                 Object.keys(information).forEach((key) => {
                     this.options_device.push({
                         'value':information[key].id, 
@@ -204,6 +210,43 @@ export default {
                     })
                 });
            });  
+        },
+
+        //save
+        submitForm: function () {
+            var formData = new FormData(document.getElementById("form-registration"));
+            document.getElementById("button-submit").disabled = true;
+            this.$store
+            .dispatch("insertUnit", formData)
+            .then((response) => {
+                let status = response.data.status;
+                if (status == "Success") {
+                this.toast(status, response.data.message);
+                this.clearForm();
+                this.loadDevice();
+                } else if (status == "Warning") {
+                    Object.keys(response.data.data).forEach((key) => {
+                    this.form[key]["state"] = false;
+                    this.form[key]["validation"] = response.data.data[key][0];
+                    });
+                    this.toast(status, "Please review your inputs.");
+                } else if (status == "Error") {
+                    this.toast(status, response.data.message);
+                }
+            })
+            .catch((error) => {
+                let error_data = error.data;
+                let status = error.data.status;
+                console.log(error_data.error);
+                for(const[key] of Object.entries(error_data.error))
+                {
+                    this.toast(status,error_data.error[key][0]);
+                };
+                this.clearForm();
+            })
+            .finally(() => {
+                document.getElementById("button-submit").disabled = false;
+            });
         },
 
         toast: function (status, message){

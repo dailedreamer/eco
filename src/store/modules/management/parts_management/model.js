@@ -9,6 +9,7 @@ export default {
         },
     },
     actions: {
+		//load
         async loadModel({ commit }) {
 			return new Promise((resolve, reject) => {
 				axios
@@ -22,6 +23,53 @@ export default {
 							data: response.data.data,
 						};
                         resolve(result);
+					})
+					.catch(function(error) {
+						reject(error);
+					});
+			});
+		},
+
+		//delete
+		async deleteDevice(state, id) {
+			return new Promise((resolve, reject) => {
+				axios
+					.delete(`devices/${id}`)
+					.then(function(response) {
+						resolve(response);
+					})
+					.catch(function(error) {
+						reject(error);
+					});
+			});
+		},
+
+		//save
+		async insertModel(state, payload) {
+			return new Promise((resolve, reject) => {
+				axios
+					.post("model-names", payload)
+					.then(function(response) {
+						console.log(response);
+						resolve(response);
+					})
+					.catch(function(error) {
+						reject(error.response);
+					});
+			});
+		},
+		
+		//update
+		async updateModel(state, payload) {
+			return new Promise((resolve, reject) => {
+				payload["formData"].append("_method", "PATCH");
+				axios
+					.post(
+						`model-names/${payload["id"]}`,
+						payload["formData"]
+					)
+					.then(function(response) {
+						resolve(response);
 					})
 					.catch(function(error) {
 						reject(error);
