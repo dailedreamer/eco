@@ -9,35 +9,66 @@
                 <hr class="hr_device">
             </b-media>
             <b-container fluid>
-            <b-form-group label-for="txt_device_name" class="mb-4" label="Device Name:">
-                <b-form-select v-model="selected" :options="options_device"></b-form-select>
-            </b-form-group>
-            <b-form-group label-for="txt_model_name" class="mb-4" label="Model Name:">
-                <b-form-input id="txt_model_name" v-model="device_name" placeholder="Enter Model Name"></b-form-input>
-            </b-form-group>
-            <b-form-group label-for="txt_model_code" class="mb-5" label="Model Code:">
-                <b-form-input id="txt_model_code" v-model="device_name" placeholder="Enter Model Code"></b-form-input>
-            </b-form-group>
-                <b-row class="pl-2 pr-2">
-                <b-col>
-                    <b-button variant="danger" block>
-                        <font-awesome-icon
-                            icon="save"
-                            class="icon"
-                        />
-                        Save Values
-                    </b-button>
-                </b-col>
-                <b-col>
-                    <b-button block>
-                        <font-awesome-icon
-                            icon="trash"
-                            class="icon"
-                        />
-                        Clear
-                    </b-button>
-                </b-col>
-            </b-row>
+                <b-form
+                    id="form-registration"
+                    @submit.prevent="submitForm"
+                    method="post"
+                >
+                <b-form-group label-for="device_id" class="mb-4" label="Device Name:">
+                    <b-form-select 
+                    name="device_id"
+                     v-model="form.device_id.value"
+                    :state="form.device_id.state"
+                    :options="options_device" 
+                    required>
+                    </b-form-select>
+                </b-form-group>
+                <b-form-group label-for="name" class="mb-4" label="Model Name:">
+                    <b-form-input 
+                        id="name" 
+                        name="name"
+                        required
+                        placeholder="Enter Model Name"
+                        v-model="form.name.value"
+                        :state="form.name.state"
+                    >
+                    </b-form-input>
+                </b-form-group>
+                <b-form-group label-for="model_code" class="mb-5" label="Model Code:">
+                    <b-form-input 
+                        id="model_code" 
+                        name="model_code"
+                        required
+                        placeholder="Enter Model Code"
+                         v-model="form.model_code.value"
+                        :state="form.model_code.state"
+                        ></b-form-input>
+                </b-form-group>
+                    <b-row class="pl-2 pr-2">
+                    <b-col>
+                        <b-button 
+                            variant="danger" 
+                            block
+                            type="submit"
+                            id="button-submit">
+                            <font-awesome-icon
+                                icon="save"
+                                class="icon"
+                            />
+                            Save Values
+                        </b-button>
+                    </b-col>
+                    <b-col>
+                        <b-button block>
+                            <font-awesome-icon
+                                icon="trash"
+                                class="icon"
+                            />
+                            Clear
+                        </b-button>
+                    </b-col>
+                </b-row>
+            </b-form>
         </b-container> 
         </b-col>
            <b-col cols="8">
@@ -74,6 +105,12 @@
                             <AButton
                                 variant="default"
                                 class="mr-2"
+                                v-b-modal.model-modal-update
+                                @click.native="loadModelInfo(
+                                    data.item.id, 
+                                    data.item.device_id, 
+                                    data.item.name, 
+                                    data.item.mode_code)"
                             >
                                 <font-awesome-icon
                                     icon="pen"
@@ -104,6 +141,79 @@
                 </b-col>
             </b-row>
         </b-col>
+        <b-modal
+            id="model-modal-update"
+            size="md"
+            hide-footer
+            title="Update Device"
+            title-class="alpha__modal__title"
+        >
+            <b-form
+                class="pl-4 pr-4"
+                id="form-update"
+                @submit.prevent="updateForm"
+                method="post"
+            >
+                <b-row>
+                    <b-col lg="12" class="mb-2">    
+                        <b-form-group label-for="device_id" label="Device Name:">
+                        <b-form-input
+                            id="device_id"
+                            name="device_id"
+                            type="text"
+                            v-model="model.device_id.value"
+                            :state="model.device_id.state"
+                            required
+                        />
+                        </b-form-group>
+                    </b-col>
+                </b-row>
+                <b-row>
+                    <b-col lg="12" class="mb-2">    
+                        <b-form-group label-for="name" label="Model Name:">
+                        <b-form-input
+                            id="name"
+                            name="name"
+                            type="text"
+                            v-model="model.name.value"
+                            :state="model.name.state"
+                            required
+                        />
+                        </b-form-group>
+                    </b-col>
+                </b-row>
+                <b-row>
+                    <b-col lg="12" class="mb-2">    
+                        <b-form-group label-for="name" label="Model Code:">
+                        <b-form-input
+                            id="model_code"
+                            name="model_code"
+                            type="text"
+                            v-model="model.model_code.value"
+                            :state="model.model_code.state"
+                            required
+                        />
+                        </b-form-group>
+                    </b-col>
+                </b-row>
+                <b-row class="mb-1 pl-2 pr-2">
+                    <b-col>
+                        <b-button 
+                            variant="danger" 
+                            block
+                            type="submit"
+                            id="button-submit"
+                            >
+                            <font-awesome-icon
+                                icon="save"
+                                class="icon"
+                            />
+                        Update Values
+                        </b-button>
+                    </b-col>
+                </b-row>
+            </b-form>
+        </b-modal>
     </b-row>
 </template>
 <script>
@@ -144,6 +254,49 @@ export default {
         currentPage: 1,
         perPage: 10,
 
+        //saving
+        form: {
+                device_id: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                name: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                model_code: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                }
+        },
+        //updating
+        update_id:'',
+        model: {
+                device_id: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                name: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                model_code: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                }
+        }
       }
     },
     computed: {
@@ -161,8 +314,30 @@ export default {
         this.loadDevice();
     },
     methods: {
+        //delete
         removeModel: function (id) {
-            alert(id);
+            this.$store
+            .dispatch("deleteModel", id)
+            .then((response) => {
+                let status = response.data.status;
+                if (status == "Success") {
+                    this.loadDevice();  
+                    this.toast(status, response.data.message);
+                } else if (status == "Warning") {
+                    this.toast(status, response.data.message);
+                } else if (status == "Error") {
+                    this.toast(status, response.data.message);
+                }
+            })
+            .catch((error) => {
+            let error_data = error.data;
+                    let status = error.data.status;
+                    console.log(error_data.error);
+                    for(const[key] of Object.entries(error_data.error))
+                    {
+                        this.toast(status,error_data.error[key][0]);
+                    };
+            });
         },
 
         loadDevice: function()
@@ -178,6 +353,112 @@ export default {
                 });
            });  
         },
+
+        //update
+        loadModelInfo: function (id, device_id, name, code) {
+            this.update_id = id;
+            this.model.device_id.value = device_id;
+            this.model.name.value = name;
+            this.model.model_code.value = code;
+
+        },
+
+        updateForm: function () {
+        var formData = new FormData(document.getElementById("form-update"));
+        var patchData = {
+            id: this.update_id,
+            formData : formData,
+        };
+        this.$store
+            .dispatch("updateModel", patchData)
+            .then((response) => {
+            let status = response.data.status;
+                if (status == "Success") {
+                    this.toast(status, response.data.message);
+                    this.clearForm();
+                    this.$bvModal.hide("model-modal-update");
+                     this.loadDevice();
+                } else if (status == "Warning") {
+                    Object.keys(response.data.data).forEach((key) => {
+                    this.form[key]["state"] = false;
+                    this.form[key]["validation"] = response.data.data[key][0];
+                    });
+                    this.toast(status, "Please review your inputs.");
+                } else if (status == "Error") {
+                    this.toast(status, response.data.message);
+                }
+            })
+            .catch((error) => {
+            let error_data = error.data;
+                    let status = error.data.status;
+                    console.log(error_data.error);
+                    for(const[key] of Object.entries(error_data.error))
+                    {
+                        this.toast(status,error_data.error[key][0]);
+                    };
+                    this.clearForm();
+                })
+            .finally(() => {
+            });
+        },
+
+        //save
+        submitForm: function () {
+            var formData = new FormData(document.getElementById("form-registration"));
+            document.getElementById("button-submit").disabled = true;
+            this.$store
+            .dispatch("insertModel", formData)
+            .then((response) => {
+                let status = response.data.status;
+                if (status == "Success") {
+                this.toast(status, response.data.message);
+                this.clearForm();
+                this.loadModel();
+                } else if (status == "Warning") {
+                    Object.keys(response.data.data).forEach((key) => {
+                    this.form[key]["state"] = false;
+                    this.form[key]["validation"] = response.data.data[key][0];
+                    });
+                    this.toast(status, "Please review your inputs.");
+                } else if (status == "Error") {
+                    this.toast(status, response.data.message);
+                }
+            })
+            .catch((error) => {
+                let error_data = error.data;
+                let status = error.data.status;
+                console.log(error_data.error);
+                for(const[key] of Object.entries(error_data.error))
+                {
+                    this.toast(status,error_data.error[key][0]);
+                };
+                this.clearForm();
+            })
+            .finally(() => {
+                document.getElementById("button-submit").disabled = false;
+            });
+        },
+
+        clearForm: function () {
+            this.form = {
+                device_id: {
+                value: '',
+                state: null,
+                validation: "",
+                },
+                model_name: {
+                value: '',
+                state: null,
+                validation: "",
+                },
+                model_code: {
+                value: '',
+                state: null,
+                validation: "",
+                },
+            };
+        },
+
         loadModel: function()
         {
            this.$store.dispatch("loadModel")
