@@ -12,7 +12,7 @@ export default {
         async loadUnit({ commit }) {
 			return new Promise((resolve, reject) => {
 				axios
-					.get("model-names")
+					.get("units")
 					.then(function(response) {
 						commit("SET_MANAGENT_UNIT", response.data);
 						let result = {
