@@ -14,7 +14,7 @@
                           <b-row class="mt-0">
                               <b-col cols="8">
                                     <b-row>
-                                        <h5 class="mb-1">No Supplier</h5>
+                                        <h6 class="mb-1">No Supplier</h6>
                                         <small class="text-secondary mt-1">Status: Incomplete</small>
                                     </b-row>
                                     <b-row class="mt-lg-3">
@@ -27,14 +27,14 @@
                           </b-row>
                       </b-card>
                     </b-row>
-                    <b-row class="mt-2">
+                    <b-row class="mt-3">
                       <b-card 
                         class="custom_card_filter" 
                         @click="noEcasNoCard">
                           <b-row class="mt-0">
                               <b-col cols="8">
                                     <b-row>
-                                        <h5 class="mb-1">No ECAS No.</h5>
+                                        <h6 class="mb-1">No ECAS No.</h6>
                                         <small class="text-secondary mt-1">Status: Incomplete</small>
                                     </b-row>
                                     <b-row class="mt-lg-4">
@@ -47,14 +47,14 @@
                           </b-row>
                       </b-card>
                     </b-row>
-                    <b-row class="mt-2">
+                    <b-row class="mt-3">
                       <b-card 
                         class="custom_card_filter" 
                         @click="registeredEcasCard">
                           <b-row class="mt-0">
                               <b-col cols="8">
                                     <b-row>
-                                        <h5 class="mb-1">Registered ECAS</h5>
+                                        <h6 class="mb-1">Registered ECAS</h6>
                                         <small class="text-secondary mt-1">Status: For Verification</small>
                                     </b-row>
                                     <b-row class="mt-lg-4">
@@ -67,14 +67,14 @@
                           </b-row>
                       </b-card>
                     </b-row>
-                    <b-row class="mt-2">
+                    <b-row class="mt-3">
                       <b-card 
                         class="custom_card_filter" 
                         @click="unnecessaryEcasCard">
                           <b-row class="mt-0">
                               <b-col cols="8">
                                     <b-row>
-                                        <h5 class="mb-1">Unnecessary ECAS</h5>
+                                        <h6 class="mb-1">Unnecessary ECAS</h6>
                                         <small class="text-secondary mt-1">Status: For Verification</small>
                                     </b-row>
                                     <b-row class="mt-lg-4">
@@ -89,7 +89,7 @@
                     </b-row>
                   </b-col>
                   <b-col cols="10">
-                      <RegisteredContent :title="title" :status="status" :percentage="percentage" :fields="this.fields" :items="this.items"/> 
+                      <RegisteredContent :title="title" :status="status" :percentage="percentage" :fields="this.fields"/> 
                   </b-col>
                 </b-row>
               </b-col> 

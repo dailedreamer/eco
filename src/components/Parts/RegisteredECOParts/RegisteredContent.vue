@@ -105,6 +105,7 @@
                                         <b-button 
                                             variant="primary" 
                                             size="sm"
+                                            v-b-modal.update_modal_id
                                             :id="'btn_actions_'+data.item.id">
                                                 <font-awesome-icon icon="edit" />
                                         </b-button>
@@ -123,16 +124,19 @@
             </b-col>
         </b-row>
          <EditContentModal />
+         <UpdateModal />
     </b-container>
 </template>
 
 <script>
 import EditContentModal from '../RegisteredECOParts/EditContentModal';
+import UpdateModal from '../RegisteredECOParts/UpdateModal';
 import Multiselect from 'vue-multiselect'
 export default {
     name: "RegisteredContent",
     components: {
          EditContentModal, 
+         UpdateModal,
          Multiselect
     },
     props: {

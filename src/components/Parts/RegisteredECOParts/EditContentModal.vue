@@ -69,7 +69,8 @@
                                 <label id="lbl_under_development" for="">Under Development?:</label>
                             </b-col>
                             <b-col cols="5">
-                                <toggle-button :value="true"
+                                <toggle-button 
+                                        :value="true"
                                         :labels="{checked: 'On', unchecked: 'Off'}" 
                                         :color="{checked: '#118f22', unchecked: '#FF0000'}"/>
                             </b-col>
@@ -79,7 +80,8 @@
                                 <label id="lbl_with_unit_rev" for="">With Unit Rev. Up?:</label>
                             </b-col>
                             <b-col cols="5">
-                                <toggle-button  :value="true" 
+                                <toggle-button  
+                                        :value="true" 
                                         :labels="{checked: 'On', unchecked: 'Off'}" 
                                         :color="{checked: '#118f22', unchecked: '#FF0000'}"/>
                             </b-col>
@@ -89,7 +91,8 @@
                                 <label id="lbl_with_simultaneous" for="">With Simultaneous?:</label>
                             </b-col>
                             <b-col cols="5">
-                                <toggle-button  :value="true" 
+                                <toggle-button  
+                                        :value="true" 
                                         :labels="{checked: 'On', unchecked: 'Off'}" 
                                         :color="{checked: '#118f22', unchecked: '#FF0000'}"/>
                             </b-col>
@@ -98,7 +101,8 @@
                     <b-col cols="4">
                         <b-row class="pb-2">
                             <label class="mr-4" id="lbl_vps_data" for="">Is VPS Data Necessary?:</label>
-                            <toggle-button  :value="true" 
+                            <toggle-button  
+                                        :value="true" 
                                         :labels="{checked: 'On', unchecked: 'Off'}" 
                                         :color="{checked: '#118f22', unchecked: '#FF0000'}"/>
                         </b-row>
@@ -110,7 +114,8 @@
                     <b-col cols="4">
                         <b-row class="pb-2">
                             <label class="mr-4" id="lbl_with_action_item" for="">With Action Item?:</label>
-                            <toggle-button :value="true" 
+                            <toggle-button 
+                                        :value="true" 
                                         :labels="{checked: 'On', unchecked: 'Off'}" 
                                         :color="{checked: '#118f22', unchecked: '#FF0000'}"/>
                         </b-row>
@@ -125,7 +130,6 @@
                     </b-col>
                 </b-row>
             </b-form>
-
             <template #modal-footer="{ Update, hide }">
                 <b-button size="sm" variant="danger" @click="Update">
                     <font-awesome-icon icon="save" /> Update
@@ -134,7 +138,6 @@
                     <font-awesome-icon icon="times-circle" /> Close 
                 </b-button>
             </template> 
-
         </b-modal>
     </b-container>
 </template>
