@@ -29,10 +29,9 @@
                                    <b-card class="custom_side_card" @click="show_label('file-alt','New ECAS','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
-                                             <font-awesome-icon
-                                                    icon="file-alt"
-                                                    class="icon text-muted custom_size"
-                                                />
+                                            <div class="circle-icons">
+                                                <b-icon b-icon icon="file-earmark-plus"  font-scale="1.5" variant="white"></b-icon>
+                                            </div>                                         
                                         </template>
                                         <strong class="mt-0 mb-0">New ECAS</strong>
                                         <br>
@@ -48,10 +47,9 @@
                                 <b-card class="custom_side_card" @click="show_label('redo','For Revision','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
-                                            <font-awesome-icon
-                                                    icon="redo"
-                                                    class="icon text-muted custom_size"
-                                                />
+                                            <div class="circle-icons">
+                                                <b-icon icon="arrow-counterclockwise"  font-scale="1.5" variant="white"></b-icon>
+                                            </div>
                                         </template>
                                         <strong class="mt-0 mb-0">For Revision</strong>
                                         <br>
@@ -67,10 +65,9 @@
                                 <b-card class="custom_side_card" @click="show_label('check-double','For Checking','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
-                                            <font-awesome-icon
-                                                    icon="check-double"
-                                                    class="icon text-muted custom_size"
-                                                />
+                                            <div class="circle-icons">
+                                                <b-icon icon="check-square"  font-scale="1.5" variant="white"></b-icon>
+                                            </div>
                                         </template>
                                         <strong class="mt-0 mb-0">For Checking</strong>
                                         <br>
@@ -86,10 +83,9 @@
                                 <b-card class="custom_side_card" @click="show_label('thumbs-up','For Approval','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
-                                            <font-awesome-icon
-                                                    icon="thumbs-up"
-                                                    class="icon text-muted custom_size"
-                                                />
+                                            <div class="circle-icons">
+                                                <b-icon icon="hand-thumbs-up"  font-scale="1.5" variant="white"></b-icon>
+                                            </div>
                                         </template>
                                         <strong class="mt-0 mb-0">For Approval</strong>
                                         <br>
@@ -105,10 +101,9 @@
                                 <b-card class="custom_side_card" @click="show_label('pallet','For PC','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
-                                             <font-awesome-icon
-                                                    icon="pallet"
-                                                    class="icon text-muted custom_size"
-                                                />
+                                            <div class="circle-icons">
+                                                <b-icon icon="box-seam"  font-scale="1.5" variant="white"></b-icon>
+                                            </div>
                                         </template>
                                         <strong class="mt-0 mb-0">For PC</strong>
                                         <br>
@@ -122,20 +117,19 @@
                         <b-row class='mb-3'>
                              <b-col cols="12">
                                 <b-card class="custom_side_card" @click="show_label('hand-holding-usd','For Purchasing','Status: For Verification')">
-                                        <b-media>
-                                        <template #aside>
-                                           <font-awesome-icon
-                                                    icon="hand-holding-usd"
-                                                    class="icon text-muted custom_size"
-                                                />
-                                        </template>
-                                        <strong class="mt-0 mb-0">For Purchasing</strong>
-                                        <br>
-                                        <small class="text-muted">
-                                            Status: For 
-                                        </small>
-                                        </b-media>
-                                    </b-card>
+                                    <b-media>
+                                    <template #aside>
+                                        <div class="circle-icons">
+                                            <b-icon icon="minecart"  font-scale="1.5" variant="white"></b-icon>
+                                        </div>
+                                    </template>
+                                    <strong class="mt-0 mb-0">For Purchasing</strong>
+                                    <br>
+                                    <small class="text-muted">
+                                        Status: For 
+                                    </small>
+                                    </b-media>
+                                </b-card>
                              </b-col>
                         </b-row>
                         <b-row class='mb-2'>
@@ -143,10 +137,9 @@
                                 <b-card class="custom_side_card" @click="show_label('flag-checkered','Finished ECAS','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
-                                             <font-awesome-icon
-                                                    icon="flag-checkered"
-                                                    class="icon text-muted custom_size"
-                                                />
+                                            <div class="circle-icons">
+                                                <b-icon icon="flag"  font-scale="1.5" variant="white"></b-icon>
+                                            </div>
                                         </template>
                                         <strong class="mt-0 mb-0">Finished ECAS</strong>
                                         <br>
@@ -251,6 +244,14 @@ export default {
 </script>
 
 <style scoped>
+.circle-icons
+{
+    display:inline-flex;
+    padding:10px;
+    border-radius:50%;
+    background-color:#e84656;
+    color:white
+}
 .custom_size
 {
     font-size:2.5em
@@ -259,15 +260,18 @@ export default {
 {
     cursor:pointer;
     border-left:.25em solid #e84656;
-    bottom:0px;
+    right:0px;
+    /* box-shadow: 0 4px 8px 0 rgba(107, 107, 107, 0.2), 1px 20px 20px 0 rgba(255, 255, 255, 0.19); */
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.18);
+
     transition: all 0.25s;
 }
 .custom_side_card:hover
 {
-    box-shadow: 0 4px 8px 0 rgba(107, 107, 107, 0.2), 1px 20px 20px 0 rgba(255, 255, 255, 0.19);
-    border-top:1px solid #bbbbbb;
+   
+    /* border-top:1px solid #bbbbbb;
     border-right:1px solid #bbbbbb;
-    border-bottom:1px solid #bbbbbb;
-    bottom:2px;
+    border-bottom:1px solid #bbbbbb; */
+    right:5px;
 }
 </style>

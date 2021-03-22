@@ -10,7 +10,7 @@
                method="post"
               >
               <h4>SINGLE ITEM REGISTRATION</h4>
-                <hr />
+                <hr class="hr--property" />
                 <div class="red-line"></div>
       
                   <b-form-group
@@ -388,7 +388,7 @@ export default {
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../../template/assets/sass/imports/general";
 
 .b-col
@@ -411,7 +411,7 @@ export default {
   border-color: #A30B1A;
 }
 
-hr {
+.hr--property {
   border-bottom: 3px solid #e84656;
   margin-top: 0;
   margin-bottom: 2rem;

@@ -77,7 +77,6 @@
                         responsive 
                         class="alpha__table text-nowrap"
                         hover 
-                        bordered 
                         head-variant="light"
                         :fields="fields"
                         :items="getDevice.data"
@@ -96,6 +95,7 @@
                         <template #cell(actions)="data">
                             <AButton
                                 variant="default"
+                                size="sm"
                                 class="mr-2"
                                 v-b-modal.device-modal-update
                                 @click.native="loadDeviceInfo(data.item.id, data.item.device_name)"
@@ -107,8 +107,9 @@
                                 Edit
                             </AButton>
                              <AButton
-                                variant="defualt"
-                                 @click.native="removeDevice(data.item.id)"
+                                variant="default"
+                                size="sm"
+                                @click.native="removeDevice(data.item.id)"
                             >
                                 <font-awesome-icon
                                     icon="trash"

@@ -15,10 +15,16 @@
                     method="post"
                 >
                     <b-form-group label-for="slc_device_name" class="mb-4" label="Device Name:">
-                        <b-form-select v-model="selected_device" :options="options_device"></b-form-select>
+                        <b-form-select 
+                        v-model="selected_device" 
+                        :options="options_device"></b-form-select>
                     </b-form-group>
                     <b-form-group label-for="slc_model_name" class="mb-4" label="Model Name:">
-                        <b-form-select v-model="selected_model" :options="options_model"></b-form-select>
+                        <b-form-select 
+                            v-model="selected_model" 
+                            :options="options_model"
+                            >
+                        </b-form-select>
                     </b-form-group>
                     <b-form-group label-for="txt_unit_number" class="mb-4" label="Unit Number:">
                         <b-form-input id="txt_unit_number" v-model="device_name" placeholder="Enter Unit Number"></b-form-input>
@@ -81,6 +87,7 @@
                         <template #cell(actions)="data">
                             <AButton
                                 variant="default"
+                                size="sm"
                                 class="mr-2"
                             >
                                 <font-awesome-icon
@@ -90,7 +97,8 @@
                                 Edit
                             </AButton>
                              <AButton
-                                variant="defualt"
+                                variant="default"
+                                size="sm"
                                  @click.native="removeUnit(data.item.id)"
                             >
                                 <font-awesome-icon
@@ -153,6 +161,34 @@ export default {
         //pagination
         currentPage: 1,
         perPage: 10,
+
+        //saving
+        form: {
+                device_name: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                model_name: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                unit_name: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                unit_number: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                }
+        },
       }
     },
     computed: {
