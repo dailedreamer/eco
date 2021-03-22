@@ -7,34 +7,53 @@ const TheContainer = () =>
 
 // Splash Screen/ Others
 const LoadLocalStorage = () =>import("@/views/SplashScreen/LoadLocalStorage");
-const LoggedOut = () =>import("@/views/SplashScreen/LoggedOut");
+const LoggedOut        = () =>import("@/views/SplashScreen/LoggedOut");
 // Pages
 const Dashboard = () =>import("@/views/Dashboard");
-const Parts = () =>import("@/views/Parts");
+const Parts     = () =>import("@/views/Parts");
 
-const PartsRegistrationUnit = () =>import("@/views/Parts/PartsRegistrationUnit");
+const PartsRegistrationUnit  = () =>import("@/views/Parts/PartsRegistrationUnit");
 const PartsRegistrationParts = () =>import("@/views/Parts/PartsRegistrationParts");
-const RegisteredECOParts = () =>import("@/views/Parts/RegisteredECOParts");
-const PartsMonitoring = () =>import("@/views/Parts/PartsMonitoring");
+const RegisteredECOParts     = () =>import("@/views/Parts/RegisteredECOParts");
+const PartsMonitoring        = () =>import("@/views/Parts/PartsMonitoring");
+
+//Parts Monitoring Modal Contents
+const AssemblyApplication = () =>import("@/views/Parts/PartsMonitoring/ModalContents/AssemblyApplication");
+const DieDFM              = () =>import("@/views/Parts/PartsMonitoring/ModalContents/DieDFM");
+const DieQuotationDetails = () =>import("@/views/Parts/PartsMonitoring/ModalContents/DieQuotationDetails");
+const DieSample           = () =>import("@/views/Parts/PartsMonitoring/ModalContents/DieSample");
+const DieTrialDetails     = () =>import("@/views/Parts/PartsMonitoring/ModalContents/DieTrialDetails");
+const DrawingIssuance     = () =>import("@/views/Parts/PartsMonitoring/ModalContents/DrawingIssuance");
+const ECODetails          = () =>import("@/views/Parts/PartsMonitoring/ModalContents/ECODetails");
+const LotDelivery         = () =>import("@/views/Parts/PartsMonitoring/ModalContents/LotDelivery");
+const LotPOIssuance       = () =>import("@/views/Parts/PartsMonitoring/ModalContents/LotPOIssuance");
+const Meeting             = () =>import("@/views/Parts/PartsMonitoring/ModalContents/Meeting");
+const PartsAllocation     = () =>import("@/views/Parts/PartsMonitoring/ModalContents/PartsAllocation");
+const PartsDetails        = () =>import("@/views/Parts/PartsMonitoring/ModalContents/PartsDetails");
+const ProductAudit        = () =>import("@/views/Parts/PartsMonitoring/ModalContents/ProductAudit");
+const QCIGM               = () =>import("@/views/Parts/PartsMonitoring/ModalContents/QCIGM");
+
+
 
 const ECASList = () =>import("@/views/ECASList");
 
-const Process = () =>import("@/views/Process");
+const Process             = () =>import("@/views/Process");
 const ProcessRegistration = () =>import("@/views/Process/Registration");
-const ProcessMonitoring = () =>import("@/views/Process/Monitoring");
+const ProcessMonitoring   = () =>import("@/views/Process/Monitoring");
 
-const Simultaneous = () =>import("@/views/Simultaneous");
-const UnitRev = () =>import("@/views/UnitRev");
+const Simultaneous   = () =>import("@/views/Simultaneous");
+const UnitRev        = () =>import("@/views/UnitRev");
 const VPSApplication = () =>import("@/views/VPSApplication");
 const ECOActionItems = () =>import("@/views/ECOActionItems");
 
-const ManagementParts = () =>import("@/views/Management/Parts");
+const ManagementParts       = () =>import("@/views/Management/Parts");
 const ManagementPartsDevice = () =>import("@/views/Management/Parts/Device");
-const ManagementPartsModel = () =>import("@/views/Management/Parts/Model");
-const ManagementPartsUnit= () =>import("@/views/Management/Parts/Unit");
+const ManagementPartsModel  = () =>import("@/views/Management/Parts/Model");
+const ManagementPartsUnit   = () =>import("@/views/Management/Parts/Unit");
 
 const ManagementUsers = () =>import("@/views/Management/Users");
 const ManagementEmail = () =>import("@/views/Management/Email");
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -62,6 +81,7 @@ const routes = [
 			{
 				path: "/parts",
 				name: "Parts",
+				redirect: '/parts-registration-unit',
 				component: Parts ,
 				children: [
 					{
@@ -83,6 +103,80 @@ const routes = [
 						path: "/parts-monitoring",
 						name: "PartsMonitoring",
 						component: PartsMonitoring ,
+						children: [
+							{
+								path: "/parts-details",
+								name: "PartsDetails",
+								component: PartsDetails ,
+							},
+							{
+								path: "/meeting",
+								name: "Meeting",
+								component: Meeting ,
+							},
+							{
+								path: "/eco_details",
+								name: "ECODetails",
+								component: ECODetails ,
+							},
+							{
+								path: "/die_sample",
+								name: "DieSample",
+								component: DieSample ,
+							},
+							{
+								path: "/drawing_issuance",
+								name: "DrawingIssuance",
+								component: DrawingIssuance ,
+							},
+							{
+								path: "/die_quotation_details",
+								name: "DieQutationDetails",
+								component: DieQuotationDetails ,
+							},
+							{
+								path: "/die_dfm",
+								name: "DieDFM",
+								component: DieDFM ,
+							},
+							{
+								path: "/qc_igm",
+								name: "QCIGM",
+								component: QCIGM ,
+							},
+							{
+								path: "/die_trial_details",
+								name: "DieTrialDetails",
+								component: DieTrialDetails ,
+							},
+							{
+								path: "/lot_po_issuance",
+								name: "LotPOIssuance",
+								component: LotPOIssuance ,
+							},
+							{
+								path: "/lot_delivery",
+								name: "LotDelivery",
+								component: LotDelivery ,
+							},
+							{
+								path: "/product_audit",
+								name: "ProductAudit",
+								component: ProductAudit ,
+							},
+							{
+								path: "/parts_allocation",
+								name: "PartsAllocation",
+								component: PartsAllocation ,
+							},
+							{
+								path: "/assembly_application",
+								name: "AssemblyApplication",
+								component: AssemblyApplication ,
+							}
+
+						]
+
 					},
 				]
 			},
@@ -94,6 +188,7 @@ const routes = [
 			{
 				path: "/process",
 				name: "Process ",
+				redirect: '/process-registration',
 				component: Process ,
 				children: [
 					{
@@ -133,6 +228,7 @@ const routes = [
 				path: "/management-parts",
 				name: "ManagementParts ",
 				component: ManagementParts ,
+				redirect: '/management-parts-device',
 				children:
 				[
 					{
@@ -153,12 +249,12 @@ const routes = [
 				]
 			},
 			{
-				path: "/management_users",
+				path: "/management-users",
 				name: "ManagementUsers ",
 				component: ManagementUsers ,
 			},
 			{
-				path: "/management_email",
+				path: "/management-email",
 				name: "ManagementEmail ",
 				component: ManagementEmail ,
 			},

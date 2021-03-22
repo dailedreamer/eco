@@ -14,16 +14,14 @@ import "../src/template/assets/sass/views/custom-cards.scss";
 import VuePapaParse from 'vue-papa-parse'
 import VueConfirmDialog from 'vue-confirm-dialog'
 import ToggleButton from "vue-js-toggle-button";
+import Multiselect from 'vue-multiselect';
+import "vue-multiselect/dist/vue-multiselect.min.css";
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons)
 Vue.use(VuePapaParse)
 Vue.use(VueConfirmDialog)
 Vue.use(ToggleButton);
-
-
-import Multiselect from 'vue-multiselect';
-import "vue-multiselect/dist/vue-multiselect.min.css";
 Vue.use(Multiselect);
 
 import "./template/alpha.js";
@@ -35,8 +33,8 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
 import axios from "axios";
-// axios.defaults.baseURL  = 'http://10.164.58.65/eco-cms-v2/server/public/api/';
-axios.defaults.baseURL  = 'http://10.164.58.93/eco-cms-v2/server/public/api/';
+axios.defaults.baseURL  = 'http://10.164.58.65/eco-cms-v2/server/public/api/';
+// axios.defaults.baseURL  = 'http://10.164.58.93/eco-cms-v2/server/public/api/';
 // axios.defaults.baseURL  = 'http://10.164.58.43/tms/server/public/api/';
 
 const options = {

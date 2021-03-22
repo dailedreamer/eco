@@ -29,6 +29,7 @@ export default {
 			});
 		},
 
+		//delete
 		async deleteDevice(state, id) {
 			return new Promise((resolve, reject) => {
 				axios
@@ -42,6 +43,7 @@ export default {
 			});
 		},
   
+		//update
 		async updateDevice(state, payload) {
 			return new Promise((resolve, reject) => {
 				payload["formData"].append("_method", "PATCH");
@@ -57,7 +59,9 @@ export default {
 						reject(error);
 					});
 			});
-        },
+		},
+		
+		//save
 		async insertDevice(state, payload) {
 			return new Promise((resolve, reject) => {
 				axios
