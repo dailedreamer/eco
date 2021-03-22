@@ -1,35 +1,83 @@
 <template>
-  <b-container fluid>
-    <b-row class="mb-3">
-      <b-col cols="4">
-        <b-form inline>
-          <p class="mr-4 legends_box_position">Legend:</p>
-          <div class="whitebox ml-5"></div>
-          <p class="legends_box_position whitebox_text_position">Not yet started</p>
-          <div class="yellowbox"></div>
-          <p class="legends_box_position yellowbox_text_position">Started</p>
-          <div class="graybox"></div>
-          <p class="legends_box_position graybox_text_position">Finished</p>
-          <div class="pinkbox"></div>
-          <p class="legends_box_position pinkbox_text_position">Delay</p>
-        </b-form>
+  <b-container class="mt-4 mb-1" fluid>
+    <hr>
+    <b-row >
+      <b-col cols="3">
+        <b-container fluid>
+        <b-row>
+          <b-col cols="12">
+            <p class="float-left">Legend:</p>
+          </b-col>
+        </b-row>
+         <b-row>
+          <b-col cols="6">
+            <b-row>
+              <b-col cols="9">
+                <p class="text-right">Not yet started</p>
+              </b-col>
+              <b-col cols="3">
+                <div class="float-left whitebox"></div>
+              </b-col>
+            </b-row>
+          </b-col>
+          <b-col cols="6">
+            <b-row>
+              <b-col cols="9">
+                <p class="text-right">Started</p>
+              </b-col>
+              <b-col cols="3">
+                <div class="float-left yellowbox"></div>
+              </b-col>
+            </b-row>
+          </b-col>
+        </b-row>
+              <b-row>
+          <b-col cols="6">
+            <b-row>
+              <b-col cols="9">
+                 <p class="text-right">Finished</p>
+              </b-col>
+              <b-col cols="3">
+                <div class="float-left graybox"></div>
+              </b-col>
+            </b-row>
+          </b-col>
+          <b-col cols="6">
+            <b-row>
+              <b-col cols="9">
+                <p class="text-right">Delay</p>
+              </b-col>
+              <b-col cols="3">
+                <div class="float-left pinkbox"></div>
+              </b-col>
+            </b-row>
+          </b-col>
+        </b-row>
+        </b-container>
       </b-col>
-      <b-col cols="8">
-        <b-card class="card_custom float-right">
-          <b-form class="mb-3" inline>
-            <span class="mr-5">Filter:</span>
-            <b-form-select class="mr-2 w-25" v-model="device_selected" :options="device_options" size="sm"></b-form-select>
-            <b-form-select class="mr-2 w-25" v-model="model_selected" :options="model_options" size="sm"></b-form-select>
-            <b-form-select class="mr-2 select_unit" v-model="unit_selected" :options="unit_options" size="sm"></b-form-select>
-          </b-form>
-          <b-form inline>
-            <span class="mr-4">Filter By:</span>
-            <b-form-select class="mr-2 w-25" v-model="filterby_selected" :options="filterby_options" size="sm"></b-form-select>
-            <b-input size="sm w-25" placeholder="Enter supplier"></b-input>
-          </b-form>
+      <b-col cols="9">
+        <b-card class="mt-5" style="border:none">
+          <b-row>
+            <b-col cols="7">
+              <b-form inline>
+                <small class="mr-3">Filter:</small>
+                  <b-form-select class="mr-2 w-25 filter_size" v-model="device_selected" :options="device_options" size="sm"></b-form-select>
+                  <b-form-select class="mr-2 w-25 filter_size" v-model="model_selected" :options="model_options" size="sm"></b-form-select>
+                  <b-form-select class="mr-2 select_unit filter_size" v-model="unit_selected" :options="unit_options" size="sm"></b-form-select>
+              </b-form>
+            </b-col>
+            <b-col cols="5">
+              <b-form inline>
+                <small class="mr-3">Filter By:</small>
+                <b-form-select class="mr-2 w-25 filter_size" v-model="filterby_selected" :options="filterby_options" size="sm"></b-form-select>
+                <b-input size="sm w-50 filter_size" placeholder="Enter supplier"></b-input>
+              </b-form>
+            </b-col>
+          </b-row>
         </b-card>
       </b-col>
     </b-row>
+
     <b-row>
       <b-col cols="12">
         <b-table-simple responsive bordered small >
@@ -82,13 +130,14 @@
             <b-tr>
               <b-td>
                   <template>
-                    <b-img
-                      class="img_action" 
-                      :src="require('../../../assets/icon_images/copy.svg')" 
-                      width="25" 
-                      height="35" 
-                      alt="placeholder">
-                    </b-img>
+                    <AButton
+                      variant="primary"
+                      v-b-modal.device-modal-update
+                    
+                    >
+                    <b-icon icon="files" size="sm" variant="white"></b-icon>
+                  
+                  </AButton>
                   </template>
               </b-td>
               <b-td></b-td>
@@ -129,11 +178,16 @@
         </AButton> 
       </b-col>
     </b-row>
+    <Modal/>
   </b-container>
 </template>
 
 <script>
+import Modal from "./Modal.vue";
 export default {
+    components: {
+      Modal,
+    },
     name: "Body",
      data() {
     return {
@@ -172,63 +226,43 @@ export default {
   .custom_p_count {
     font-size: 3rem;
   }
-  .legends_box_position {
-    position: absolute;
-    bottom: -20%;
-  }
-  .whitebox_text_position {
-    left: 26%;
-  }
   .whitebox {
-    position: absolute;
-    bottom: -4%;
-    left: 14%;
     height: 13px;
     width: 13px;
     background-color: #fff;
     border: 1px solid #000;
   }
-  .yellowbox_text_position {
-    left: 47.4%;
-  }
   .yellowbox {
-    position: absolute;
-    bottom: -4%;
-    left: 44%;
     height: 13px;
     width: 13px;
     background-color: #f8ff01;
   }
-  .graybox_text_position {
-    left: 60%;
-  }
   .graybox {
-    position: absolute;
-    bottom: -4%;
-    left: 56.8%;
     height: 13px;
     width: 13px;
     background-color: #7a7a7a;
   }
-  .pinkbox_text_position {
-    left: 74%;
-  }
   .pinkbox {
-    position: absolute;
-    bottom: -4%;
-    left: 70.4%;
     height: 13px;
     width: 13px;
     background-color:#eb41a6;
   }
+  .filter_size
+  {
+    font-size:12px;
+  }
   .th_alignment {
-    vertical-align:middle
+    vertical-align:middle;
+    text-align:center!important;
+    padding-left:10px;
+    padding-right:10px;
   }
   .img_action {
     cursor: pointer;
   }
   .custom_thead {
-    font-size: 10px;;
+    font-size: 10px;
+   
   }
   .card_custom {
     width: 67vh;

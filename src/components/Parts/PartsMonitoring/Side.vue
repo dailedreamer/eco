@@ -29,6 +29,8 @@ export default {
         background: #a10e14;
         margin-left: -35px;
         cursor: pointer;
+        right:0;
+        transition: all 0.15s;
     }
     .rectangle:before {
         content: "";
@@ -42,10 +44,11 @@ export default {
         border-bottom: 24px solid transparent;
     }
     .rectangle:hover {
-        background: linear-gradient(
+        /* background: linear-gradient(
         90deg
-        , rgb(163 11 26), rgb(179 6 28), rgb(194 11 29), rgb(163 11 26));
+        , rgb(163 11 26), rgb(179 6 28), rgb(194 11 29), rgb(163 11 26)); */
         box-shadow: 2px 2px 18px rgb(161 14 20);
+        right:4px;
     }
     .rectangle_eco_position {
         top: 13%;
@@ -61,17 +64,19 @@ export default {
         position: relative;
     }
     .rectangle_text {
-        bottom: 75%;
-        right: 12%;
-        position: relative;
+        bottom: 32%;
+        right: 50%;
+        position: absolute;
         color: #fff;
         font-size: 12px;
+
     }
     .rectangle_second_text {
-        bottom: 75%;
-        right: -6%;
-        position: relative;
+        bottom: 32%;
+        right: 12%;
+        position: absolute;
         color: #fff;
         font-size: 11px;
+
     }
 </style>

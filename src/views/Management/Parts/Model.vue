@@ -105,6 +105,7 @@
                             <AButton
                                 variant="default"
                                 class="mr-2"
+                                size="sm"
                                 v-b-modal.model-modal-update
                                 @click.native="loadModelInfo(
                                     data.item.id, 
@@ -120,6 +121,7 @@
                             </AButton>
                              <AButton
                                 variant="defualt"
+                                size="sm"
                                  @click.native="removeModel(data.item.id)"
                             >
                                 <font-awesome-icon
