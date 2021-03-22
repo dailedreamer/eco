@@ -49,6 +49,9 @@
                         :busy="isBusy" 
                         :per-page="perPage"
                         :current-page="currentPage">
+                         <template #cell(No)="data">
+                            {{data.index+1}}
+                        </template>
                       <template #cell(device)="data"> 
                           <multiselect  
                             v-model="data.item.device"
@@ -57,6 +60,7 @@
                             track-by="value" 
                             :options="device_options"
                             :show-labels="false"
+                            @input="loadModel(data.item.device.id)"
                             
                             ></multiselect>
                       </template>
@@ -136,7 +140,7 @@ export default {
           key: "part_number",
           sortable: true,
         },
-         {
+        {
           key: "revision",
           sortable: true,
         },
@@ -158,9 +162,9 @@ export default {
       unit_options: [],
       items: 
       [
-        {id: 1,eco_number: '123456877', part_number: 'KD021-13254', revision: '04',device:''},
-        {id: 2,eco_number: '123456877', part_number: 'KD021-13254', revision: '04',device:''},
-        {id: 1,eco_number: '123456877', part_number: 'KD021-13254', revision: '04',device:''}
+        {id: 1,eco_number: '123456877', part_number: 'KD021-13254', revision: '04',device:'',model:'', unit:''},
+        {id: 2,eco_number: '123456877', part_number: 'KD021-13254', revision: '04',device:'',model:'', unit:''},
+        {id: 1,eco_number: '123456877', part_number: 'KD021-13254', revision: '04',device:'',model:'', unit:''},
  
       ],
       //loading
@@ -171,6 +175,7 @@ export default {
   {
     loadDevice: function()
     {
+     
       this.$store.dispatch("loadDevice").then((response) => {
         let data = response.data.data;
         Object.values(data).forEach(function(value){
@@ -181,10 +186,13 @@ export default {
       });  
   
     },
-    loadModel: function()
+    loadModel: function(device_id)
     {
-      this.$store.dispatch("loadModel").then((response) => {
+      this.model
+      this.model_options = [];
+      this.$store.dispatch("loadModelPerDevice", device_id).then((response) => {
         let data = response.data;
+     
        
           for(const [key, value] of Object.entries(data))
           {
@@ -196,7 +204,8 @@ export default {
         });  
     },
     loadUnit: function()
-    {
+    {     
+           this.unit_options = [];
            this.$store.dispatch("loadUnit").then((response) => {
               console.log(response);
               let data = response.data;
@@ -206,6 +215,7 @@ export default {
                     value['value'] = value.id;
                     value['text'] = value.model_name;
                 }
+              
               this.unit_options = data;
            });  
         },
@@ -217,7 +227,7 @@ export default {
   },
    mounted() {
      this.loadDevice();
-     this.loadModel();
+    //  this.loadModel();
      this.loadUnit();
       // console.log(this.model_options);
      
