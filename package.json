@@ -15,6 +15,7 @@
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.19.0",
     "core-js": "^3.6.5",
+    "v-mask": "^2.2.4",
     "v-select2-component": "^0.4.3",
     "v-select2-multiple-component": "^0.1.1",
     "vue": "^2.6.12",

@@ -1,9 +1,7 @@
 <template>
     <b-container fluid>
         <b-modal id="update_modal_id" size="lg" scrollable 
-            :no-close-on-backdrop="true"
-            background= "black"
-            color="white" centered
+            :no-close-on-backdrop="true" centered
             >
             <template #modal-header="" >
                 <b-media>

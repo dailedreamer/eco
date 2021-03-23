@@ -16,6 +16,7 @@ import VueConfirmDialog from 'vue-confirm-dialog'
 import ToggleButton from "vue-js-toggle-button";
 import Multiselect from 'vue-multiselect';
 import "vue-multiselect/dist/vue-multiselect.min.css";
+import VueMask from 'v-mask'
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons)
@@ -23,6 +24,7 @@ Vue.use(VuePapaParse)
 Vue.use(VueConfirmDialog)
 Vue.use(ToggleButton);
 Vue.use(Multiselect);
+Vue.use(VueMask);
 
 import "./template/alpha.js";
 import "./assets/icons.js";

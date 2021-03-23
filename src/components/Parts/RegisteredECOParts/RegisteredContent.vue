@@ -2,7 +2,7 @@
     <b-container fluid>
         <b-row>
             <b-col cols="7">
-                <b-card>
+                <b-card no-body class="pt-3 pl-3 pr-3">
                      <b-form-group
                         id="filter_by"
                         label-cols-sm="2"
@@ -115,7 +115,6 @@
                                 v-model="currentPage"
                                 :total-rows="rows"
                                 :per-page="perPage"
-                                aria-controls="my-registered_table_id"
                                 align="right"
                                 pills></b-pagination>
                         </b-col>
