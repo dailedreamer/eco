@@ -15,6 +15,7 @@
                         <b-col cols="4">
                             <multiselect  
                                 v-model="deviceValue"
+                                name="searchTemplateDevice"
                                 :options="this.deviceOptions" 
                                 :searchable="true"
                                 :show-labels="false"
@@ -26,6 +27,7 @@
                         <b-col cols="4">
                             <multiselect  
                                 v-model="modelValue"
+                                name="searchTemplateModel"
                                 :options="modelOptions" 
                                 :searchable="true"
                                 :show-labels="false"
@@ -37,10 +39,11 @@
                         <b-col cols="4">
                             <multiselect  
                                 v-model="unitValue" 
+                                 name="searchTemplateUnit"
                                 :options="unitOptions"
                                 :searchable="true"
                                 :show-labels="false"
-                                placeholder="Unit" 
+                                placeholder="Unit Name/Number" 
                                 label="name" 
                                 track-by="id" 
                                 :max-height="50"
@@ -69,13 +72,13 @@
                                     :show-labels="false"
                                     :multiple="false" 
                                     :taggable="true" 
-                                    placeholder="Filter By" 
+                                    placeholder="Select one" 
                                     label="name" 
                                     track-by="id"
                                     @input="clearFilter()"></multiselect>
                             </b-col>
                             <b-col cols="4">
-                                    <b-input block v-model="filterByValue"></b-input>
+                                    <b-input block v-model="filterByValue" class="filterby_input"></b-input>
                             </b-col>
                             <b-col cols="4">
                                <slot></slot>
@@ -134,6 +137,8 @@ props: {
         loadModel: function () {
             this.modelOptions=[];
             this.clearFilterBy();
+            this.modelValue = [];
+            this.unitValue = [];
                 this.$store.dispatch("loadModelPerDevice", this.deviceValue.id)
                 .then((response) => {
                     let information = response.data;
@@ -149,6 +154,7 @@ props: {
         loadUnit: function () {
             this.unitOptions=[];
             this.clearFilterBy();
+            this.unitValue = [];
                 this.$store.dispatch("loadUnitPerModel", this.modelValue.id)
                 .then((response) => {
                     let information = response.data;
@@ -211,8 +217,12 @@ props: {
 </script>
 
 <style>
-.form_group_custom
-{
-    margin-bottom:0;
-}
+    .form_group_custom{
+        margin-bottom:0;
+    }
+
+    .filterby_input{
+        border-color: #e3e3e3;
+        height: 43px;
+    }
 </style>

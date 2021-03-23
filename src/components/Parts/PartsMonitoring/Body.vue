@@ -63,7 +63,6 @@
               variant="danger"
               block
               type="submit"
-              size="sm"
               id="button-submit"
             >
            <b-icon icon="search"></b-icon>
