@@ -1,6 +1,6 @@
 <template>
     <b-container fluid>
-        <b-media>
+        <b-media class="pb-2 pt-1">
             <template #aside>
             <b-img 
                 :src="require('../../../assets/icon_images/cog.svg')" 
@@ -115,10 +115,10 @@ export default {
       font-size: 12px;
     }
     .custom_p_percentage {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
     .custom_p_count {
-        font-size: 3rem;
+        font-size: 2.1rem;
     }
     .custom_size{
         font-size: 2.5rem;

@@ -29,6 +29,28 @@ export default {
 					});
 			});
 		},
+		async loadModelPerDevice({ commit }, id) {
+		
+			return new Promise((resolve, reject) => {
+				axios
+					.get(`model-names/${id}`)
+					.then(function(response) {
+						console.log(response);
+						commit("SET_MANAGEMENT_MODEL", response.data);
+						let result = {
+							code: response.data.code,
+							status: response.data.status,
+							message: response.data.message,
+							data: response.data.data,
+						};
+						resolve(result);
+						
+					})
+					.catch(function(error) {
+						reject(error);
+					});
+			});
+		},
 
 		//delete
 		async deleteDevice(state, id) {

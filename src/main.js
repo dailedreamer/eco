@@ -23,8 +23,8 @@ Vue.use(BootstrapVueIcons)
 Vue.use(VuePapaParse)
 Vue.use(VueConfirmDialog)
 Vue.use(ToggleButton);
-Vue.use(Multiselect);
 Vue.use(VueMask);
+Vue.component('multiselect', Multiselect)
 
 import "./template/alpha.js";
 import "./assets/icons.js";
@@ -35,8 +35,8 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
 import axios from "axios";
-// axios.defaults.baseURL  = 'http://10.164.58.65/eco-cms-v2/server/public/api/';
-axios.defaults.baseURL  = 'http://10.164.58.93/eco-cms-v2/server/public/api/';
+axios.defaults.baseURL  = 'http://10.164.58.65/eco-cms-v2/server/public/api/';
+// axios.defaults.baseURL  = 'http://10.164.58.93/eco-cms-v2/server/public/api/';
 // axios.defaults.baseURL  = 'http://10.164.58.43/tms/server/public/api/';
 
 const options = {
