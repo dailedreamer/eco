@@ -1,7 +1,7 @@
 <template>
   <b-container class="mt-4 mb-1" fluid>
     <hr>
-    <b-row >
+    <b-row>
       <b-col cols="3">
         <b-container fluid>
         <b-row>
@@ -55,30 +55,24 @@
         </b-row>
         </b-container>
       </b-col>
-      <b-col cols="9">
-        <b-card class="mt-5" style="border:none">
-          <b-row>
-            <b-col cols="7">
-              <b-form inline>
-                <small class="mr-3">Filter:</small>
-                  <b-form-select class="mr-2 w-25 filter_size" v-model="device_selected" :options="device_options" size="sm"></b-form-select>
-                  <b-form-select class="mr-2 w-25 filter_size" v-model="model_selected" :options="model_options" size="sm"></b-form-select>
-                  <b-form-select class="mr-2 select_unit filter_size" v-model="unit_selected" :options="unit_options" size="sm"></b-form-select>
-              </b-form>
-            </b-col>
-            <b-col cols="5">
-              <b-form inline>
-                <small class="mr-3">Filter By:</small>
-                <b-form-select class="mr-2 w-25 filter_size" v-model="filterby_selected" :options="filterby_options" size="sm"></b-form-select>
-                <b-input size="sm w-50 filter_size" placeholder="Enter supplier"></b-input>
-              </b-form>
-            </b-col>
-          </b-row>
-        </b-card>
+      <b-col cols="3">
+      </b-col>
+      <b-col cols="6">
+          <SearchTemplate field_set='2'>
+            <b-button 
+              variant="danger"
+              block
+              type="submit"
+              size="sm"
+              id="button-submit"
+            >
+           <b-icon icon="search"></b-icon>
+            &nbsp;Go!
+            </b-button>
+          </SearchTemplate>
       </b-col>
     </b-row>
-
-    <b-row>
+    <b-row class='mt-3'>
       <b-col cols="12">
         <b-table-simple responsive bordered small >
           <b-thead class="thead-light custom_thead">
@@ -184,6 +178,7 @@
 
 <script>
 import Modal from "./Modal.vue";
+
 export default {
     components: {
       Modal,

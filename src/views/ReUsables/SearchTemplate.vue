@@ -1,70 +1,90 @@
 <template>
-        <b-card>
-            <b-form-group
-            id="filter_by"
-            label-cols-sm="2"
-            label="Filter:"
-            label-align="left"
-            horizontal>
-            <b-row>
-                <b-col cols="4">
-                    <multiselect  
-                        v-model="deviceValue"
-                        :options="this.deviceOptions" 
-                        :searchable="true"
-                        :show-labels="false"
-                        placeholder="Device" 
-                        label="name" 
-                        track-by="id"
-                        @input="loadModel('asdasd')"></multiselect>
-                </b-col>
-                <b-col cols="4">
-                    <multiselect  
-                        v-model="this.modelValue"
-                        :options="modelOptions" 
-                        :searchable="true"
-                        :show-labels="false"
-                        placeholder="Model" 
-                        label="name" 
-                        track-by="id"></multiselect>
-                </b-col>
-                <b-col cols="4">
-                    <multiselect  
-                        v-model="this.unitValue" 
-                        :options="unitOptions"
-                        :searchable="true"
-                        :show-labels="false"
-                        placeholder="Unit" 
-                        label="name" 
-                        track-by="id" 
-                        ></multiselect>
-                </b-col>
-            </b-row>
-        </b-form-group>
-        <b-form-group
-            id="filter_by"
-            label-cols-sm="2"
-            label="Filter By:"
-            label-align="left"
-            horizontal>
-            <b-row>
-                <b-col cols="4">
-                    <multiselect  
-                        v-model="this.filterByValue" 
-                        :options="filterByOptions"
-                        :searchable="true"
-                        :show-labels="false"
-                        :multiple="false" 
-                        :taggable="true" 
-                        placeholder="Unit" 
-                        label="name" 
-                        track-by="id"></multiselect>
-                </b-col>
-                <b-col cols="4">
-                        <b-input block></b-input>
+        <b-card no-body class="p-3">
+            <b-card-text>
+                <b-row class="mb-2">
+                    <b-col>
+                    <b-form-group
+                    class="form_group_custom"
+                    id="filter_by"
+                    label-cols-sm="2"
+                    label="Filter:"
+                    label-align="left"
+                    label-size="sm"
+                    horizontal>
+                    <b-row>
+                        <b-col cols="4">
+                            <multiselect  
+                                v-model="deviceValue"
+                                :options="this.deviceOptions" 
+                                :searchable="true"
+                                :show-labels="false"
+                                placeholder="Device" 
+                                label="name" 
+                                track-by="id"
+                                @input="loadModel()"></multiselect>
+                        </b-col>
+                        <b-col cols="4">
+                            <multiselect  
+                                v-model="modelValue"
+                                :options="modelOptions" 
+                                :searchable="true"
+                                :show-labels="false"
+                                placeholder="Model" 
+                                label="name" 
+                                track-by="id"
+                                @input="loadUnit()"></multiselect>
+                        </b-col>
+                        <b-col cols="4">
+                            <multiselect  
+                                v-model="unitValue" 
+                                :options="unitOptions"
+                                :searchable="true"
+                                :show-labels="false"
+                                placeholder="Unit" 
+                                label="name" 
+                                track-by="id" 
+                                :max-height="50"
+                                ></multiselect>
+                        </b-col>
+                    </b-row>
+                </b-form-group>
                 </b-col>
             </b-row>
-        </b-form-group>
+            <b-row>
+                <b-col>
+                    <b-form-group
+                        class="form_group_custom"
+                        id="filter_by"
+                        label-cols-sm="2"
+                        label="Filter By:"
+                        label-align="left"
+                        label-size="sm"
+                        horizontal>
+                        <b-row>
+                            <b-col cols="4">
+                                <multiselect  
+                                    v-model="filterBySelectValue" 
+                                    :options="filterByOptions"
+                                    :searchable="true"
+                                    :show-labels="false"
+                                    :multiple="false" 
+                                    :taggable="true" 
+                                    placeholder="Filter By" 
+                                    label="name" 
+                                    track-by="id"
+                                    @input="clearFilter()"></multiselect>
+                            </b-col>
+                            <b-col cols="4">
+                                    <b-input block v-model="filterByValue"></b-input>
+                            </b-col>
+                            <b-col cols="4">
+                               <slot></slot>
+                            </b-col>
+                        </b-row>
+                    </b-form-group>
+                </b-col>
+            </b-row>
+         </b-card-text>
     </b-card>
 </template>
 
@@ -72,35 +92,35 @@
 // import {mapGetters} from "vuex";
 export default {
 name: "SearchTemplate",
+props: {
+        field_set:{
+            type:String,
+            default:'1'
+        }
+    },
     data(){
         return{
-            deviceValue: '',
+            deviceValue: [],
             deviceOptions: [],
 
-            modelValue: '',
-            modelOptions: [
-                {id: '1', name: 'Model 1'},
-                {id: '2', name: 'Model 2'},
-                {id: '3', name: 'Model 3'}
-            ],
-            unitValue: '',
-            unitOptions: [
-                {id: '1', name: 'Unit 1'},
-                {id: '2', name: 'Unit 2'},
-                {id: '3', name: 'Unit 3'}
-            ],
+            modelValue: [],
+            modelOptions: [],
+
+            unitValue: [],
+            unitOptions: [],
             filterByValue: '',
-            filterByOptions: [
-                {id: '1', name: 'ECO Number'},
-                {id: '2', name: 'Supplier'}
-            ]
+            filterBySelectValue: [],
+            filterByOptions: []
         }
     },
     methods:{
         loadDevice: function () {
             this.deviceOptions=[];
+            this.clearFilterBy();
             this.$store.dispatch("loadDevice")
                 .then((response) => {
+                this.modelOptions=[];
+                this.unitOptions=[];
                 let information = response.data.data;
                     Object.keys(information).forEach((key) => {
                         this.deviceOptions.push({
@@ -110,30 +130,89 @@ name: "SearchTemplate",
                     });
             });  
         },
+
         loadModel: function () {
-            this.deviceOptions=[];
-                this.$store.dispatch("loadDevice")
-                    .then((response) => {
-                    let information = response.data.data;
+            this.modelOptions=[];
+            this.clearFilterBy();
+                this.$store.dispatch("loadModelPerDevice", this.deviceValue.id)
+                .then((response) => {
+                    let information = response.data;
                         Object.keys(information).forEach((key) => {
-                            this.deviceOptions.push({
+                            this.modelOptions.push({
                                 'id':information[key].id, 
-                                'name':information[key].device_name
+                                'name':information[key].model_code
                             })
                         });
                 });  
         },
-        // loadUnits: function (id) {
-        
-        // }
+
+        loadUnit: function () {
+            this.unitOptions=[];
+            this.clearFilterBy();
+                this.$store.dispatch("loadUnitPerModel", this.modelValue.id)
+                .then((response) => {
+                    let information = response.data;
+                        Object.keys(information).forEach((key) => {
+                            this.unitOptions.push({
+                                'id':information[key].id, 
+                                'name':information[key].unit_name
+                            })
+                        });
+                });  
+        },
+
+        setFieldSet: function () {
+            console.log(this.field_set);
+           if(this.field_set == "1")
+           {
+               this.filterByOptions.push(
+                    {id: '1', name: 'ECO Number'},
+                    {id: '2', name: 'Batch No'},
+                    {id: '3', name: 'Supplier'}
+               );
+           }
+           else if(this.field_set == "2")
+           {
+               this.filterByOptions.push(
+                    {id: '1', name: 'ECO Number'},
+                    {id: '3', name: 'Supplier'}
+               );
+           }
+           else if(this.field_set == "3")
+           {
+               this.filterByOptions.push(
+                    {id: '1', name: 'ECO Number'}
+               );
+           }
+           else
+           {
+               this.filterByOptions=[];
+           }
+        },
+        clearFilter: function () {
+            this.deviceValue = [];
+            this.modelValue = [];
+            this.unitValue = [];
+
+            this.modelOptions=[];
+            this.unitOptions=[];
+        },
+        clearFilterBy: function () {
+            this.filterBySelectValue = [];
+        },
     },
     mounted()
     {
-        this.loadDevice()
+        this.loadDevice();
+        this.setFieldSet();
+        console.log(this.filterByOptions);
     }
 }
 </script>
 
 <style>
-
+.form_group_custom
+{
+    margin-bottom:0;
+}
 </style>
