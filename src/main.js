@@ -22,7 +22,8 @@ Vue.use(BootstrapVueIcons)
 Vue.use(VuePapaParse)
 Vue.use(VueConfirmDialog)
 Vue.use(ToggleButton);
-Vue.use(Multiselect);
+// Vue.use(Multiselect);
+Vue.component('multiselect', Multiselect)
 
 import "./template/alpha.js";
 import "./assets/icons.js";
