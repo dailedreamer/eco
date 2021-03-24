@@ -86,7 +86,10 @@
                                 label-for="txt_parts_supplier"
                                 label-cols-sm="5"
                                 label-align-sm="left">
-                                <b-form-input id="txt_parts_supplier"></b-form-input>
+                                <b-form-input 
+                                    id="txt_parts_supplier" 
+                                    placeholder="Enter Parts Supplier"
+                                    required></b-form-input>
                             </b-form-group>
                         </b-form-group>
                     </b-card>
@@ -106,14 +109,28 @@
                                 label-for="txt_die_target"
                                 label-cols-sm="5"
                                 label-align-sm="left">
-                                <b-form-input id="txt_die_target"></b-form-input>
+                                <b-form-datepicker 
+                                    id="txt_die_target" 
+                                    placeholder="Choose a date" 
+                                    class="pc_datepicker"
+                                    hide-header
+                                    reset-button
+                                    close-button
+                                    :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"></b-form-datepicker>
                             </b-form-group>
                             <b-form-group 
                                 label="Parts Del. Target:"
                                 label-for="txt_parts_del_target"
                                 label-cols-sm="5"
                                 label-align-sm="left">
-                                <b-form-input id="txt_parts_del_target"></b-form-input>
+                                <b-form-datepicker 
+                                    id="txt_parts_del_target" 
+                                    placeholder="Choose a date" 
+                                    class="pc_datepicker"
+                                    hide-header
+                                    reset-button
+                                    close-button
+                                    :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"></b-form-datepicker>
                             </b-form-group>
                         </b-form-group>
                     </b-card>
@@ -147,7 +164,14 @@ export default {
         margin-left: auto;
         margin-right: auto;
         border-width: 7px;
-        /* color: black; */
-        /* border-bottom: black; */
+    }
+
+    .pc_datepicker{
+        position:unset;
+        top: unset;
+        max-width: unset;
+        overflow: unset;
+        flex-wrap: unset;
+        box-shadow: unset;
     }
 </style>
