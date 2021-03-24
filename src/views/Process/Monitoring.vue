@@ -60,72 +60,18 @@
                 </b-card>
               </b-col>
               <b-col cols="6">
-                <b-card no-body class="pt-1 pl-3 pr-3" >
-                  <b-row>
-                    <b-col>
-                     <b-form-group
-                        class="pt-2"
-                        id="filter_by"
-                        label-cols-sm="2"
-                        label="Filter:"
-                        label-align="left"
-                        horizontal>
-                        <b-row>
-                            <b-col cols="4">
-                                <multiselect  
-                                    v-model="deviceValue"
-                                    :options="deviceOptions" 
-                                    :searchable="true"
-                                    :show-labels="false"
-                                    placeholder="Device" 
-                                    label="name" 
-                                    track-by="id"></multiselect>
-                            </b-col>
-                            <b-col cols="4">
-                                <multiselect  
-                                    v-model="modelValue"
-                                    :options="modelOptions" 
-                                    :searchable="true"
-                                    :show-labels="false"
-                                    placeholder="Model" 
-                                    label="name" 
-                                    track-by="id"></multiselect>
-                            </b-col>
-                            <b-col cols="4">
-                                <multiselect  
-                                    v-model="unitValue" 
-                                    :options="unitOptions"
-                                    :searchable="true"
-                                    :show-labels="false"
-                                    placeholder="Unit Name/Unit No." 
-                                    label="name" 
-                                    track-by="id" 
-                                    ></multiselect>
-                            </b-col>
-                        </b-row>
-                    </b-form-group>
-                    <b-form-group
-                        id="filter_by"
-                        label-cols-sm="2"
-                        label="Filter By:"
-                        label-align="left"
-                        horizontal>
-                        <b-row>
-                            <b-col cols="4">
-                                <multiselect  
-                                    v-model="filterByValue" 
-                                    :options="filterByOptions"
-                                    :searchable="true"
-                                    :show-labels="false"
-                                    placeholder="ECO Number" 
-                                    label="name" 
-                                    track-by="id"></multiselect>
-                            </b-col>
-                        </b-row>
-                    </b-form-group>
-                    </b-col>
-                  </b-row>
-                </b-card>
+                <SearchTemplate field_set='3'>
+                  <b-button 
+                    class="pb-1 mt-sm-1"
+                    variant="danger"
+                    block
+                    type="submit"
+                    id="button-submit">
+                    <b-icon 
+                      icon="search"></b-icon>
+                      &nbsp;Go!
+                  </b-button>
+                </SearchTemplate>
               </b-col>
             </b-row>
             <b-row class="mt-4">
@@ -139,42 +85,15 @@
 </template>
 
 <script>
-import Multiselect from 'vue-multiselect'
 import ProcessContent from '../../components/Process/ProcessMonitoring/ProcessContent';
 export default {
   name: "Blank",
   components: {
-    Multiselect, 
     ProcessContent
   },
   data(){
     return{
-      deviceValue: [],
-      deviceOptions: [
-          {id: '1', name: 'Device 1'},
-          {id: '2', name: 'Device 2'},
-          {id: '3', name: 'Device 3'},
-      ],
-      modelValue: [],
-      modelOptions: [
-          {id: '1', name: 'Model 1'},
-          {id: '2', name: 'Model 2'},
-          {id: '3', name: 'Model 3'}
-      ],
-      unitValue: [],
-      unitOptions: [
-          {id: '1', name: 'Unit 1/name 1'},
-          {id: '2', name: 'Unit 2/name 2'},
-          {id: '3', name: 'Unit 3/name 3'}
-      ],
-      filterByValue: [],
-      filterByOptions: [
-          {id: '1', name: 'eco_001'},
-          {id: '2', name: 'eco_002'},
-          {id: '3', name: 'eco_003'},
-          {id: '4', name: 'eco_004'},
-          {id: '5', name: 'eco_005'},
-      ]
+     
     }
   }
 };

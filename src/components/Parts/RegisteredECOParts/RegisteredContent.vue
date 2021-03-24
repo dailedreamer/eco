@@ -1,75 +1,21 @@
 <template>
     <b-container fluid>
         <b-row>
-            <b-col cols="7">
-                <b-card no-body class="pt-3 pl-3 pr-3">
-                     <b-form-group
-                        id="filter_by"
-                        label-cols-sm="2"
-                        label="Filter:"
-                        label-align="left"
-                        horizontal>
-                        <b-row>
-                            <b-col cols="4">
-                                <multiselect  
-                                    v-model="deviceValue"
-                                    :options="deviceOptions" 
-                                    :searchable="true"
-                                    :show-labels="false"
-                                    placeholder="Device" 
-                                    label="name" 
-                                    track-by="id"></multiselect>
-                            </b-col>
-                            <b-col cols="4">
-                                <multiselect  
-                                    v-model="modelValue"
-                                    :options="modelOptions" 
-                                    :searchable="true"
-                                    :show-labels="false"
-                                    placeholder="Model" 
-                                    label="name" 
-                                    track-by="id"></multiselect>
-                            </b-col>
-                            <b-col cols="4">
-                                <multiselect  
-                                    v-model="unitValue" 
-                                    :options="unitOptions"
-                                    :searchable="true"
-                                    :show-labels="false"
-                                    placeholder="Unit" 
-                                    label="name" 
-                                    track-by="id" 
-                                    ></multiselect>
-                            </b-col>
-                        </b-row>
-                    </b-form-group>
-                    <b-form-group
-                        id="filter_by"
-                        label-cols-sm="2"
-                        label="Filter By:"
-                        label-align="left"
-                        horizontal>
-                        <b-row>
-                            <b-col cols="4">
-                                <multiselect  
-                                    v-model="filterByValue" 
-                                    :options="filterByOptions"
-                                    :searchable="true"
-                                    :show-labels="false"
-                                    :multiple="false" 
-                                    :taggable="true" 
-                                    placeholder="Unit" 
-                                    label="name" 
-                                    track-by="id"></multiselect>
-                            </b-col>
-                            <b-col cols="8">
-                                 <b-input class="inputs col-sm-6" ></b-input>
-                            </b-col>
-                        </b-row>
-                    </b-form-group>
-                </b-card>
+            <b-col cols="8">
+                <SearchTemplate field_set='2'>
+                  <b-button 
+                    class="pb-1 mt-sm-1"
+                    variant="danger"
+                    block
+                    type="submit"
+                    id="button-submit">
+                    <b-icon 
+                      icon="search"></b-icon>
+                      &nbsp;Go!
+                  </b-button>
+                </SearchTemplate>
             </b-col>
-            <b-col cols="5">
+            <b-col cols="4">
                 <b-button 
                     size="sm" 
                     variant="danger" 
@@ -103,7 +49,7 @@
                                 :current-page="currentPage">
                                     <template #cell(actions)="data">
                                         <b-button 
-                                            variant="primary" 
+                                            variant="danger" 
                                             size="sm"
                                             v-b-modal.update_modal_id
                                             :id="'btn_actions_'+data.item.id">
@@ -130,13 +76,11 @@
 <script>
 import EditContentModal from '../RegisteredECOParts/EditContentModal';
 import UpdateModal from '../RegisteredECOParts/UpdateModal';
-import Multiselect from 'vue-multiselect'
 export default {
     name: "RegisteredContent",
     components: {
          EditContentModal, 
          UpdateModal,
-         Multiselect
     },
     props: {
         title:String,
@@ -163,36 +107,6 @@ export default {
                     {device:"PPR", model:"X100", unit_number:"KS01023430", unit_name:"Feed", part_number:"KD02160-Y220", revision_no:"03", eco_no:"02189949", class:"M", parts_supplier:"OB KOGYO"},  
                     {device:"PPR", model:"X100", unit_number:"KS01023431", unit_name:"Feed", part_number:"KD02160-Y230", revision_no:"03", eco_no:"02189950", class:"M", parts_supplier:"OB KOGYO"},
                 ],
-            deviceValue: [],
-            deviceOptions: [
-                {id: '1', name: 'Device 1'},
-                {id: '2', name: 'Device 2'},
-                {id: '3', name: 'Device 3'},
-                {id: '4', name: 'Device 4'},
-                {id: '5', name: 'Device 5'},
-                {id: '6', name: 'Device 6'},
-                {id: '7', name: 'Device 7'},
-                {id: '8', name: 'Device 8'},
-                {id: '9', name: 'Device 9'},
-                {id: '10', name: 'Device 10'},
-            ],
-            modelValue: [],
-            modelOptions: [
-                {id: '1', name: 'Model 1'},
-                {id: '2', name: 'Model 2'},
-                {id: '3', name: 'Model 3'}
-            ],
-            unitValue: [],
-            unitOptions: [
-                {id: '1', name: 'Unit 1'},
-                {id: '2', name: 'Unit 2'},
-                {id: '3', name: 'Unit 3'}
-            ],
-            filterByValue: [],
-            filterByOptions: [
-                {id: '1', name: 'ECO Number'},
-                {id: '2', name: 'Supplier'}
-            ]
         }
     },
     computed:{
@@ -207,30 +121,4 @@ export default {
 </script>
 
 <style scoped>
-    .select2_model {
-        position: absolute;
-        margin-top: -4%;
-        left: 30%;
-    }
-    .select2_unit {
-        position: absolute;
-        margin-top: -4%;
-        left: 60%;
-    }
-
-    .inputs_style{
-        position: absolute;
-        margin-top: -4%;
-        left: 32%;
-        width: 203px;
-        height: 29px;
-        border-color: #b1b3b4;
-        text-align: center;
-    }
-
-    .inputs{
-        border-color: #e3e3e3;
-        width: 185px;
-        height: 41px;
-    }
 </style>
