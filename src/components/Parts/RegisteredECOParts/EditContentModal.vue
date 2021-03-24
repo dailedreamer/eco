@@ -134,7 +134,7 @@
                 <b-button size="sm" variant="danger" @click="Update">
                     <font-awesome-icon icon="save" /> Update
                 </b-button>
-                <b-button size="sm" variant="primary" @click="hide('close')">
+                <b-button size="sm" variant="outline-secondary" @click="hide('close')">
                     <font-awesome-icon icon="times-circle" /> Close 
                 </b-button>
             </template> 
