@@ -82,10 +82,5 @@ export default {
 }
 </script>
 
-<style >
-   .page-item.active .page-link
-    {
-    background-color: #A30B1A;
-    border-color: #A30B1A;
-    }
+<style scoped>
 </style>
