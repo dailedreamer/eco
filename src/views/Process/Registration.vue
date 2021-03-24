@@ -39,10 +39,10 @@
                  <br>
                   <b-col cols="12">
                     <b-table fixed class="alpha__table text-nowrap"
-                        style="overflow-y:none"
+                        style="overflow-x:visible !important;"
                         responsive 
                         hover 
-                        bordered 
+                        bordered
                         head-variant="light"
                         :fields="fields"
                         :items="items"
@@ -56,22 +56,23 @@
                           <multiselect  
                             v-model="data.item.device"
                             placeholder="Select device" 
-                            label="text" 
-                            track-by="value" 
+                            label="device_name" 
+                            track-by="id" 
                             :options="device_options"
                             :show-labels="false"
-                            @input="loadModel(data.item.device.id)"
-                            
+                            @input="loadModel(data.item.device.id, data.index) ,changeDevice(data.index)"  
+                                             
                             ></multiselect>
                       </template>
                       <template #cell(model)="data"> 
                           <multiselect  
                             v-model="data.item.model"
                             placeholder="Select model" 
-                            label="text" 
-                            track-by="value" 
-                            :options="model_options"
+                            label="name" 
+                            track-by="id" 
+                            :options="data.item.model_options"
                             :show-labels="false"
+                            @input="loadUnit(data.item.model.id, data.index)"
                             
                           ></multiselect>
                       </template>
@@ -79,32 +80,42 @@
                           <multiselect  
                             v-model="data.item.unit"
                             placeholder="Select Unit" 
-                            label="text" 
-                            track-by="value" 
-                            :options="unit_options"
+                            label="unit_name" 
+                            track-by="id" 
+                            :options="data.item.unit_options"
                             :show-labels="false"
-                            
                           ></multiselect>
                       </template>
+                      <template #cell(unit_no)="data">  
+                       {{data.item.unit.unit_number}}
+                      </template>
+                      
                       <template #table-busy>
                             <div class="text-center text-default my-2">
                             <b-spinner class="align-middle"></b-spinner>
                             </div>
                         </template>
-                      
-
-                        
                     </b-table>
                      <b-pagination
                       align="right"
                       class="alpha__table__pagination"
                       pills
                       v-model="currentPage"
-                   
                       :per-page="perPage"
                     ></b-pagination>
                  </b-col>
+                 <div class = "mt-4">
+                    <AButton class = "float-right mr-3"
+                      id="button-submit"
+                      type="submit"
+                      title="Update Selected"
+                      variant="primary"
+                    >
+                    <font-awesome-icon icon="save" size="sm" class="icon" /> Update Selected
+                    </AButton>
+              </div>
              </div>
+              
           </vessel-header>
           <vessel-body>
           </vessel-body>
@@ -152,19 +163,23 @@ export default {
           key: "model",
           sortable: true,
         },
-          {
+        {
           key: "unit_name",
           sortable: true,
-        },        
+        },
+        {
+          key: "unit_no",
+          sortable: true,
+        },         
       ],
       device_options: [],
-      model_options: [],
-      unit_options: [],
+      // model_options: [],
+      // unit_options: [],
       items: 
       [
-        {id: 1,eco_number: '123456877', part_number: 'KD021-13254', revision: '04',device:'',model:'', unit:''},
-        {id: 2,eco_number: '123456877', part_number: 'KD021-13254', revision: '04',device:'',model:'', unit:''},
-        {id: 1,eco_number: '123456877', part_number: 'KD021-13254', revision: '04',device:'',model:'', unit:''},
+        {id: 1,eco_number: '123456877',unit_options:[], model_options:[],part_number: 'KD021-13254', revision: '04',device:[],model:[], unit:[]},
+        {id: 2,eco_number: '123456877',unit_options:[], model_options:[],part_number: 'KD021-13254', revision: '04',device:[],model:[], unit:[]},
+        {id: 1,eco_number: '123456877',unit_options:[], model_options:[],part_number: 'KD021-13254', revision: '04',device:[],model:[], unit:[]},
  
       ],
       //loading
@@ -175,50 +190,38 @@ export default {
   {
     loadDevice: function()
     {
-     
+      
       this.$store.dispatch("loadDevice").then((response) => {
         let data = response.data.data;
-        Object.values(data).forEach(function(value){
-            value['value'] = value.id;
-            value['text'] = value.device_name;
-        });
-        this.device_options = data;
+        this.device_options = data;      
+
       });  
-  
     },
-    loadModel: function(device_id)
+    loadModel: function(device_id, index)
     {
-      this.model
-      this.model_options = [];
+      this.items[index].model_options = [];     
       this.$store.dispatch("loadModelPerDevice", device_id).then((response) => {
         let data = response.data;
-     
-       
-          for(const [key, value] of Object.entries(data))
-          {
-            console.log(key);
-            value['value'] = value.id;
-            value['text'] = value.name;
-          }
-            this.model_options = data;
+          this.items[index].model=[];
+          this.items[index].model_options = data;
+          console.log(data);
         });  
+        
     },
-    loadUnit: function()
-    {     
-           this.unit_options = [];
-           this.$store.dispatch("loadUnit").then((response) => {
-              console.log(response);
-              let data = response.data;
-                for(const [key, value] of Object.entries(data))
-                {
-                    console.log(key);
-                    value['value'] = value.id;
-                    value['text'] = value.model_name;
-                }
-              
-              this.unit_options = data;
-           });  
-        },
+    loadUnit: function(model_id, index)
+    {
+          this.unit_options = [];
+          this.$store.dispatch("loadUnitPerModel", model_id).then((response) => {
+            let data = response.data;
+            this.items[index].unit=[];
+            this.items[index].unit_options = data;
+          });  
+    },
+    changeDevice: function(index)
+    {
+        this.items[index].model=[];
+        this.items[index].unit=[];
+    },
   },
   computed: {
     ...mapGetters(["getDevice"]),
@@ -227,10 +230,6 @@ export default {
   },
    mounted() {
      this.loadDevice();
-    //  this.loadModel();
-     this.loadUnit();
-      // console.log(this.model_options);
-     
     }
 };
 </script>
