@@ -161,7 +161,7 @@ props: {
                         Object.keys(information).forEach((key) => {
                             this.unitOptions.push({
                                 'id':information[key].id, 
-                                'name':information[key].unit_name
+                                'name':information[key].unit_name + '/' + information[key].unit_number
                             })
                         });
                 });  
