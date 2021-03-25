@@ -138,6 +138,7 @@ props: {
             this.modelOptions=[];
             this.clearFilterBy();
             this.modelValue = [];
+            this.unitOptions=[];
             this.unitValue = [];
                 this.$store.dispatch("loadModelPerDevice", this.deviceValue.id)
                 .then((response) => {
@@ -145,7 +146,7 @@ props: {
                         Object.keys(information).forEach((key) => {
                             this.modelOptions.push({
                                 'id':information[key].id, 
-                                'name':information[key].model_code
+                                'name':information[key].name
                             })
                         });
                 });  

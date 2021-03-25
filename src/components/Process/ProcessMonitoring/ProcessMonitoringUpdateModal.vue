@@ -22,7 +22,8 @@
             <b-row class="ml-3 mr-3 mt-2">
                 <b-form-group 
                     label="EC Process Details"
-                    label-size="lg">
+                    label-size="lg"
+                    label-class="font-weight-bold pt-0">
                 </b-form-group>
             </b-row>
             <b-row class="ml-5 mr-5">
@@ -30,14 +31,20 @@
                     <b-form-group
                         label="Drawing Number:"
                         label-for="txt_drawing_number">
-                        <b-form-input id="txt_drawing_number"></b-form-input>
+                        <b-form-input 
+                            id="txt_drawing_number"
+                            placeholder="Enter Drawing Number"
+                            required></b-form-input>
                     </b-form-group>
                 </b-col>
                 <b-col cols="3">
                     <b-form-group 
                         label="Revision Number:"
                         label-for="txt_revision_number">
-                        <b-form-input id="txt_drawing_number"></b-form-input>
+                        <b-form-input 
+                            id="txt_drawing_number"
+                            placeholder="Enter Revision Number"
+                            required></b-form-input>
                     </b-form-group>
                 </b-col> 
             </b-row>
@@ -49,11 +56,14 @@
                         <multiselect 
                             id="slc_device" 
                             v-model="deviceValue"
-                            :options="deviceOptions" 
+                            name="slc_device"
+                            :options="this.deviceOptions" 
                             :searchable="true"
                             :show-labels="false"
-                            label="device_name" 
-                            track-by="id"></multiselect>
+                            placeholder='Select Device'
+                            label="name" 
+                            track-by="id"
+                            @input="loadModel()"></multiselect>
                     </b-form-group>
                 </b-col>
                 <b-col cols="3">
@@ -63,11 +73,14 @@
                         <multiselect  
                             id="slc_model"
                             v-model="modelValue"
+                            name="slc_model"
                             :options="modelOptions"  
                             :searchable="true"
                             :show-labels="false"
-                            label="model_name" 
-                            track-by="id"></multiselect>
+                            placeholder='Select Model'
+                            label="name" 
+                            track-by="id"
+                            @input="loadUnitName()"></multiselect>
                     </b-form-group>
                 </b-col>
                 <b-col cols="3">
@@ -80,29 +93,31 @@
                             :options="unitNameOptions"  
                             :searchable="true"
                             :show-labels="false"
-                            label="unit_name" 
-                            track-by="id"></multiselect>
+                            placeholder='Select Unit Name'
+                            label="name" 
+                            track-by="id"
+                           @input="loadUnitNo(unitNameValue.unit_number)"
+                        ></multiselect>
                     </b-form-group>
                 </b-col>
                 <b-col cols="3">
                     <b-form-group 
                         label="Unit No.:"
-                        label-for="slc_unit_number">
-                        <multiselect  
-                            id="slc_unit_number"
+                        label-for="txt_unit_number">
+                            <b-form-input 
+                            id="txt_unit_number"
+                            name="txt_unit_number"
+                            type="text"
                             v-model="unitNumberValue"
-                            :options="unitNumberOptions"  
-                            :searchable="true"
-                            :show-labels="false"
-                            label="unit_number" 
-                            track-by="id"></multiselect>
+                            disabled ="true"></b-form-input>
                     </b-form-group>
                 </b-col>
             </b-row>
             <b-row class="ml-3 mr-3 mt-4">
                 <b-form-group 
                     label="Details of Change"
-                    label-size="lg">
+                    label-size="lg"
+                    label-class="font-weight-bold pt-0">
                     </b-form-group>
             </b-row>
             <b-row class="ml-5 mr-5">
@@ -149,14 +164,20 @@
                     <b-form-group 
                         label="CARF:"
                         label-for="txt_carf">
-                        <b-form-input id="txt_carf"></b-form-input>
+                        <b-form-input 
+                            id="txt_carf"
+                            placeholder="Enter Carf"
+                            required></b-form-input>
                     </b-form-group>
                 </b-col> 
                 <b-col cols="3">
                     <b-form-group 
                         label="Serial No.:"
                         label-for="txt_serial_number">
-                        <b-form-input id="txt_serial_number"></b-form-input>
+                        <b-form-input 
+                            id="txt_serial_number"
+                            placeholder="Enter Serial No"
+                            required></b-form-input>
                     </b-form-group>
                 </b-col> 
             </b-row>
@@ -191,7 +212,10 @@
                     <b-form-group 
                         label="Man-hour (Difference):"
                         label-for="slc_difference">
-                        <b-form-input id="slc_difference"></b-form-input>
+                        <b-form-input 
+                            id="slc_difference"
+                            placeholder="Enter Difference"
+                            required></b-form-input>
                     </b-form-group>
                 </b-col> 
             </b-row>
@@ -200,7 +224,14 @@
                     <b-form-group 
                         label="Remarks:"
                         label-for="txt_remarks">
-                        <b-form-textarea id="txt_remarks"></b-form-textarea>
+                        <b-form-textarea 
+                            id="txt_remarks"
+                            name="txt_remarks"
+                            type="text"
+                            rows="5"
+                            max-rows="7"
+                            placeholder="Enter Remarks"
+                            required></b-form-textarea>
                     </b-form-group>
                 </b-col>
             </b-row>
@@ -209,7 +240,7 @@
             <b-button size="sm" variant="danger" @click="Update">
                 <font-awesome-icon icon="save" /> Update Values
             </b-button>
-            <b-button size="sm" variant="outline-dark" @click="hide('close')">
+            <b-button size="sm" variant="outline-secondary" @click="hide('close')">
                 <font-awesome-icon icon="times-circle" /> Close 
             </b-button>
         </template> 
@@ -217,11 +248,9 @@
 </template>
 
 <script>
-import Multiselect from 'vue-multiselect'
 export default {
     name: 'ProcessMonitoringUpdateModal',
     components: {
-        Multiselect, 
     },
     data() {
         return{
@@ -242,31 +271,85 @@ export default {
                 {part_number: "KD02165-Y144", part_number_revision:"01", revision_mark: "1", quantity: "20", remarks:"sample"}
             ],
             deviceValue: [],
-            deviceOptions: [
-                {id: '1', device_name: 'Device 1'},
-                {id: '2', device_name: 'Device 2'},
-                {id: '3', device_name: 'Device 3'},
-            ],
+            deviceOptions: [],
             modelValue: [],
-            modelOptions: [
-                {id: '1', model_name: 'Model 1'},
-                {id: '2', model_name: 'Model 2'},
-                {id: '3', model_name: 'Model 3'},
-            ],
+            modelOptions: [],
             unitNameValue: [],
-            unitNameOptions: [
-                {id: '1', unit_name: 'Unit Number 1'},
-                {id: '2', unit_name: 'Unit Number 2'},
-                {id: '3', unit_name: 'Unit Number 3'},
-            ],
-            unitNumberValue: [],
-            unitNumberOptions: [
-                {id: '1', unit_number: 'Unit Name 1'},
-                {id: '2', unit_number: 'Unit Name 2'},
-                {id: '3', unit_number: 'Unit Name 3'},
-            ],
+            unitNameOptions: [],
+            unitNumberValue: '',
         }
-    }
+    },
+    methods:{
+        loadDevice: function () {
+            this.deviceOptions=[];
+            this.clearFields();
+            this.$store.dispatch("loadDevice")
+                .then((response) => {
+                    let information = response.data.data;
+                    Object.keys(information).forEach((key) => {
+                        this.deviceOptions.push({
+                            'id':information[key].id, 
+                            'name':information[key].device_name
+                        })
+                    });
+                })
+        },
+        loadModel: function () {
+            this.modelOptions=[];
+            this.modelValue=[];
+            this.unitNameOptions=[];
+            this.unitNameValue=[];
+            this.unitNumberValue= '',
+
+            this.$store.dispatch("loadModelPerDevice", this.deviceValue.id)
+                .then((response) => {
+                    let information = response.data;
+                    Object.keys(information).forEach((key) => {
+                        this.modelOptions.push({
+                            'id':information[key].id, 
+                            'name':information[key].model_code
+                        })
+                    });
+                })
+        },
+        loadUnitName: function () {
+            this.unitNameOptions= [];
+            this.unitNameValue = [];
+            this.unitNumberValue= '',
+
+            this.$store.dispatch("loadUnitPerModel", this.modelValue.id)
+                .then((response) => {
+                    let information = response.data;
+                    // console.log(information);
+
+                    Object.keys(information).forEach((key) => {
+                        this.unitNameOptions.push({
+                            'id':information[key].id, 
+                            'name':information[key].unit_name,
+                            'unit_number':information[key].unit_number,
+                        })
+                    });
+
+                })
+        },
+        loadUnitNo: function (unit_no)
+        {
+            
+            this.unitNumberValue = unit_no;
+        },
+        clearFields: function ()
+        {
+            this.modelValue = [];
+            this.unitNameValue = [];
+            this.unitNumberValue = '';
+
+            this.modelOptions=[];
+            this.unitNameOptions=[];
+        }
+    },
+    mounted(){
+        this.loadDevice();
+    },
 }
 </script>
 
