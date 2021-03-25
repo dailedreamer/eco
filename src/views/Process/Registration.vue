@@ -38,8 +38,7 @@
                 </b-col>
                  <br>
                   <b-col cols="12">
-                    <b-table fixed class="alpha__table text-nowrap"
-                        style="overflow-x:visible !important;"
+                    <b-table class="alpha__table text-nowrap"
                         responsive 
                         hover 
                         bordered

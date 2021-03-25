@@ -37,24 +37,82 @@
                      </b-row>
                 </b-col>
                  <br>
-                 <b-col cols="12"
-                v-if="countread > 0"
-                 >
+                <b-col cols="12">
                     <b-table class="alpha__table text-nowrap"
-                        hover
+                        responsive 
+                        hover 
                         bordered
-                        responsive
-                        :fields="fields">
+                        head-variant="light"
+                        :fields="fields"
+                        :items="items"
+                        :busy="isBusy" 
+                        :per-page="perPage"
+                        :current-page="currentPage">
+                         <template #cell(No)="data">
+                            {{data.index+1}}
+                        </template>
+                      <template #cell(device)="data"> 
+                          <multiselect  
+                            v-model="data.item.device"
+                            placeholder="Select device" 
+                            label="device_name" 
+                            track-by="id" 
+                            :options="device_options"
+                            :show-labels="false"
+                            @input="loadModel(data.item.device.id, data.index) ,changeDevice(data.index)"  
+                                             
+                            ></multiselect>
+                      </template>
+                      <template #cell(model)="data"> 
+                          <multiselect  
+                            v-model="data.item.model"
+                            placeholder="Select model" 
+                            label="name" 
+                            track-by="id" 
+                            :options="data.item.model_options"
+                            :show-labels="false"
+                            @input="loadUnit(data.item.model.id, data.index)"
+                            
+                          ></multiselect>
+                      </template>
+                      <template #cell(unit_name)="data"> 
+                          <multiselect  
+                            v-model="data.item.unit"
+                            placeholder="Select Unit" 
+                            label="unit_name" 
+                            track-by="id" 
+                            :options="data.item.unit_options"
+                            :show-labels="false"
+                          ></multiselect>
+                      </template>
+                      <template #cell(unit_no)="data">  
+                       {{data.item.unit.unit_number}}
+                      </template>
+                      
+                      <template #table-busy>
+                            <div class="text-center text-default my-2">
+                            <b-spinner class="align-middle"></b-spinner>
+                            </div>
+                        </template>
                     </b-table>
                      <b-pagination
                       align="right"
                       class="alpha__table__pagination"
                       pills
                       v-model="currentPage"
-                      :total-rows="rows"
                       :per-page="perPage"
                     ></b-pagination>
                  </b-col>
+                 <div class = "mt-4">
+                    <AButton class = "float-right mr-3"
+                      id="button-submit"
+                      type="submit"
+                      title="Update Selected"
+                      variant="primary"
+                    >
+                    <font-awesome-icon icon="save" size="sm" class="icon" /> Update Selected
+                    </AButton>
+              </div>
             </div>
           </vessel-header>
           <vessel-body>
@@ -75,21 +133,22 @@ export default {
       file: '',
        currentPage: 1,
         perPage: 10,
-        fields: [
+        fields:
+        [
         {
           key: "no",
           sortable: true,
         },
         {
-          key: "batch_number",
+          key: "eco_number",
           sortable: true,
         },
         {
-          key: "parent_drawing_number",
+          key: "parent_number",
           sortable: true,
         },
         {
-          key: "drawing_number_current_revision",
+          key: "revision",
           sortable: true,
         },
         {
@@ -97,27 +156,58 @@ export default {
           sortable: true,
         },
           {
-          key: "part_number_current_revision",
+          key: "revision_no",
           sortable: true,
         },
         {
           key: "class",
           sortable: true,
         },
-         {
+        {
           key: "die_details",
           sortable: true,
         },
+        {
+          key: "device",
+          sortable: true,
+        },
+        {
+          key: "model",
+          sortable: true,
+        },
+        {
+          key: "unit_name",
+          sortable: true,
+        },
+        {
+          key: "unit_no",
+          sortable: true,
+        }, 
       ],
-      countread : 1
+      countread : 1,
+       device_options: [],
+      // model_options: [],
+      // unit_options: [],
+      items: 
+      [
+        {id: 1,eco_number: '123456877', parent_number: 'Parent 1', revision_no: '01', class: 'P', die_details: 'new', unit_options:[], model_options:[],part_number: 'KD021-13254', revision: '04',device:[],model:[], unit:[]},
+        {id: 2,eco_number: '123456877', parent_number: 'Parent 1', revision_no: '01', class: 'P', die_details: 'new', unit_options:[], model_options:[],part_number: 'KD021-13254', revision: '04',device:[],model:[], unit:[]},
+        {id: 1,eco_number: '123456877', parent_number: 'Parent 1', revision_no: '01', class: 'P', die_details: 'new', unit_options:[], model_options:[],part_number: 'KD021-13254', revision: '04',device:[],model:[], unit:[]},
+ 
+      ],
+      //loading
+        isBusy: false,
     }
   },
   mounted()
   {
-      // this.loadTable();
+      this.loadDevice();
   },
    computed: {
     ...mapGetters(["getPartsRegistrationUnits"]),
+     ...mapGetters(["getDevice"]),
+    ...mapGetters(["getModel"]),
+    ...mapGetters(["getUnit"])
     },
    methods: 
    {
@@ -148,7 +238,41 @@ export default {
       },
       FileUpload(){
         this.file = this.$refs.file.files[0];
-      }
+      },
+      loadDevice: function()
+      {
+        
+        this.$store.dispatch("loadDevice").then((response) => {
+          let data = response.data.data;
+          this.device_options = data;      
+
+        });  
+    },
+    loadModel: function(device_id, index)
+    {
+      this.items[index].model_options = [];     
+      this.$store.dispatch("loadModelPerDevice", device_id).then((response) => {
+        let data = response.data;
+          this.items[index].model=[];
+          this.items[index].model_options = data;
+          console.log(data);
+        });  
+        
+    },
+    loadUnit: function(model_id, index)
+    {
+          this.unit_options = [];
+          this.$store.dispatch("loadUnitPerModel", model_id).then((response) => {
+            let data = response.data;
+            this.items[index].unit=[];
+            this.items[index].unit_options = data;
+          });  
+    },
+    changeDevice: function(index)
+    {
+        this.items[index].model=[];
+        this.items[index].unit=[];
+    },
    }
 };
 </script>
@@ -158,13 +282,6 @@ export default {
 .b-col
 {
   text-align: left;
-}
-.div_upload_data {
- border: 1px solid black;
- border-radius: 10px;
- box-shadow: 0px 0px 5px 0px #5f4646;
- padding: 10px 10px 20px 10px;
- height: 700px;
 }
 .page-item.active .page-link
 {
