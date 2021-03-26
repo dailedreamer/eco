@@ -1,25 +1,25 @@
 <template>
-  <b-container fluid>
-     <b-row class="mb-4">
-      <b-col cols="12">
-        <b-media>
-          <template #aside>
-            <b-img 
-                :src="require('../assets/icon_images/sync.svg')" 
-                width="44" 
-                height="37" 
-                alt="placeholder">
-            </b-img>
-          </template>
-            <h5 class="mb-0">Simultaneous</h5>
-            <small class="text-secondary">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, illum.
-            </small>
-        </b-media>
-     </b-col>
-    </b-row>
-    <b-row>
-      <b-col cols="12">
+    <b-container fluid>
+        <b-row class="mb-4">
+            <b-col cols="12">
+                <b-media>
+                    <template #aside>
+                        <b-img 
+                            :src="require('../assets/icon_images/sync.svg')" 
+                            width="44" 
+                            height="37" 
+                            alt="placeholder">
+                        </b-img>
+                    </template>
+                    <h5 class="mb-0">Simultaneous</h5>
+                    <small class="text-secondary">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, illum.
+                    </small>
+                </b-media>
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col cols="12">
                 <b-row>
                    <b-col cols="3">
                         <b-card 
@@ -151,19 +151,25 @@
                         <b-col cols="12">
                             <b-card class="pl-2 pr-2">
                                 <b-card-body>
+                                    <SimultaneousContent />
                                 </b-card-body>
                             </b-card>
+                            
                         </b-col>
                     </b-row>
-      </b-col>
+        </b-col>
     </b-row>
   
   </b-container>
 </template>
 
 <script>
+import SimultaneousContent from "../components/Simultaneous/SimultaneousContent";
 export default {
   name: "Simultaneous",
+  components: {
+      SimultaneousContent
+  },
   data() {
       return {
         value: 45,
