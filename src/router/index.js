@@ -225,7 +225,7 @@ const routes = [
 				component: ECOActionItems ,
 			},
 			{
-				path: "/management-parts",
+				path: "/management_parts",
 				name: "ManagementParts ",
 				component: ManagementParts ,
 				redirect: '/management-parts-device',
@@ -249,12 +249,12 @@ const routes = [
 				]
 			},
 			{
-				path: "/management-users",
+				path: "/management_users",
 				name: "ManagementUsers ",
 				component: ManagementUsers ,
 			},
 			{
-				path: "/management-email",
+				path: "/management_email",
 				name: "ManagementEmail ",
 				component: ManagementEmail ,
 			},
