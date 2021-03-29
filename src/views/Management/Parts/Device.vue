@@ -320,6 +320,7 @@ export default {
                 }
             })
             .catch((error) => {
+                console.log(error);
                 let error_data = error.data;
                 let status = error.data.status;
                 console.log(error_data.error);
