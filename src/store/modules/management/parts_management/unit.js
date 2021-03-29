@@ -13,6 +13,56 @@ export default {
 		},
     },
     actions: {
+
+		//save
+		async insertUnit(state, payload) {
+			console.log(payload);
+			return new Promise((resolve, reject) => {
+				axios
+					.post("units", payload)
+					.then(function(response) {
+						console.log(response);
+						resolve(response);
+					})
+					.catch(function(error) {
+						reject(error.response);
+					});
+			});
+		},
+
+		//delete
+		async deleteUnit(state, id) {
+			return new Promise((resolve, reject) => {
+				axios
+					.delete(`units/${id}`)
+					.then(function(response) {
+						resolve(response);
+					})
+					.catch(function(error) {
+						reject(error);
+					});
+			});
+		},
+
+		//update
+		async updatUnit(state, payload) {
+			return new Promise((resolve, reject) => {
+				payload["formData"].append("_method", "PATCH");
+				axios
+					.post(
+						`units/${payload["id"]}`,
+						payload["formData"]
+					)
+					.then(function(response) {
+						resolve(response);
+					})
+					.catch(function(error) {
+						reject(error);
+					});
+			});
+		},
+		
+		//load
         async loadUnit({ commit }) {
 			return new Promise((resolve, reject) => {
 				axios
@@ -25,6 +75,7 @@ export default {
 							message: response.data.message,
 							data: response.data.data,
 						};
+						console.log(result);
 						resolve(result);
 					})
 					.catch(function(error) {
@@ -39,7 +90,7 @@ export default {
 				axios
 					.get(`units-load/${id}`)
 					.then(function(response) {
-						commit("SET_MANAGENT_UNIT", response.data);
+						commit("SET_MANAGENT_SPECIFIC", response.data);
 						console.log(response);
 						let result = {
 							code: response.data.code,

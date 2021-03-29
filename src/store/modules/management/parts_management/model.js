@@ -9,10 +9,11 @@ export default {
 			state.management_model = model;
 		},
 		SET_MANAGEMENT_MODEL_SPECIFIC(state, model) {
-			state.mangement_model_value = model;
+			state.mangement_model_specific = model;
         },
     },
     actions: {
+		
 		//load
         async loadModel({ commit }) {
 			return new Promise((resolve, reject) => {
@@ -48,7 +49,6 @@ export default {
 							message: response.data.message,
 							data: response.data.data,
 						};
-						console.log(result);
 						resolve(result);
 						
 					})
