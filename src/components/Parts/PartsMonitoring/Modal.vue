@@ -12,7 +12,7 @@
                 <b-row class="mb-1">
                     <b-col>
                      <b-button block squared size="sm" router-link to="/parts-details" class="pt-3 pb-3 pr-5 custom_button custom_active" variant="outline-secondary">
-                        <b-icon icon="gear-fill" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
+                        <b-icon icon="info-square" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
                         <small>Parts Details</small>
                     </b-button>
                     </b-col>
@@ -20,7 +20,7 @@
                 <b-row class="mb-2">
                     <b-col>
                      <b-button block squared size="sm" router-link to="/meeting" class="pt-3 pb-3 pr-5 custom_button custom_active" variant="outline-secondary">
-                        <b-icon icon="gear-fill" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
+                        <b-icon icon="people" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
                         <small>Meeting</small>
                     </b-button>
                     </b-col>
@@ -28,7 +28,7 @@
                 <b-row class="mb-2">
                     <b-col>
                      <b-button block squared size="sm" router-link to="/eco_details" class="pt-3 pb-3 pr-5 custom_button custom_inactive" variant="outline-secondary">
-                        <b-icon icon="gear-fill" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
+                        <b-icon icon="pen" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
                         <small>ECO Details</small>
                     </b-button>
                     </b-col>
@@ -36,7 +36,7 @@
                 <b-row class="mb-2">
                     <b-col>
                      <b-button block squared size="sm" router-link to="/die_sample" class="pt-3 pb-3 pr-5 custom_button custom_inactive" variant="outline-secondary">
-                        <b-icon icon="gear-fill" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
+                        <b-icon icon="files" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
                         <small>Die Sample</small>
                     </b-button>
                     </b-col>
@@ -44,7 +44,7 @@
                <b-row class="mb-2">
                     <b-col>
                      <b-button block squared size="sm" router-link to="/drawing_issuance" class="pt-3 pb-3 pr-5 custom_button custom_active" variant="outline-secondary">
-                        <b-icon icon="gear-fill" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
+                        <b-icon icon="filter-square" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
                         <small>Drawing Issuance</small>
                     </b-button>
                     </b-col>
@@ -52,7 +52,7 @@
                  <b-row class="mb-2">
                     <b-col>
                      <b-button block squared size="sm" router-link to="/die_quotation_details" class="pt-3 pb-3 pr-5 custom_button custom_inactive" variant="outline-secondary">
-                        <b-icon icon="gear-fill" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
+                        <b-icon icon="pen" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
                         <small>Die Quotation Details</small>
                     </b-button>
                     </b-col>
@@ -60,7 +60,7 @@
                  <b-row class="mb-2">
                     <b-col>
                      <b-button block squared size="sm" router-link to="/die_dfm" class="pt-3 pb-3 pr-5 custom_button custom_inactive" variant="outline-secondary">
-                        <b-icon icon="gear-fill" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
+                        <b-icon icon="pen" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
                         <small>Die DFM  Details</small>
                     </b-button>
                     </b-col>
@@ -68,7 +68,7 @@
                  <b-row class="mb-2">
                     <b-col>
                      <b-button block squared size="sm" router-link to="/qc_igm" class="pt-3 pb-3 pr-5 custom_button custom_inactive" variant="outline-secondary">
-                        <b-icon icon="gear-fill" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
+                        <b-icon icon="layout-split" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
                         <small>QC IGM</small>
                     </b-button>
                     </b-col>
@@ -76,7 +76,7 @@
                  <b-row class="mb-2">
                     <b-col>
                      <b-button block squared size="sm" router-link to="/die_trial_details" class="pt-3 pb-3 pr-5 custom_button custom_inactive" variant="outline-secondary">
-                        <b-icon icon="gear-fill" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
+                        <b-icon icon="pen" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
                         <small>Die Trial Details</small>
                     </b-button>
                     </b-col>
@@ -84,7 +84,7 @@
                  <b-row class="mb-2">
                     <b-col>
                      <b-button block squared size="sm" router-link to="/lot_po_issuance" class="pt-3 pb-3 pr-5 custom_button custom_inactive" variant="outline-secondary">
-                        <b-icon icon="gear-fill" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
+                        <b-icon icon="newspaper" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
                         <small>Lot PO Issuance</small>
                     </b-button>
                     </b-col>
@@ -92,7 +92,7 @@
                  <b-row class="mb-2">
                     <b-col>
                      <b-button block squared size="sm" router-link to="/lot_delivery" class="pt-3 pb-3 pr-5 custom_button custom_inactive" variant="outline-secondary">
-                        <b-icon icon="gear-fill" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
+                        <b-icon icon="minecart-loaded" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
                         <small>Lot Delivery</small>
                     </b-button>
                     </b-col>
@@ -100,7 +100,7 @@
                 <b-row class="mb-2">
                     <b-col>
                      <b-button block squared size="sm" router-link to="/product_audit" class="pt-3 pb-3 pr-5 custom_button custom_inactive" variant="outline-secondary">
-                        <b-icon icon="gear-fill" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
+                        <b-icon icon="search" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
                         <small>Product Audit</small>
                     </b-button>
                     </b-col>
@@ -108,7 +108,7 @@
                 <b-row class="mb-2">
                     <b-col>
                      <b-button width="200px" squared size="sm" router-link to="/parts_allocation" class="pt-3 pb-3 pr-5 custom_button custom_inactive" variant="outline-secondary">
-                        <b-icon icon="gear-fill" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
+                        <b-icon icon="reply-all" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
                       <small>Parts Allocation</small>
                     </b-button>
                     </b-col>
@@ -116,7 +116,7 @@
                 <b-row class="mb-2">
                     <b-col>
                      <b-button squared size="sm" router-link to="/assembly_application" class="pt-3 pb-3 pr-5 custom_button custom_inactive" variant="outline-secondary">
-                        <b-icon icon="gear-fill" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
+                        <b-icon icon="wrench" class='float-left ml-2 mr-4' aria-hidden="true"></b-icon> 
                        <small>Assembly Application</small>
                     </b-button>
                     </b-col>
@@ -147,6 +147,11 @@ export default {
     margin-left:-13px;
     /* box-shadow: 0 2px 4px 0 rgba(0,0,0,0.18); */
 }
+/* .custom_button:before
+{
+    position:absolute
+    left:3px;
+} */
 .custom_button
 {
     /* background-color:hsl(0,0%,96%); */
@@ -154,12 +159,12 @@ export default {
 }
 .custom_active
 {
-   border-left: 3px solid #e84656;
+   border-left: 4px solid #e84656;
    width:240px;
 }
 .custom_inactive
 {
-    border-left: 3px solid hsl(0,0%, 42%);
+    border-left: 4px solid hsl(0,0%, 60%);
     width:240px;
 }
 .btn-outline-secondary {

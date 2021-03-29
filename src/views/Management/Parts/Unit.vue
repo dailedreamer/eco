@@ -14,27 +14,49 @@
                     @submit.prevent="submitForm"
                     method="post"
                 >
-                    <b-form-group label-for="slc_device_name" class="mb-4" label="Device Name:">
+                    <b-form-group label-for="device_name" class="mb-4" label="Device Name:">
                         <b-form-select 
-                        v-model="selected_device" 
-                        :options="options_device"></b-form-select>
+                        name="device_name"
+                        v-model="form.device_name.value" 
+                        :state="form.device_name.state"
+                        :options="options_device"
+                        @change="loadModel()"
+                        ></b-form-select>
                     </b-form-group>
-                    <b-form-group label-for="slc_model_name" class="mb-4" label="Model Name:">
+                    <b-form-group label-for="model_name_id" class="mb-4" label="Model Name:">
                         <b-form-select 
-                            v-model="selected_model" 
+                            name="model_name_id"
+                            v-model="form.model_name_id.value" 
+                            :state="form.model_name_id.state"
                             :options="options_model"
                             >
+                            <div class="text-center">
+                                <b-spinner label="Spinning"></b-spinner>
+                            </div>
                         </b-form-select>
                     </b-form-group>
-                    <b-form-group label-for="txt_unit_number" class="mb-4" label="Unit Number:">
-                        <b-form-input id="txt_unit_number" v-model="device_name" placeholder="Enter Unit Number"></b-form-input>
+                    <b-form-group label-for="unit_number" class="mb-4" label="Unit Number:">
+                        <b-form-input 
+                            id="unit_number" 
+                            name="unit_number"
+                            v-model="form.unit_number.value" 
+                            placeholder="Enter Unit Number">
+                        </b-form-input>
                     </b-form-group>
-                    <b-form-group label-for="txt_unit_name" class="mb-5" label="Unit Name:">
-                        <b-form-input id="txt_unit_name" v-model="device_name" placeholder="Enter Unit Name"></b-form-input>
+                    <b-form-group label-for="unit_name" class="mb-5" label="Unit Name:">
+                        <b-form-input 
+                            id="unit_name" 
+                            name="unit_name"
+                            v-model="form.unit_name.value" 
+                            placeholder="Enter Unit Name"></b-form-input>
                     </b-form-group>
                         <b-row class="pl-2 pr-2">
                         <b-col>
-                            <b-button variant="danger" block>
+                            <b-button 
+                                variant="danger" 
+                                block
+                                type="submit"
+                                id="button-submit">
                                 <font-awesome-icon
                                     icon="save"
                                     class="icon"
@@ -43,10 +65,12 @@
                             </b-button>
                         </b-col>
                         <b-col>
-                            <b-button block>
+                            <b-button block
+                                @click="clearForm()">
                                 <font-awesome-icon
                                     icon="trash"
                                     class="icon"
+                                   
                                 />
                                 Clear
                             </b-button>
@@ -69,8 +93,8 @@
                     </b-media>
                     <b-table 
                         responsive 
+                        outlined
                         hover 
-                        bordered 
                         head-variant="light"
                         :fields="fields"
                         :items="getUnit.data" 
@@ -84,30 +108,22 @@
                         <template #cell(No)="data">
                             {{data.index+1}}
                         </template>
-                        <template #cell(actions)="data">
-                            <AButton
-                                variant="default"
-                                size="sm"
-                                class="mr-2"
-                            >
-                                <font-awesome-icon
-                                    icon="pen"
-                                    class="icon"
-                                />
-                                Edit
-                            </AButton>
-                             <AButton
-                                variant="default"
-                                size="sm"
-                                 @click.native="removeUnit(data.item.id)"
-                            >
-                                <font-awesome-icon
-                                    icon="trash"
-                                    class="icon"
-                                />
-                                Delete
-                            </AButton>
-                           
+                        <template #cell(actions)>
+                            
+                            <a href="#"
+                             v-b-modal.model-modal-update
+                                @click="loadUnitInfo(
+                                    data.item.id, 
+                                    data.item.device_name, 
+                                    data.item.model_name_id, 
+                                    data.item.unit_number,
+                                    data.item.unit_name,    
+                                    )">
+                            >Edit</a>
+                            <label class="ml-2 mr-2 text-secondary">|</label>
+                            <a href="#"
+                                 @click="removeUnit(data.item.id)"
+                            >Delete</a>                         
                         </template>
                     </b-table>
                     <b-pagination
@@ -121,6 +137,93 @@
                 </b-col>
             </b-row>
         </b-col>
+        <b-modal
+            id="model-modal-update"
+            size="md"
+            hide-footer
+            title="Update Device"
+            title-class="alpha__modal__title"
+        >
+            <b-form
+                class="pl-4 pr-4"
+                id="form-update"
+                @submit.prevent="updateForm"
+                method="post"
+            >
+                <b-row>
+                    <b-col lg="12" class="mb-2">    
+                        <b-form-group label-for="device_id" label="Device Name:">
+                        <b-form-input
+                            id="device_id"
+                            name="device_id"
+                            type="text"
+                            v-model="unit.device_name.value"
+                            :state="unit.device_name.state"
+                            required
+                        />
+                        </b-form-group>
+                    </b-col>
+                </b-row>
+                <b-row>
+                    <b-col lg="12" class="mb-2">    
+                        <b-form-group label-for="name" label="Model Name:">
+                        <b-form-input
+                            id="name"
+                            name="name"
+                            type="text"
+                            v-model="unit.model_name_id.value"
+                            :state="unit.model_name_id.state"
+                            required
+                        />
+                        </b-form-group>
+                    </b-col>
+                </b-row>
+                <b-row>
+                    <b-col lg="12" class="mb-2">    
+                        <b-form-group label-for="name" label="Unit Name:">
+                        <b-form-input
+                            id="model_code"
+                            name="model_code"
+                            type="text"
+                            v-model="unit.unit_name.value"
+                            :state="unit.unit_name.state"
+                            required
+                        />
+                        </b-form-group>
+                    </b-col>
+                </b-row>
+                 <b-row>
+                    <b-col lg="12" class="mb-2">    
+                        <b-form-group label-for="name" label="Unit Number:">
+                        <b-form-input
+                            id="model_code"
+                            name="model_code"
+                            type="text"
+                            v-model="unit.unit_number.value"
+                            :state="unit.unit_number.state"
+                            required
+                        />
+                        </b-form-group>
+                    </b-col>
+                </b-row>
+                <b-row class="mb-1 pl-2 pr-2">
+                    <b-col>
+                        <b-button 
+                            variant="danger" 
+                            block
+                            type="submit"
+                            id="button-submit"
+                            >
+                            <font-awesome-icon
+                                icon="save"
+                                class="icon"
+                            />
+                        Update Values
+                        </b-button>
+                    </b-col>
+                </b-row>
+            </b-form>
+        </b-modal>
     </b-row>
 </template>
 <script>
@@ -141,7 +244,9 @@ export default {
         isBusy: false,
         device_name: '',
         fields: [ 
-            'No',
+            {
+                key: "No",sortable: true,
+            }, 
             {
                 key: "device_name",sortable: true,
             }, 
@@ -170,7 +275,36 @@ export default {
                     state: null,
                     validation: "",
                 },
-                model_name: 
+                model_name_id: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                unit_name: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                unit_number: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                }
+        },
+
+        //updating
+        update_id:'',
+        unit: {
+                device_name: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                model_name_id: 
                 {
                     value: "",
                     state: null,
@@ -203,8 +337,9 @@ export default {
     },
     mounted() {
         this.loadDevice();
-        this.loadModel();
+        this.loadUnit();
     },
+    
     methods: {
         removeUnit: function (id) {
             alert(id);
@@ -220,7 +355,7 @@ export default {
         },
 
         loadDevice: function()
-        {
+        {   
            this.$store.dispatch("loadDevice")
             .then((response) => {
             let information = response.data.data;
@@ -230,22 +365,22 @@ export default {
                         'text':information[key].device_name
                     })
                 });
-                console.log(this.options_device);
            });  
         },
 
         loadModel: function()
         {
-           this.$store.dispatch("loadModel")
+            this.options_model = [];
+            this.$store.dispatch("loadModelPerDevice", this.form.device_name.value)
             .then((response) => {
-            let information = response.data;
-                Object.keys(information).forEach((key) => {
-                    this.options_model.push({
-                        'value':information[key].id, 
-                        'text':information[key].model_name
-                    })
-                });
-           });  
+                let information = response.data;
+                    Object.keys(information).forEach((key) => {
+                        this.options_model.push({
+                            'value':information[key].id, 
+                            'text':information[key].model_code
+                        })
+                    });
+            }); 
         },
 
         //save
@@ -258,8 +393,9 @@ export default {
                 let status = response.data.status;
                 if (status == "Success") {
                 this.toast(status, response.data.message);
-                this.clearForm();
-                this.loadDevice();
+                this.loadUnit();
+                 this.clearForm();
+                this.getUnit;
                 } else if (status == "Warning") {
                     Object.keys(response.data.data).forEach((key) => {
                     this.form[key]["state"] = false;
@@ -283,6 +419,79 @@ export default {
             .finally(() => {
                 document.getElementById("button-submit").disabled = false;
             });
+        },
+
+        //update
+        loadUnitInfo: function (id, device_name, model_name, unit_number, unit_name) {
+            this.update_id = id;
+            this.unit.device_name.value = device_name;
+            this.unit.model_name.value = model_name;
+            this.unit.unit_number.value = unit_number;
+            this.unit.unit_name.value = unit_name;
+        },
+
+        updateForm: function () {
+        var formData = new FormData(document.getElementById("form-update"));
+        var patchData = {
+            id: this.update_id,
+            formData : formData,
+        };
+        this.$store
+            .dispatch("updateUnit", patchData)
+            .then((response) => {
+            let status = response.data.status;
+                if (status == "Success") {
+                    this.toast(status, response.data.message);
+                    this.clearForm();
+                    this.$bvModal.hide("model-modal-update");
+                     this.loadUnit();
+                } else if (status == "Warning") {
+                    Object.keys(response.data.data).forEach((key) => {
+                    this.form[key]["state"] = false;
+                    this.form[key]["validation"] = response.data.data[key][0];
+                    });
+                    this.toast(status, "Please review your inputs.");
+                } else if (status == "Error") {
+                    this.toast(status, response.data.message);
+                }
+            })
+            .catch((error) => {
+            let error_data = error.data;
+                    let status = error.data.status;
+                    console.log(error_data.error);
+                    for(const[key] of Object.entries(error_data.error))
+                    {
+                        this.toast(status,error_data.error[key][0]);
+                    };
+                    this.clearForm();
+                })
+            .finally(() => {
+            });
+        },
+
+        clearForm: function () {
+            this.form = {
+                device_name: {
+                value: '',
+                state: null,
+                validation: "",
+                },
+                model_name_id: {
+                value: '',
+                state: null,
+                validation: "",
+                },
+                unit_name: {
+                value: '',
+                state: null,
+                validation: "",
+                },
+                unit_number: {
+                value: '',
+                state: null,
+                validation: "",
+                },
+            };
         },
 
         toast: function (status, message){
