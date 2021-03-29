@@ -54,8 +54,8 @@
                                                                 :searchable="true"
                                                                 :show-labels="false"
                                                                 placeholder="Select Employee" 
-                                                                label="name" 
-                                                                track-by="id"></multiselect>
+                                                                label="Full Name" 
+                                                                track-by="employee_number"></multiselect>
                                                         </b-form-group>
 
                                                         <b-form-group
@@ -70,7 +70,7 @@
                                                                 :searchable="true"
                                                                 :show-labels="false"
                                                                 placeholder="Select Roles" 
-                                                                label="name" 
+                                                                label="role" 
                                                                 track-by="id"></multiselect>
                                                         </b-form-group>
                                                     </b-form>
@@ -421,6 +421,7 @@
 
 <script>
 import UserEditModuleModal from "../../components/Management/User/UserEditModuleModal";
+import { mapGetters } from "vuex";
 export default {
   components: { 
       UserEditModuleModal
@@ -450,12 +451,33 @@ export default {
         }
     },
     computed: {
+         ...mapGetters(["getEmployees"]),
         rows() {
             return this.user_masterlist.length
         }
     },
+    mounted() {
+        this.loadEmployees();
+        this.loadRoles();
+    },
     methods: {
-    }
+        loadEmployees: function()
+        {
+            this.$store.dispatch("loadEmployees").then((response) => {
+                 let data = response.data;
+                 this.employeeOptions = data;        
+
+           });  
+        },
+        loadRoles: function()
+        {
+            this.$store.dispatch("loadRoles", '44').then((response) => {             
+                 let data = response.data;
+                 this.rolesOptions = data;        
+
+           });  
+        }
+    },
 }
 </script>
 

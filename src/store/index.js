@@ -56,6 +56,7 @@ import management_parts_management_device from "./modules/management/parts_manag
 import management_parts_management_model from "./modules/management/parts_management/model";
 import management_parts_management_unit from "./modules/management/parts_management/unit";
 import management_email from "./modules/management/email";
+import management_users from "./modules/management/users_management";
 
 
 
@@ -118,6 +119,7 @@ export default new Vuex.Store({
     management_parts_management_device,
     management_parts_management_model,
     management_parts_management_unit,
-    management_email
+    management_email,
+    management_users
   }
 });
