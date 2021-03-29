@@ -75,8 +75,9 @@
                     </b-media>
                     <b-table 
                         responsive 
-                        class="alpha__table text-nowrap"
+                        outlined
                         hover 
+                        class="alpha__table text-nowrap"
                         head-variant="light"
                         :fields="fields"
                         :items="getDevice.data"
@@ -93,31 +94,17 @@
                             {{data.index+1}}
                         </template>
                         <template #cell(actions)="data">
-                            <AButton
-                                variant="default"
-                                size="sm"
-                                class="mr-2"
+                             <a href="#"
                                 v-b-modal.device-modal-update
-                                @click.native="loadDeviceInfo(data.item.id, data.item.device_name)"
-                            >
-                                <font-awesome-icon
-                                    icon="pen"
-                                    class="icon"
-                                />
+                                @click="loadDeviceInfo(data.item.id, data.item.device_name)">
                                 Edit
-                            </AButton>
-                             <AButton
-                                variant="default"
-                                size="sm"
-                                @click.native="removeDevice(data.item.id)"
+                            </a>
+                            <label class="ml-2 mr-2 text-secondary">|</label>
+                            <a href="#"
+                                @click="removeDevice(data.item.id)"
                             >
-                                <font-awesome-icon
-                                    icon="trash"
-                                    class="icon"
-                                />
                                 Delete
-                            </AButton>
-                           
+                            </a>          
                         </template>
                     </b-table>               
                     <b-pagination
@@ -354,6 +341,7 @@ export default {
                 this.isBusy=false;
            });  
         },
+
         clearForm: function () {
             this.form = {
                 device_name: {

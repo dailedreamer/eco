@@ -85,8 +85,8 @@
                     </b-media>
                     <b-table 
                         responsive 
+                        outlined
                         hover 
-                        bordered 
                         head-variant="light"
                         :fields="fields"
                         :items="getModel.data"
@@ -102,34 +102,21 @@
                             {{data.index+1}}
                         </template>
                         <template #cell(actions)="data">
-                            <AButton
-                                variant="default"
-                                class="mr-2"
-                                size="sm"
-                                v-b-modal.model-modal-update
-                                @click.native="loadModelInfo(
+                            <a href="#"
+                               v-b-modal.model-modal-update
+                                @click="loadModelInfo(
                                     data.item.id, 
                                     data.item.device_id, 
                                     data.item.name, 
-                                    data.item.mode_code)"
-                            >
-                                <font-awesome-icon
-                                    icon="pen"
-                                    class="icon"
-                                />
+                                    data.item.mode_code)">
                                 Edit
-                            </AButton>
-                             <AButton
-                                variant="defualt"
-                                size="sm"
-                                 @click.native="removeModel(data.item.id)"
+                            </a>
+                            <label class="ml-2 mr-2 text-secondary">|</label>
+                            <a href="#"
+                                @click="removeModel(data.item.id)"
                             >
-                                <font-awesome-icon
-                                    icon="trash"
-                                    class="icon"
-                                />
                                 Delete
-                            </AButton>
+                            </a>          
                         </template>
                     </b-table>           
                     <b-pagination
@@ -377,8 +364,8 @@ export default {
             let status = response.data.status;
                 if (status == "Success") {
                     this.toast(status, response.data.message);
-                    this.clearForm();
                     this.$bvModal.hide("model-modal-update");
+                    this.clearForm();
                      this.loadDevice();
                 } else if (status == "Warning") {
                     Object.keys(response.data.data).forEach((key) => {
@@ -434,7 +421,7 @@ export default {
                 {
                     this.toast(status,error_data.error[key][0]);
                 };
-                this.clearForm();
+              
             })
             .finally(() => {
                 document.getElementById("button-submit").disabled = false;
@@ -443,22 +430,45 @@ export default {
 
         clearForm: function () {
             this.form = {
-                device_id: {
-                value: '',
-                state: null,
-                validation: "",
+                device_id: 
+                {
+                    value: '',
+                    state: null,
+                    validation: "",
                 },
-                model_name: {
-                value: '',
-                state: null,
-                validation: "",
+                model_name: 
+                {
+                    value: '',
+                    state: null,
+                    validation: "",
                 },
-                model_code: {
-                value: '',
-                state: null,
-                validation: "",
+                model_code: 
+                {
+                    value: '',
+                    state: null,
+                    validation: "",
                 },
             };
+            this.model = {
+                device_id: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                name: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                model_code: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                }
+        }
         },
 
         loadModel: function()
