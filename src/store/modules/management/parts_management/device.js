@@ -24,7 +24,7 @@ export default {
 						resolve(result);
 					})
 					.catch(function(error) {
-						reject(error);
+						reject(error.response);
 					});
 			});
 		},
@@ -38,7 +38,7 @@ export default {
 						resolve(response);
 					})
 					.catch(function(error) {
-						reject(error);
+						reject(error.response);
 					});
 			});
 		},
@@ -56,7 +56,7 @@ export default {
 						resolve(response);
 					})
 					.catch(function(error) {
-						reject(error);
+						reject(error.response);
 					});
 			});
 		},
