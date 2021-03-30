@@ -115,38 +115,6 @@
                             </b-card>
                         </b-col>
                     </b-row>
-                    <!-- <b-row>
-                        <b-col cols="2">
-                            <b-card class="custom_card_filter">
-                                <label class="mt-0 mb-0">Applied</label>
-                                <h2 class="text-muted float-right">
-                                36%
-                                </h2>
-                                <br><br>
-                                     <b-progress variant="danger" :value="value" :max="max" show-progress animated></b-progress>
-                            </b-card>
-                        </b-col>
-                        <b-col cols="2">
-                            <b-card class="custom_card_filter">
-                                <label class="mt-0 mb-0">For Application</label>
-                                <h2 class="text-muted float-right">
-                                45%
-                                </h2>
-                                <br><br>
-                                     <b-progress variant="danger" :value="value" :max="max" show-progress animated></b-progress>
-                            </b-card>
-                        </b-col>
-                        <b-col cols="2">
-                            <b-card class="custom_card_filter">
-                                <label class="mt-0 mb-0">Cancelled</label>
-                                <h2 class="text-muted float-right">
-                                87%
-                                </h2>
-                                <br><br>
-                                     <b-progress variant="danger" :value="value" :max="max" show-progress animated></b-progress>
-                            </b-card>
-                        </b-col>
-                    </b-row> -->
                     <b-row class="mt-3">
                         <b-col cols="12">
                             <b-card class="pl-2 pr-2">
@@ -166,20 +134,16 @@
 <script>
 import SimultaneousContent from "../components/Simultaneous/SimultaneousContent";
 export default {
-  name: "Simultaneous",
-  components: {
-      SimultaneousContent
-  },
-  data() {
-      return {
-        value: 45,
-        max: 100
-    }
-  },
-    methods:
-    {
-
-    }
+    name: "Simultaneous",
+    components: {
+        SimultaneousContent
+    },
+    data() {
+        return {
+            value: 45,
+            max: 100
+        }
+    },
 };
 </script>
 

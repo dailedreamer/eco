@@ -137,7 +137,7 @@
                 </b-col>
             </b-row>
 
-             <template #modal-footer="{ Update, hide }">
+            <template #modal-footer="{ Update, hide }">
                 <b-button size="sm" variant="danger" @click="Update">
                     <font-awesome-icon icon="save" /> Update
                 </b-button>

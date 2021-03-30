@@ -3,9 +3,10 @@
         <b-modal 
             id="simultaneous_update_modal_id" 
             size="lg"
+            hide-footer
             :no-close-on-backdrop="true" 
             centered>
-            <template #modal-header="">
+            <template #modal-title="">
                 <b-media>
                     <template #aside>
                         <b-img 
@@ -25,21 +26,30 @@
                         label-for="txt_eco_number"
                         label-cols-sm="4"
                         label-align-sm="left">
-                        <b-form-input id="txt_eco_number" disabled></b-form-input>
+                        <b-form-input 
+                            id="txt_eco_number" 
+                            v-model="this.get_data.eco_number"
+                            disabled ></b-form-input>
                     </b-form-group>
                     <b-form-group
                         label="Device:"
                         label-for="txt_device"
                         label-cols-sm="4"
                         label-align-sm="left">
-                        <b-form-input id="txt_device" disabled></b-form-input>
+                        <b-form-input 
+                            id="txt_device" 
+                            v-model="this.get_data.device_name"
+                            disabled></b-form-input>
                     </b-form-group>
                     <b-form-group
                         label="Model:"
                         label-for="txt_model"
                         label-cols-sm="4"
                         label-align-sm="left">
-                        <b-form-input id="txt_model" disabled></b-form-input>
+                        <b-form-input 
+                            id="txt_model" 
+                            v-model="this.get_data.model_name"
+                            disabled></b-form-input>
                     </b-form-group>
                 </b-col>
                 <b-col cols="6">
@@ -48,21 +58,102 @@
                         label-for="txt_unit_number"
                         label-cols-sm="4"
                         label-align-sm="left">
-                        <b-form-input id="txt_unit_number" disabled></b-form-input>
+                        <b-form-input 
+                            id="txt_unit_number" 
+                            v-model="this.get_data.unit_number"
+                            disabled></b-form-input>
                     </b-form-group>
                     <b-form-group
                         label="Unit Name:"
                         label-for="txt_unit_name"
                         label-cols-sm="4"
                         label-align-sm="left">
-                        <b-form-input id="txt_unit_name" disabled></b-form-input>
+                        <b-form-input 
+                            id="txt_unit_name" 
+                             v-model="this.get_data.unit_name"
+                            disabled></b-form-input>
                     </b-form-group>
                 </b-col>
             </b-row>
-            <hr>
-            <b-row class="mr-3 ml-3 pl-2 mt-3">
-                aaaaa
-            </b-row>
+            <hr class="hr_style">
+            <b-form
+                id="form_update_simultaneous"
+                @submit.prevent="submitForm"
+                method="post">
+                    <b-row class="mr-5 ml-5 pl-3 mt-4 mb-4">
+                        <b-col>
+                            <b-card bg-variant="light" class="ml-5 mr-5">
+                                <b-form-group
+                                    label="Actual Application:"
+                                    label-for="slc_actual_application"
+                                    label-cols-sm="4"
+                                    label-align-sm="left"
+                                    invalid-feedback="Name is required"
+                                    :state="form.slc_actual_application.state">
+                                    <b-form-datepicker 
+                                        id="slc_actual_application" 
+                                        name="slc_actual_application"
+                                        placeholder="Choose a date" 
+                                        class="simultaneous_datepicker"
+                                        hide-header
+                                        reset-button
+                                        close-button
+                                        :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+                                        v-model="form.slc_actual_application.value"
+                                        :state="form.slc_actual_application.state"></b-form-datepicker>
+                                </b-form-group>
+                                <b-form-group
+                                    label="CARF Number:"
+                                    label-for="txt_carf_number"
+                                    label-cols-sm="4"
+                                    label-align-sm="left"
+                                    :state="form.txt_carf_number.state">
+                                    <b-form-input 
+                                        id="txt_carf_number" 
+                                        name="txt_carf_number"
+                                        v-model="form.txt_carf_number.value"
+                                        :state="form.txt_carf_number.state"
+                                        placeholder="Enter Carf Number"></b-form-input>
+                                </b-form-group>
+                                <b-form-group
+                                    label="Serial Number:"
+                                    label-for="txt_serial_number"
+                                    label-cols-sm="4"
+                                    label-align-sm="left"
+                                    :state="form.txt_serial_number.state">
+                                    <b-form-input 
+                                        id="txt_serial_number" 
+                                        name="txt_serial_number"
+                                        v-model="form.txt_serial_number.value"
+                                        :state="form.txt_serial_number.state"
+                                        placeholder="Enter Serial Number"></b-form-input>
+                                </b-form-group>
+                            </b-card>
+                        </b-col>
+                    </b-row>
+                    <!-- <hr> -->
+                    <b-row>
+                        <b-col cols="12">
+                             <b-button 
+                                class="float-right mr-2"
+                                size="md" 
+                                variant="outline-secondary"
+                                @click="clearForm();"
+                                title="Click to clear inputs">
+                                <font-awesome-icon icon="times-circle" /> Clear
+                            </b-button>
+                            <b-button 
+                                class="float-right mr-2"
+                                id="btn_update" 
+                                size="md" 
+                                variant="danger" 
+                                type="submit"
+                                title="Click to update simultaneous">
+                                <font-awesome-icon icon="save" /> Update
+                            </b-button> 
+                        </b-col>
+                    </b-row>
+            </b-form>
         </b-modal>
     </b-container>
 </template>
@@ -70,9 +161,81 @@
 <script>
 export default {
     name: 'SimultaneousUpdate',
+    props: {
+        get_data: Object
+    },
+    data(){
+        return{
+            form:{
+                slc_actual_application: {
+                    value: "",
+                    state: null,
+                    validation: "", 
+                },
+                txt_carf_number: {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                txt_serial_number: {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },   
+            }
+        }
+    },
+    methods:{
+        submitForm: function(){
+            // var formData = new FormData(document.getElementById("form_update_simultaneous"));
+            // document.getElementById('btn_update').disabled.true;
+            // this.$store
+            // .dispatch("updateSimultaneous", formData)
+            // .then((response) => {
+            //     console.log(JSON.stringify(this.form));
+            //     console.log(response)
+            // });
+            alert(1);
+        },
+        clearForm: function(){
+            this.form = {
+                slc_actual_application: {
+                    value: "",
+                    state: null,
+                    validation: "", 
+                },
+                txt_carf_number: {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                txt_serial_number: {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+            }; 
+        }
+    }
 }
 </script>
 
 <style scoped>
+    .simultaneous_datepicker{
+        position:unset;
+        top: unset;
+        max-width: unset;
+        overflow: unset;
+        flex-wrap: unset;
+        box-shadow: unset;
+    }
 
+    .hr_style{
+        display: block;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        margin-left: auto;
+        margin-right: auto;
+        border-width: 7px;
+    }
 </style>
