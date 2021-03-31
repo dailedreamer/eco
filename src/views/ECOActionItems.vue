@@ -23,7 +23,7 @@
             <b-card class="pl-2 pr-2">
                 <b-card-body>
                                <b-row>
-                   <b-col cols="3">
+                   <b-col xl="3" lg="6">
                             <b-card 
                             class="custom_card_filter">
                                     <b-row class="mt-0">
@@ -54,7 +54,7 @@
                                     </b-row>
                             </b-card>
                         </b-col>
-                        <b-col cols="3">
+                        <b-col xl="3" lg="6">
                             <b-card 
                             class="custom_card_filter">
                                     <b-row class="mt-0">

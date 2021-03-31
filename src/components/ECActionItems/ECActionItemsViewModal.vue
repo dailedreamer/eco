@@ -25,14 +25,22 @@
                         label-for="txt_eco_number"
                         label-cols-sm="4"
                         label-align-sm="left">
-                        <b-form-input id="txt_eco_number" disabled></b-form-input>
+                        <b-form-input 
+                            id="txt_eco_number" 
+                            disabled
+                            v-model="this.get_data.eco_number"
+                        ></b-form-input>
                     </b-form-group>
                     <b-form-group
                         label="FDTP/FTEC Meeting Date:"
                         label-for="txt_fdtp_ftec_meeting_date"
                         label-cols-sm="4"
                         label-align-sm="left">
-                        <b-form-input id="txt_fdtp_ftec_meeting_date" disabled></b-form-input>
+                        <b-form-input 
+                            id="txt_fdtp_ftec_meeting_date"
+                            disabled
+                            v-model="this.get_data.meeting"
+                        ></b-form-input>
                     </b-form-group>
                 </b-col>
                 <b-col cols="4">
@@ -41,7 +49,11 @@
                         label-for="txt_device"
                         label-cols-sm="4"
                         label-align-sm="left">
-                        <b-form-input id="txt_device" disabled></b-form-input>
+                    <b-form-input 
+                        id="txt_device" 
+                        disabled
+                        v-model="this.get_data.device"
+                    ></b-form-input>
                     </b-form-group>
                 </b-col>
             </b-row>
@@ -101,6 +113,9 @@
 <script>
 export default {
     name: 'ECActionItemsView',
+     props: {
+        get_data:Object
+    },
 }
 </script>
 
