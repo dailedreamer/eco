@@ -25,21 +25,23 @@
                                                 :searchable="true"
                                                 :show-labels="false"
                                                 placeholder="Device" 
-                                                label="name" 
+                                                label="device_name" 
                                                 track-by="id"
-                                                @input="loadModel()"></multiselect>
+                                                @input="loadModel(deviceValue.id)"
+                                                ></multiselect>
                                         </b-col>
                                         <b-col cols="3">
                                             <multiselect  
                                                 v-model="modelValue"
                                                 name="searchTemplateModel"
-                                                :options="modelOptions" 
+                                                :options="this.modelOptions" 
                                                 :searchable="true"
                                                 :show-labels="false"
                                                 placeholder="Model" 
                                                 label="name" 
                                                 track-by="id"
-                                                @input="loadUnit()"></multiselect>
+                                                @input="loadUnit(modelValue.id)"
+                                               ></multiselect>
                                         </b-col>
                                         <b-col cols="3">
                                             <multiselect  
@@ -49,9 +51,10 @@
                                                 :searchable="true"
                                                 :show-labels="false"
                                                 placeholder="Unit Name/Number" 
-                                                label="name" 
+                                                label="unit_name" 
                                                 track-by="id" 
                                                 :max-height="50"
+                                           
                                                 ></multiselect>
                                         </b-col>
                                          <b-col cols="3">
@@ -184,7 +187,8 @@
 
 <script>
 import SimultaneousUpdateModal from '../../components/Simultaneous/SimultaneousUpdateModal';
-import WithSimultaneousModal from '../../components/Simultaneous/WithSimultaneousModal'
+import WithSimultaneousModal from '../../components/Simultaneous/WithSimultaneousModal';
+
 export default {
     name: 'SimultaneousContent',
     components: {
@@ -224,14 +228,47 @@ export default {
      computed:{
         totalRows(){
             return this.items.length
-        }    
+        },   
+        
+    },
+    mounted() {
+        this.loadDevice();
+        // console.log(this.loadModel('3'));
     },
     methods:{
         updateSimultaneous: function(id)
         {
             this.id = {};
             this.id = this.items[id-1];
-        }
+        },
+        loadDevice: function()
+        {
+            this.$store.dispatch("loadDevice").then((response) => {
+                let data = response.data.data;
+                this.deviceOptions = data;     
+                // console.log(this.deviceOptions); 
+            });  
+        },
+        loadModel: function(device_id)
+        {
+            // console.log(device_id);
+            this.modelOptions = [];     
+            this.$store.dispatch("loadModelPerDevice", device_id).then((response) => {
+                let data = response.data;
+                console.log(response);
+                this.modelOptions = data;
+            });  
+        },
+        loadUnit: function(model_id)
+        {
+            this.unitOptions = [];
+            this.$store.dispatch("loadUnitPerModel", model_id).then((response) => {
+                let data = response.data;
+                this.unitOptions = data;
+                console.log(data);
+            });  
+        },
+
     }
 }
 </script>
