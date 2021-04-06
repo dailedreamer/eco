@@ -58,7 +58,7 @@ Vue.use(VueRouter);
 
 const routes = [
 	{
-		path: "/load-localstorage/:token",
+		path: "/loader/:token",
 		name: "LoadLocalStorage",
 		component: LoadLocalStorage ,
 	},
@@ -76,103 +76,122 @@ const routes = [
 				path: "/dashboard",
 				name: "Dashboard",
 				component: Dashboard ,
-				meta: { requiresAuth: true }
+				// meta: { requiresAuth: true }
 			},
 			{
 				path: "/parts",
 				name: "Parts",
 				redirect: '/parts-registration-unit',
 				component: Parts ,
+				// meta: { requiresAuth: true },
 				children: [
 					{
 						path: "/parts-registration-unit",
 						name: "PartsRegistrationUnit",
 						component: PartsRegistrationUnit ,
+						// meta: { requiresAuth: true },
 					},
 					{
 						path: "/parts-registration-parts",
 						name: "PartsRegistrationParts",
 						component: PartsRegistrationParts ,
+						// meta: { requiresAuth: true },
 					},
 					{
 						path: "/registered-eco-parts",
 						name: "RegisteredECOParts",
 						component: RegisteredECOParts ,
+						// meta: { requiresAuth: true },
 					},
 					{
 						path: "/parts-monitoring",
 						name: "PartsMonitoring",
 						component: PartsMonitoring ,
+						// meta: { requiresAuth: true },
 						children: [
 							{
 								path: "/parts-details",
 								name: "PartsDetails",
 								component: PartsDetails ,
+								// meta: { requiresAuth: true },
 							},
 							{
 								path: "/meeting",
 								name: "Meeting",
 								component: Meeting ,
+								// meta: { requiresAuth: true },
 							},
 							{
 								path: "/eco_details",
 								name: "ECODetails",
 								component: ECODetails ,
+								// meta: { requiresAuth: true },
 							},
 							{
 								path: "/die_sample",
 								name: "DieSample",
 								component: DieSample ,
+								// meta: { requiresAuth: true },
 							},
 							{
 								path: "/drawing_issuance",
 								name: "DrawingIssuance",
 								component: DrawingIssuance ,
+								// meta: { requiresAuth: true },
 							},
 							{
 								path: "/die_quotation_details",
 								name: "DieQutationDetails",
 								component: DieQuotationDetails ,
+								// meta: { requiresAuth: true },
 							},
 							{
 								path: "/die_dfm",
 								name: "DieDFM",
 								component: DieDFM ,
+								// meta: { requiresAuth: true },
 							},
 							{
 								path: "/qc_igm",
 								name: "QCIGM",
 								component: QCIGM ,
+								// meta: { requiresAuth: true },
 							},
 							{
 								path: "/die_trial_details",
 								name: "DieTrialDetails",
 								component: DieTrialDetails ,
+								// meta: { requiresAuth: true },
 							},
 							{
 								path: "/lot_po_issuance",
 								name: "LotPOIssuance",
 								component: LotPOIssuance ,
+								// meta: { requiresAuth: true },
 							},
 							{
 								path: "/lot_delivery",
 								name: "LotDelivery",
 								component: LotDelivery ,
+								// meta: { requiresAuth: true },
 							},
 							{
 								path: "/product_audit",
 								name: "ProductAudit",
 								component: ProductAudit ,
+								// meta: { requiresAuth: true },
 							},
 							{
 								path: "/parts_allocation",
 								name: "PartsAllocation",
 								component: PartsAllocation ,
+								// meta: { requiresAuth: true },
 							},
 							{
 								path: "/assembly_application",
 								name: "AssemblyApplication",
 								component: AssemblyApplication ,
+								// meta: { requiresAuth: true },
 							}
 
 						]
@@ -184,22 +203,26 @@ const routes = [
 				path: "/ecas_list",
 				name: "ECASList ",
 				component: ECASList ,
+				// meta: { requiresAuth: true },
 			},
 			{
 				path: "/process",
 				name: "Process ",
 				redirect: '/process-registration',
 				component: Process ,
+				// meta: { requiresAuth: true },
 				children: [
 					{
 						path: "/process-registration",
 						name: "ProcessRegistration",
 						component: ProcessRegistration ,
+						// meta: { requiresAuth: true },
 					},
 					{
 						path: "/process-monitoring",
 						name: "ProcessMonitoring",
 						component: ProcessMonitoring ,
+						// meta: { requiresAuth: true },
 					},
 				]
 				
@@ -208,43 +231,51 @@ const routes = [
 				path: "/simultaneous",
 				name: "Simultaneous ",
 				component: Simultaneous ,
+				// meta: { requiresAuth: true },
 			},
 			{
 				path: "/unit_rev",
 				name: "UnitRev ",
 				component: UnitRev ,
+				// meta: { requiresAuth: true },
 			},
 			{
 				path: "/vps_application",
 				name: "VPSApplication ",
 				component: VPSApplication ,
+				// meta: { requiresAuth: true },
 			},
 			{
 				path: "/eco_action_items",
 				name: "ECOActionItems ",
 				component: ECOActionItems ,
+				// meta: { requiresAuth: true },
 			},
 			{
 				path: "/management_parts",
 				name: "ManagementParts ",
 				component: ManagementParts ,
 				redirect: '/management-parts-device',
+				// meta: { requiresAuth: true },
 				children:
 				[
 					{
 						path: "/management-parts-device",
 						name: "ManagementPartsDevice ",
 						component: ManagementPartsDevice ,
+						// meta: { requiresAuth: true },
 					},
 					{
 						path: "/management-parts-model",
 						name: "ManagementPartsModel ",
 						component: ManagementPartsModel ,
+						// meta: { requiresAuth: true },
 					},
 					{
 						path: "/management-parts-unit",
 						name: "ManagementPartsUnit ",
 						component: ManagementPartsUnit ,
+						// meta: { requiresAuth: true },
 					},
 				]
 			},
@@ -252,11 +283,13 @@ const routes = [
 				path: "/management_users",
 				name: "ManagementUsers ",
 				component: ManagementUsers ,
+				// meta: { requiresAuth: true },
 			},
 			{
 				path: "/management_email",
 				name: "ManagementEmail ",
 				component: ManagementEmail ,
+				// meta: { requiresAuth: true },
 			},
 		],
 	},
@@ -271,12 +304,16 @@ router.beforeEach((to, from, next) => {
 	if (to.matched.some(record => record.meta.requiresAuth)) {
 		if(localStorage.getItem('auth_token') === null)
 		{
-			next({name:'LoggedOut'});
+			console.log('Destroyed Local Storage');
+			localStorage.removeItem("auth_token");
+			localStorage.removeItem("user_info");
+			setTimeout(function() {
+			  location.href = "http://10.164.58.49/fdtp-portal/public/";
+			}, 500);  
 		}
 		else
 		{
 			next();
-			console.log('Logged In');
 		}
 	}
 	else

@@ -40,9 +40,10 @@
                                         :searchable="true"
                                         :show-labels="false"
                                         placeholder="Device" 
-                                        label="name" 
+                                        label="device_name" 
                                         track-by="id"
-                                        @input="loadModel()"></multiselect>
+                                        @input="loadModel(deviceValue.id)"
+                                        ></multiselect>
                                 </b-col>
                                 <b-col cols="3">
                                     <multiselect  
@@ -54,7 +55,8 @@
                                         placeholder="Model" 
                                         label="name" 
                                         track-by="id"
-                                        @input="loadUnit()"></multiselect>
+                                        @input="loadUnit(modelValue.id)"
+                                        ></multiselect>
                                 </b-col>
                                 <b-col cols="3">
                                     <multiselect  
@@ -64,7 +66,7 @@
                                         :searchable="true"
                                         :show-labels="false"
                                         placeholder="Unit Name/Number" 
-                                        label="name" 
+                                        label="unit_name" 
                                         track-by="id" 
                                         :max-height="50"
                                         ></multiselect>
@@ -343,6 +345,10 @@ export default {
             ],
         }
     },
+    mounted()
+    {
+        this.loadDevice();
+    },
     methods:{
         isNumber: function(evt) {
             evt = (evt) ? evt : window.event;
@@ -352,7 +358,34 @@ export default {
             } else {
                 return true;
             }
-        }
+        },
+        loadDevice: function()
+        {
+            this.$store.dispatch("loadDevice").then((response) => {
+                let data = response.data.data;
+                this.deviceOptions = data;     
+                // console.log(this.deviceOptions); 
+            });  
+        },
+        loadModel: function(device_id)
+        {
+            // console.log(device_id);
+            this.modelOptions = [];     
+            this.$store.dispatch("loadModelPerDevice", device_id).then((response) => {
+                let data = response.data;
+                console.log(response);
+                this.modelOptions = data;
+            });  
+        },
+        loadUnit: function(model_id)
+        {
+            this.unitOptions = [];
+            this.$store.dispatch("loadUnitPerModel", model_id).then((response) => {
+                let data = response.data;
+                this.unitOptions = data;
+                console.log(data);
+            });  
+        },
     }
 }
 </script>

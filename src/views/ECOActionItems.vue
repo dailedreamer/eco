@@ -23,7 +23,7 @@
             <b-card class="pl-2 pr-2">
                 <b-card-body>
                                <b-row>
-                   <b-col cols="3">
+                   <b-col xl="3" lg="6">
                             <b-card 
                             class="custom_card_filter">
                                     <b-row class="mt-0">
@@ -54,7 +54,7 @@
                                     </b-row>
                             </b-card>
                         </b-col>
-                        <b-col cols="3">
+                        <b-col xl="3" lg="6">
                             <b-card 
                             class="custom_card_filter">
                                     <b-row class="mt-0">
@@ -85,15 +85,21 @@
                                     </b-row>
                             </b-card>
                         </b-col>
-                    </b-row>
-                    <b-row class="mt-3">
-                        <b-col cols="12">
-                            <b-card class="pl-2 pr-2">
-                                <b-card-body>
-                                </b-card-body>
-                            </b-card>
+                        <b-col cols="6">
+                            <SearchTemplate field_set='2'>
+                                <b-button 
+                                variant="danger"
+                                block
+                                type="submit"
+                                id="button-submit"
+                                >
+                            <b-icon icon="search"></b-icon>
+                                &nbsp;Go!
+                                </b-button>
+                            </SearchTemplate>
                         </b-col>
                     </b-row>
+                    <ECActionItemsContent/>
                 </b-card-body>
             </b-card>
       </b-col>
@@ -103,8 +109,12 @@
 </template>
 
 <script>
+import ECActionItemsContent from "../components/ECActionItems/ECActionItemsContent";
 export default {
-  name: "Simultaneous",
+  name: "ECActionItems",
+  components: {
+      ECActionItemsContent
+  },
   data() {
       return {
         value: 45,

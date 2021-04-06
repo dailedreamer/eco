@@ -1,5 +1,5 @@
-import portalAxios from "../template/assets/axios";
-
+// import portalAxios from "../template/assets/axios";
+import axios from "axios";
 export default {
 	state: {
         user_info: [],
@@ -16,8 +16,8 @@ export default {
 	actions: {
 		async loadUserInfo({ commit }, token) {
 			return new Promise((resolve, reject) => {
-				portalAxios
-					.get(`/token/get/${token}`)
+				axios
+					.get(`/user-details/${token}`)
 					.then(function(response) {
                         commit("SET_USER_INFO", response.data);
 						commit("SET_TOKEN", token);
@@ -29,10 +29,15 @@ export default {
 							data: response.data.data,
 						};
 						resolve(result);
+						console.log('Pumasok dito');
+						
 						if(localStorage.getItem('user_info') === null)
 						{
 							localStorage.setItem('user_info', JSON.stringify(response.data));
 							localStorage.setItem('auth_token', token);
+							setTimeout(function() {
+								location.href = "http://localhost:8080/dashboard/";
+							  }, 500);
 						}
 					})
 					.catch(function(error) {

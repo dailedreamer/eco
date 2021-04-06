@@ -21,7 +21,7 @@
         <b-row>
             <b-col cols="12">
                 <b-row>
-                   <b-col cols="3">
+                   <b-col xl="3" lg="6">
                         <b-card 
                             class="custom_card_filter">
                                     <b-row class="mt-0">
@@ -52,7 +52,7 @@
                                     </b-row>
                             </b-card>
                         </b-col>
-                        <b-col cols="3">
+                        <b-col xl="3" lg="6">
                             <b-card 
                             class="custom_card_filter">
                                     <b-row class="mt-0">
@@ -83,7 +83,7 @@
                                     </b-row>
                             </b-card>
                         </b-col>
-                        <b-col cols="3">
+                        <b-col xl="3" lg="6">
                             <b-card 
                             class="custom_card_filter">
                                     <b-row class="mt-0">
