@@ -34,8 +34,27 @@ const ProductAudit        = () =>import("@/views/Parts/PartsMonitoring/ModalCont
 const QCIGM               = () =>import("@/views/Parts/PartsMonitoring/ModalContents/QCIGM");
 
 
-
 const ECASList = () =>import("@/views/ECASList");
+const NewECAS = () =>import("@/views/ECASList/NewECAS");
+const NewECASContent = () =>import("@/views/ECASList/NewECASTab/NewECASContent");
+const DoneECASContent = () =>import("../views/ECASList/NewECASTab/DoneECASContent");
+const ForRevision = () =>import("@/views/ECASList/ForRevision");
+const ForRevisionContent = () =>import("@/views/ECASList/ForRevisionTab/ForRevisionContent");
+const DoneRevisionContent = () =>import("../views/ECASList/ForRevisionTab/DoneRevisionContent");
+const ForChecking = () =>import("@/views/ECASList/ForChecking");
+const ForCheckingContent = () =>import("@/views/ECASList/ForCheckingTab/ForCheckingContent");
+const DoneCheckingContent = () =>import("../views/ECASList/ForCheckingTab/DoneCheckingContent");
+const ForApproval = () =>import("@/views/ECASList/ForApproval");
+const ForApprovalContent = () =>import("@/views/ECASList/ForApprovalTab/ForApprovalContent");
+const DoneApprovalContent = () =>import("../views/ECASList/ForApprovalTab/DoneApprovalContent");
+const ForPC = () =>import("@/views/ECASList/ForPC");
+const ForPCContent = () =>import("@/views/ECASList/ForPCTab/ForPCContent");
+const DonePCContent = () =>import("../views/ECASList/ForPCTab/DonePCContent");
+const ForPurchasing = () =>import("@/views/ECASList/ForPurchasing");
+const ForPurchasingContent = () =>import("@/views/ECASList/ForPurchasingTab/ForPurchasingContent");
+const DonePurchasingContent = () =>import("../views/ECASList/ForPurchasingTab/DonePurchasingContent");
+const FinishedECAS = () =>import("@/views/ECASList/FinishedECAS");
+
 
 const Process             = () =>import("@/views/Process");
 const ProcessRegistration = () =>import("@/views/Process/Registration");
@@ -202,8 +221,125 @@ const routes = [
 			{
 				path: "/ecas_list",
 				name: "ECASList ",
+				redirect: '/new_ecas',
 				component: ECASList ,
 				// meta: { requiresAuth: true },
+				children: [
+					{
+
+						path: "/new_ecas",
+						name: "NewECAS",
+						component: NewECAS ,
+						redirect: '/new-ecas-tab',
+						children: [
+							{
+								path: "/new-ecas-tab",
+								name: "NewECASContent",
+								component: NewECASContent
+							},
+							{
+								path: "/done-ecas-tab",
+								name: "DoneECASContent",
+								component: DoneECASContent
+							},
+						]
+					},
+					{
+						path: "/for_revision",
+						name: "ForRevision",
+						component: ForRevision,
+						redirect: '/for-revision-tab',
+						children: [
+							{
+								path: "/for-revision-tab",
+								name: "ForRevisionContent",
+								component: ForRevisionContent
+							},
+							{
+								path: "/done-revision-tab",
+								name: "DoneRevisionContent",
+								component: DoneRevisionContent
+							},
+						]
+					},
+					{
+						path: "/for_checking",
+						name: "ForChecking",
+						component: ForChecking,
+						redirect: "/for-checking-tab",
+						children: [
+							{
+								path: "/for-checking-tab",
+								name: "ForCheckingContent",
+								component: ForCheckingContent
+							},
+							{
+								path: "/done-checking-tab",
+								name: "DoneCheckingContent",
+								component: DoneCheckingContent
+							},
+						]
+					},
+					{
+						path: "/for_approval",
+						name: "ForApproval",
+						component: ForApproval,
+						redirect: "/for-approval-tab",
+						children: [
+							{
+								path: "/for-approval-tab",
+								name: "ForApprovalContent",
+								component: ForApprovalContent
+							},
+							{
+								path: "/done-approval-tab",
+								name: "DoneApprovalContent",
+								component: DoneApprovalContent
+							},
+						]
+					},
+					{
+						path: "/for_pc",
+						name: "ForPC",
+						component: ForPC,
+						redirect: "/for-pc-tab",
+						children: [
+							{
+								path: "/for-pc-tab",
+								name: "ForPCContent",
+								component: ForPCContent
+							},
+							{
+								path: "/done-pc-tab",
+								name: "DonePCContent",
+								component: DonePCContent
+							},
+						]
+					},
+					{
+						path: "/for_purchasing",
+						name: "ForPurchasing",
+						component: ForPurchasing,
+						redirect: "/for-purchasing-tab",
+						children: [
+							{
+								path: "/for-purchasing-tab",
+								name: "ForPurchasingContent",
+								component: ForPurchasingContent
+							},
+							{
+								path: "/done-purchasing-tab",
+								name: "DonePurchasingContent",
+								component: DonePurchasingContent
+							},
+						]
+					},
+					{
+						path: "/finished_ecas",
+						name: "FinishedECAS",
+						component: FinishedECAS,
+					},
+				]
 			},
 			{
 				path: "/process",

@@ -26,7 +26,8 @@
                     <b-col cols="2">
                         <b-row class='mb-3'>
                              <b-col cols="12">
-                                   <b-card class="custom_side_card" @click="show_label('file-alt','New ECAS','Status: For Verification')">
+                                 <router-link to="/new_ecas">
+                                   <b-card class="custom_side_card" @click="show_label('file-alt','New ECAS','Status: For Verification')"> 
                                         <b-media>
                                         <template #aside>
                                             <div class="circle-icons">
@@ -40,11 +41,13 @@
                                         </small>
                                         </b-media>
                                     </b-card>
+                                </router-link>
                              </b-col>
                         </b-row>
                          <b-row class='mb-3'>
                              <b-col cols="12">
-                                <b-card class="custom_side_card" @click="show_label('redo','For Revision','Status: For Verification')">
+                                <router-link to="/for_revision">
+                                    <b-card class="custom_side_card"  @click="show_label('redo','For Revision','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
                                             <div class="circle-icons">
@@ -58,11 +61,13 @@
                                         </small>
                                         </b-media>
                                     </b-card>
+                                </router-link>
                              </b-col>
                         </b-row>
                         <b-row class='mb-3'>
                              <b-col cols="12">
-                                <b-card class="custom_side_card" @click="show_label('check-double','For Checking','Status: For Verification')">
+                                <router-link to="/for_checking">
+                                    <b-card class="custom_side_card" @click="show_label('check-double','For Checking','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
                                             <div class="circle-icons">
@@ -76,11 +81,13 @@
                                         </small>
                                         </b-media>
                                     </b-card>
+                                </router-link>
                              </b-col>
                         </b-row>
                         <b-row class='mb-3'>
                              <b-col cols="12">
-                                <b-card class="custom_side_card" @click="show_label('thumbs-up','For Approval','Status: For Verification')">
+                                <router-link to="/for_approval">
+                                    <b-card class="custom_side_card" @click="show_label('thumbs-up','For Approval','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
                                             <div class="circle-icons">
@@ -94,11 +101,13 @@
                                         </small>
                                         </b-media>
                                     </b-card>
-                             </b-col>
+                                </router-link>
+                            </b-col>
                         </b-row>
                         <b-row class='mb-3'>
                              <b-col cols="12">
-                                <b-card class="custom_side_card" @click="show_label('pallet','For PC','Status: For Verification')">
+                                <router-link to="/for_pc">
+                                    <b-card class="custom_side_card" @click="show_label('pallet','For PC','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
                                             <div class="circle-icons">
@@ -112,29 +121,33 @@
                                         </small>
                                         </b-media>
                                     </b-card>
-                             </b-col>
+                                </router-link>
+                            </b-col>
                         </b-row>
                         <b-row class='mb-3'>
                              <b-col cols="12">
-                                <b-card class="custom_side_card" @click="show_label('hand-holding-usd','For Purchasing','Status: For Verification')">
-                                    <b-media>
-                                    <template #aside>
-                                        <div class="circle-icons">
-                                            <b-icon icon="minecart"  font-scale="1.5" variant="white"></b-icon>
-                                        </div>
-                                    </template>
-                                    <strong class="mt-0 mb-0">For Purchasing</strong>
-                                    <br>
-                                    <small class="text-muted">
-                                        Status: For 
-                                    </small>
-                                    </b-media>
-                                </b-card>
-                             </b-col>
+                                <router-link to="/for_purchasing">
+                                    <b-card class="custom_side_card" @click="show_label('hand-holding-usd','For Purchasing','Status: For Verification')">
+                                        <b-media>
+                                        <template #aside>
+                                            <div class="circle-icons">
+                                                <b-icon icon="minecart"  font-scale="1.5" variant="white"></b-icon>
+                                            </div>
+                                        </template>
+                                        <strong class="mt-0 mb-0">For Purchasing</strong>
+                                        <br>
+                                        <small class="text-muted">
+                                            Status: For 
+                                        </small>
+                                        </b-media>
+                                    </b-card>
+                                </router-link>
+                            </b-col>
                         </b-row>
                         <b-row class='mb-2'>
                              <b-col cols="12">
-                                <b-card class="custom_side_card" @click="show_label('flag-checkered','Finished ECAS','Status: For Verification')">
+                                <router-link to="/finished_ecas">
+                                    <b-card class="custom_side_card" @click="show_label('flag-checkered','Finished ECAS','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
                                             <div class="circle-icons">
@@ -148,11 +161,13 @@
                                         </small>
                                         </b-media>
                                     </b-card>
-                             </b-col>
+                                </router-link>
+                            </b-col>
                         </b-row>
                     </b-col>
                     <b-col cols="10">
-                        <b-card>
+                   
+                        <!-- <b-card>
                             <b-media>
                                 <template #aside>
                                     <font-awesome-icon
@@ -166,7 +181,10 @@
                                     {{content_sub_label}}
                                 </small>
                             </b-media>
-                        </b-card>
+                        </b-card> -->
+                       
+                        <router-view :content_icon="content_icon" :content_label="content_label" :content_sub_label="content_sub_label"/>
+
                     </b-col>
                 </b-row>
               </b-card-body>
@@ -206,7 +224,7 @@ export default {
             this.content_label = "For Revision";
             this.content_sub_label = "Status: For Verification";
         },
-         set_for_checking()
+        set_for_checking()
         {
             this.content_icon = "check-double";
             this.content_label = "For Checking";
@@ -244,34 +262,39 @@ export default {
 </script>
 
 <style scoped>
-.circle-icons
-{
-    display:inline-flex;
-    padding:10px;
-    border-radius:50%;
-    background-color:#e84656;
-    color:white
-}
-.custom_size
-{
-    font-size:2.5em
-}
-.custom_side_card
-{
-    cursor:pointer;
-    border-left:.25em solid #e84656;
-    right:0px;
-    /* box-shadow: 0 4px 8px 0 rgba(107, 107, 107, 0.2), 1px 20px 20px 0 rgba(255, 255, 255, 0.19); */
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.18);
+    .circle-icons
+    {
+        display:inline-flex;
+        padding:10px;
+        border-radius:50%;
+        background-color:#e84656;
+        color:white
+    }
+    .custom_size
+    {
+        font-size:2.5em
+    }
+    .custom_side_card
+    {
+        cursor:pointer;
+        border-left:.25em solid #e84656;
+        right:0px;
+        /* box-shadow: 0 4px 8px 0 rgba(107, 107, 107, 0.2), 1px 20px 20px 0 rgba(255, 255, 255, 0.19); */
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,0.18);
 
-    transition: all 0.25s;
-}
-.custom_side_card:hover
-{
-   
-    /* border-top:1px solid #bbbbbb;
-    border-right:1px solid #bbbbbb;
-    border-bottom:1px solid #bbbbbb; */
-    right:5px;
-}
+        transition: all 0.25s;
+    }
+    .custom_side_card:hover
+    {
+    
+        /* border-top:1px solid #bbbbbb;
+        border-right:1px solid #bbbbbb;
+        border-bottom:1px solid #bbbbbb; */
+        right:5px;
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
 </style>
