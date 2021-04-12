@@ -12,161 +12,166 @@
               <h4>SINGLE ITEM REGISTRATION</h4>
                 <hr class="hr--property" />
                 <div class="red-line"></div>
-      
-                  <b-form-group
-                  id="select_device"
-                  label="Device Name"
-                  label-class="alpha__form__label"
-                  label-for="input-device-name"
-                >
-                  <Select2 class="alpha-input" 
-                  placeholder="Please Select Device" 
-                  name="device_id"
-                  v-model="form.device_id.value" 
-                  :state="form.device_id.state"
-                  :options="deviceOptions" 
-                  @change="myChangeEvent($event)" 
-                  @select="mySelectEvent($event)" 
-                  required/>
-                  </b-form-group>
-     
-                 <b-form-group
+                <b-form-group
                   id="select_model"
-                  label="Model Name"
+                  label="Device Name:"
                   label-class="alpha__form__label"
                   label-for="input-model-name"
                 >
-                  <Select2 class="alpha-input" 
-                  placeholder="Please Select Model"
-                  name="model_id" 
-                  v-model="form.model_id.value" 
-                  :state="form.model_id.state"
-                  :options="modelOptions"
-                  @change="myChangeEvent($event)" @select="mySelectEvent($event)"
-                  required/>
-                 </b-form-group>
+                  <multiselect  
+                    v-model="form.device_id.value"
+                    placeholder="Select device" 
+                    label="device_name" 
+                    track-by="id" 
+                    :options="deviceOptions"
+                    :show-labels="false"      
+                     @input="loadModel(form.device_id.value.id)"                                
+                  ></multiselect>
+                </b-form-group>
+                <b-form-group
+                  id="select_model"
+                  label="Model Name:"
+                  label-class="alpha__form__label"
+                  label-for="input-model-name"
+                >
+                  <multiselect  
+                    v-model="form.model_id.value"
+                    placeholder="Select Model" 
+                    label="name" 
+                    track-by="id" 
+                    :options="modelOptions"
+                    :show-labels="false"                                            
+                  ></multiselect>
+                </b-form-group>
 
                   <b-form-group
+                  class = "mt-1"
                   id="input-group-batch-number"
-                  label="Batch Number"
-                  label-class="alpha__form__label"
+                  label="Batch Number:"
                   label-for="input-batch-number"
-                >
+                  >
                   <b-form-input
-                  class="alpha-input"
+                 
                   id="input-batch-number"
                   name="batch_number"
                   v-model="form.batch_number.value"
                   :state="form.batch_number.state"
                   type="text"
-                  placeholder="Enter Batch Number"
+                  placeholder=" Enter Batch Number"
                   required
                 /></b-form-group>
 
                  <b-form-group
+                  class = "mt-1"
                   id="input-group-batch-number"
-                  label="Parent Number"
+                  label="Parent Number:"
                   label-class="alpha__form__label"
                   label-for="input-parent-number"
                 >
                   <b-form-input
-                  class="alpha-input"
+            
                   id="input-parent-number"
                   name="parent_drawing_number"
                    v-model="form.parent_drawing_number.value"
                   :state="form.parent_drawing_number.state"
                   type="text"
-                  placeholder="Enter Parent Number"
+                  placeholder=" Enter Parent Number"
                   required
                 /></b-form-group>
 
                  <b-form-group
+                  class = "mt-1"
                   id="input-group-batch-number"
-                  label="Revision"
+                  label="Revision:"
                   label-class="alpha__form__label"
                   label-for="input-revision"
                 >
                   <b-form-input
-                  class="alpha-input"
+              
                   id="input-parent-number"
                   name="drawing_number_current_revision"
                   v-model="form.drawing_number_current_revision.value"
                   :state="form.drawing_number_current_revision.state"
                   type="text"
-                  placeholder="Enter Revision"
+                  placeholder=" Enter Revision"
                   required
                 /></b-form-group>
 
                 <b-form-group
+                  class = "mt-1"
                   id="input-group-part-number"
-                  label="Part Number"
+                  label="Part Number:"
                   label-class="alpha__form__label"
                   label-for="input-part-number"
                 >
                   <b-form-input
-                  class="alpha-input"
+          
                   id="input-part-number"
                   name="part_number"
                   v-model="form.part_number.value"
                   :state="form.part_number.state"
                   type="text"
-                  placeholder="Enter Part Number"
+                  placeholder=" Enter Part Number"
                   required
                 /></b-form-group>
 
                   <b-form-group
+                  class = "mt-1"
                   id="input-group-part-number-revision"
-                  label="Revision"
+                  label="Revision:"
                   label-class="alpha__form__label"
                   label-for="input-part-number-revision"
                 >
                   <b-form-input
-                  class="alpha-input"
+                
                   id="input-part-number-revision"
                   name="part_number_current_revision"
                   v-model="form.part_number_current_revision.value"
                   :state="form.part_number_current_revision.state"
                   type="text"
-                  placeholder="Enter Revision"
+                  placeholder=" Enter Revision"
                   required
                 /></b-form-group>
 
                   <b-form-group
+                   class = "mt-1"
                   id="input-group-class"
-                  label="Class"
+                  label="Class:"
                   label-class="alpha__form__label"
                   label-for="input-class"
                   >
                   <b-form-input
-                  class="alpha-input"
+                
                   id="input-class"
                   name="class"
                   v-model="form.class.value"
                   :state="form.class.state"
                   type="text"
-                  placeholder="Enter class"
+                  placeholder=" Enter class"
                   required
                 /></b-form-group>
 
                   <b-form-group
+                   class = "mt-1"
                   id="input-group-die-details"
-                  label="Die Details"
+                  label="Die Details:"
                   label-class="alpha__form__label"
                   label-for="input-die-details"
                   >
                   <b-form-input
-                  class="alpha-input"
+             
                   id="input-die-details"
                   name="die_details"
                   v-model="form.die_details.value"
                   :state="form.die_details.state"
                   type="text"
-                  placeholder="Enter Die Details"
+                  placeholder=" Enter Die Details"
                   required
                 /></b-form-group>
               <div>
                 <center>
                     <AButton
+                      class = "mt-3"
                       id="button-submit"
                       type="submit"
                       title="Click to add budget"
@@ -174,9 +179,20 @@
                     >
                       <font-awesome-icon icon="save" size="sm" class="icon" /> SAVE VALUES
                     </AButton>
+
+                    <AButton
+
+                      class = "mt-3 ml-3"
+                      id="button-submit"
+                      type="submit"
+                      title="Click to clear"
+                      variant="outline-secondary"
+                    >
+                      <font-awesome-icon icon="save" size="sm" class="icon" /> CLEAR
+                    </AButton>
                 </center>
               </div>
-              </b-form>
+            </b-form>
             </b-col>
             <b-col cols="9">
               <b-col class="m-3 div_upload_data"><br>
@@ -221,11 +237,14 @@
                             >
                             <font-awesome-icon icon="upload" size="sm" class="icon" /> Upload
                           </AButton>
+                          
                         </b-col>
                         <b-col lg="3" class="md-2">
-                          <label>Device: </label>      <label id="lbl_device"></label>
+                          <label>Device: </label>     
+                          <label id="lbl_device"></label>
                         </b-col>
-                        <b-col lg="3" class="md-2">    <label id="lbl_model"></label>
+                        <b-col lg="3" class="md-2">    
+                          <label id="lbl_model"></label>
                           <label>Model: </label>
                         </b-col>
                      </b-row>
@@ -239,34 +258,210 @@
                         responsive
                         :fields="fields">
                     </b-table>
-                     <!-- <b-pagination
+                     <b-pagination
                       align="right"
                       class="alpha__table__pagination"
                       pills
                       v-model="currentPage"
                       :total-rows="rows"
                       :per-page="perPage"
-                    ></b-pagination> -->
+                    ></b-pagination>
                  </b-col>
                 
               </b-col>
             </b-col>
-
         </b-row>
+        <!-- <b-row>
+          <b-col cols="3">
+            <b-card>
+              <b-row class="mr-5 ml-5">
+                <b-col cols="12">
+                  <b-form
+                    id="form-parts-registration"
+                    @submit.prevent="submitForm"
+                    method="post"
+                    >
+                    <h4>SINGLE ITEM REGISTRATION</h4>
+                      <hr class="hr--property" />
+                      <div class="red-line"></div>
+                      <b-form-group
+                        id="select_model"
+                        label="Device Name"
+                        label-for="input-model-name"
+                      >
+                        <multiselect  
+                          v-model="form.device_id.value"
+                          placeholder="Select device" 
+                          label="device_name" 
+                          track-by="id" 
+                          :options="deviceOptions"
+                          :show-labels="false"                                            
+                        ></multiselect>
+                      </b-form-group>
+                      <b-form-group
+                        id="select_model"
+                        label="Model Name"
+                        label-for="input-model-name"
+                      >
+                        <multiselect  
+                          v-model="form.model_id.value"
+                          placeholder="Select Model" 
+                          label="model_name" 
+                          track-by="id" 
+                          :options="modelOptions"
+                          :show-labels="false"                                            
+                        ></multiselect>
+                      </b-form-group>
+
+                        <b-form-group
+                        id="input-group-batch-number"
+                        label="Batch Number"
+                        label-for="input-batch-number"
+                        >
+                        <b-form-input
+                        id="input-batch-number"
+                        name="batch_number"
+                        v-model="form.batch_number.value"
+                        :state="form.batch_number.state"
+                        type="text"
+                        placeholder="Enter Batch Number"
+                        required
+                      /></b-form-group>
+
+                      <b-form-group
+                        id="input-group-batch-number"
+                        label="Parent Number"
+                        label-for="input-parent-number"
+                      >
+                        <b-form-input
+                        class="alpha-input"
+                        id="input-parent-number"
+                        name="parent_drawing_number"
+                        v-model="form.parent_drawing_number.value"
+                        :state="form.parent_drawing_number.state"
+                        type="text"
+                        placeholder="Enter Parent Number"
+                        required
+                      /></b-form-group>
+
+                      <b-form-group
+                        id="input-group-batch-number"
+                        label="Revision"
+                        label-for="input-revision"
+                      >
+                        <b-form-input
+                        class="alpha-input"
+                        id="input-parent-number"
+                        name="drawing_number_current_revision"
+                        v-model="form.drawing_number_current_revision.value"
+                        :state="form.drawing_number_current_revision.state"
+                        type="text"
+                        placeholder="Enter Revision"
+                        required
+                      /></b-form-group>
+
+                      <b-form-group
+                        id="input-group-part-number"
+                        label="Part Number"
+                        label-for="input-part-number"
+                      >
+                        <b-form-input
+                        class="alpha-input"
+                        id="input-part-number"
+                        name="part_number"
+                        v-model="form.part_number.value"
+                        :state="form.part_number.state"
+                        type="text"
+                        placeholder="Enter Part Number"
+                        required
+                      /></b-form-group>
+
+                        <b-form-group
+                        id="input-group-part-number-revision"
+                        label="Revision"
+                        label-for="input-part-number-revision"
+                      >
+                        <b-form-input
+                        class="alpha-input"
+                        id="input-part-number-revision"
+                        name="part_number_current_revision"
+                        v-model="form.part_number_current_revision.value"
+                        :state="form.part_number_current_revision.state"
+                        type="text"
+                        placeholder="Enter Revision"
+                        required
+                      /></b-form-group>
+
+                        <b-form-group
+                        id="input-group-class"
+                        label="Class"
+                        label-for="input-class"
+                        >
+                        <b-form-input
+                        class="alpha-input"
+                        id="input-class"
+                        name="class"
+                        v-model="form.class.value"
+                        :state="form.class.state"
+                        type="text"
+                        placeholder="Enter class"
+                        required
+                      /></b-form-group>
+
+                        <b-form-group
+                        id="input-group-die-details"
+                        label="Die Details"
+                        label-for="input-die-details"
+                        >
+                        <b-form-input
+                        class="alpha-input"
+                        id="input-die-details"
+                        name="die_details"
+                        v-model="form.die_details.value"
+                        :state="form.die_details.state"
+                        type="text"
+                        placeholder="Enter Die Details"
+                        required
+                      /></b-form-group>
+                    <div>
+                      <center>
+                          <AButton
+                            id="button-submit"
+                            type="submit"
+                            title="Click to add budget"
+                            variant="primary"
+                          >
+                            <font-awesome-icon icon="save" size="sm" class="icon" /> SAVE VALUES
+                          </AButton>
+                      </center>
+                    </div>
+                  </b-form>
+                </b-col>
+              </b-row>
+            </b-card>
+          </b-col>
+          <b-col cols="9">
+            <b-card>bbb</b-card>
+          </b-col>
+        </b-row> -->
+        
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
-import Select2 from 'v-select2-component';
+// import Select2 from 'v-select2-component';
 export default {
-  components: {Select2},
+  components: {},
   name: "partsRegistration",
    data() {
       return {
-        deviceOptions: ['Device 1', 'Device 2', 'Device 3'],
-        modelOptions: ['Model 1', 'Model 2', 'Model 3'],
+        deviceOptions: [],
+        modelOptions: [],
+       
+        rows: '',
+   
         form: {
           device_id: {
             value: 0,
@@ -314,8 +509,8 @@ export default {
             validation:"",
           },
         },
-        // currentPage: 1,
-        // perPage: 10,
+        currentPage: 1,
+        perPage: 10,
         fields: [
         {
           key: "no",
@@ -352,6 +547,10 @@ export default {
       ],
       }
     },
+    mounted()
+    {
+      this.loadDevice();
+    },
     methods: 
     {
         uploadFile: function()
@@ -382,6 +581,24 @@ export default {
                 console.log(JSON.stringify(this.form));
                 console.log(response)
             });
+        },
+        loadDevice: function()
+        {
+          this.$store.dispatch("loadDevice").then((response) => {
+              let data = response.data.data;
+              this.deviceOptions = data;      
+          });  
+        },
+        loadModel: function(device_id)
+        {
+          console.log(device_id);
+          this.modelOptions = [];     
+          this.$store.dispatch("loadModelPerDevice", device_id).then((response) => {
+              let data = response.data;
+              this.modelOptions = data;
+              console.log(data);
+            });  
+            
         },
     },
 };

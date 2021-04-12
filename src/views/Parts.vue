@@ -11,7 +11,7 @@
                 alt="placeholder">
             </b-img>
           </template>
-            <h5 class="mb-0">Parts Module</h5>
+            <h5 class="mb-0">Parts</h5>
             <small class="text-secondary">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, illum.
             </small>
@@ -24,7 +24,7 @@
               <b-card-header header-tag="nav" class="custom_header">
                 <b-nav card-header tabs>
                   <div v-for = "tab in tab_values" :key= "tab.index" >
-                    <b-nav-item :to="tab.to" :active="tab.status" @click="setIndex(tab.index)">{{tab.name}}</b-nav-item>
+                    <b-nav-item :to="tab.to" @click="currentRouteName" :active="tab.status">{{tab.name}}</b-nav-item>
                   </div>
                 </b-nav>
               </b-card-header>
@@ -47,44 +47,77 @@ export default {
               {
                 index:1,
                 name:"Parts Registration (Unit)",
-                status:true,
-                to:"/parts-registration-unit"    
+                status:false,
+                to:"/parts-registration-unit",  
+                routes:
+                      [
+                        "/parts-registration-unit"
+                      ]              
               },
               {
                 index:2,
                 name:"Parts Registration (Parts)",
                 status:false,
-                to:"/parts-registration-parts"        
+                to:"/parts-registration-parts",  
+                routes:
+                      [
+                        "/parts-registration-parts"
+                      ]          
+                        
                 
               },
               {
                 index:3,
                 name:"Registered ECO Parts",
                 status:false,
-                to:"/registered-eco-parts"        
+                to:"/registered-eco-parts",  
+                routes:
+                      [
+                        "/registered-eco-parts"
+                      ]          
               },
               {
                 index:4,
                 name:"Parts Monitoring",
                 status:false,
-                to:"/parts-monitoring"        
+                to:"/parts-monitoring",  
+                routes:
+                      [
+                        "/parts-monitoring",
+                        "/parts-details",
+                        "/meeting",
+                        "/eco_details",
+                        "/die_sample",
+                        "/drawing_issuance",
+                        "/die_quotation_details",
+                        "/die_dfm",
+                        "/qc_igm",
+                        "/die_trial_details",
+                        "/lot_po_issuance",
+                        "/lot_delivery",
+                        "/product_audit",
+                        "/parts_allocation",
+                        "/assembly_application",
+                      ]      
               },
             ]
     }
     },
-    methods:
-    {
-      setIndex(index)
-      {
+    computed: {
+    currentRouteName() {
+      var route_details = this.$route.fullPath;
         this.tab_values.forEach(function(contents) {
-         contents.status=false;
-         if(contents.index === index)
-         {
-           contents.status=true;
-         }
+        contents.status=false;
+         (contents.routes).forEach(function(route) {
+            if(route_details == route)
+              {
+                contents.status=true;
+              }
+          });
         });
-      }
-    }
+        return route_details;
+        }
+    },
 };
 </script>
 
