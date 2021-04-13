@@ -35,7 +35,7 @@ const QCIGM               = () =>import("@/views/Parts/PartsMonitoring/ModalCont
 
 
 const ECASList = () =>import("@/views/ECASList");
-const NewECAS = () =>import("@/views/ECASList/NewECAS");
+const NewECAS = () =>import("@/views/ECASList/NewEcas");
 const NewECASContent = () =>import("@/views/ECASList/NewECASTab/NewECASContent");
 const DoneECASContent = () =>import("../views/ECASList/NewECASTab/DoneECASContent");
 const ForRevision = () =>import("@/views/ECASList/ForRevision");
