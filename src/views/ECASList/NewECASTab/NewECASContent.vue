@@ -13,15 +13,17 @@
                     :fields="new_ecas_fields"
                     :per-page="perPage"
                     :current-page="currentPage">
-                    <template #cell(action)="">
+                    <template #cell(action)="data">
                         <b-link 
                             v-b-modal.modal_edit_contents
-                            class="link_style">
+                            class="link_style"
+                            @click="updateNewECAS(data.index)">
                             Edit
                         </b-link>
                         <label class="ml-1 mr-1 text-secondary">|</label>
                         <b-link 
-                            class="link_style">
+                            class="link_style"
+                            @click="newEcasSubparts()">
                             Subparts
                         </b-link>
                     </template>
@@ -34,19 +36,27 @@
                     pills></b-pagination>
             </b-col>
         </b-row>
+        <EditContents 
+            :status_name="status_name" 
+            :status_id="status_id" 
+            :get_data="this.id"/>
     </b-container>
 </template>
 
 <script>
+import EditContents from "../Modal/EditContents";
 export default {
     name: 'NewECASContent',
+    components: {
+        EditContents
+    },
     data(){
         return{
             perPage: 10,
             currentPage: 1,
             new_ecas_list:
             [
-                {device_name: "device1", model_name: "model1", unit_number: "unit1", unit_name: "name1", 
+                { device_name: "device1", model_name: "model1", unit_number: "unit1", unit_name: "name1", 
                     parts_number: "KD0001", eco_number: "123456", current_revision: "01", ecas_number: "121212",
                     new_revision: "02", },
                 {device_name: "device2", model_name: "model2", unit_number: "unit2", unit_name: "name2", 
@@ -55,6 +65,7 @@ export default {
             ],
             new_ecas_fields:
             [
+                // {key: "no",  sortable: true, class: 'text-center'},
                 {key: "action", class: 'text-center'},
                 {key: "device_name", label:"Device", sortable: true, class: 'text-center'},
                 {key: "model_name", label:"Model", sortable: true, class: 'text-center'}, 
@@ -66,14 +77,28 @@ export default {
                 {key: "ecas_number", sortable: true, class: 'text-center'},
                 {key: "new_revision", sortable: true, class: 'text-center'},
                 {key: "release_date", sortable: true, class: 'text-center'},
-            ]
+            ],
+            status_name: '',
+            status_id: '',
+            id: {},
         }
     },
     computed:{
-        rows() {
+        rows: function(){
             return this.new_ecas_list.length
         }
     },
+    methods:{
+       updateNewECAS: function(id){
+            this.status_name = "For Verification";
+            this.status_id = "1";
+            this.id = {};
+            this.id = this.new_ecas_list[id];
+       },
+       newEcasSubparts: function(){
+           alert("Open New ECAS Subparts Modal")
+       }
+    }
 }
 </script>
 

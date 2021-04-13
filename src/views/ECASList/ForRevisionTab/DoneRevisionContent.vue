@@ -33,7 +33,8 @@
                     size="md" 
                     variant="danger" 
                     type="submit"
-                    title="Click to save changes">
+                    title="Click to save changes"
+                    @click="done_revision()">
                     <font-awesome-icon icon="thumbs-up" /> Done Revision
                 </b-button> 
             </b-col>
@@ -78,6 +79,11 @@ export default {
             return this.done_revision_list.length
         }
     },
+    methods:{
+        done_revision(){
+            alert("Done Revision");
+        }
+    }
 }
 </script>
 

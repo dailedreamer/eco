@@ -7,13 +7,13 @@
                         <template #aside>
                             <font-awesome-icon
                                     :icon="content_icon"
-                                    class="icon text-muted custom_size"
+                                    class="icon_style text-muted"
                                 />
                         </template>
                         <strong class="mt-0 mb-0">{{content_label}}</strong>
                         <br>
                         <small class="text-muted">
-                            {{content_sub_label}}
+                            Status: {{status_label}}
                         </small>
                     </b-media>
                     <b-row class="mt-4">
@@ -45,7 +45,7 @@
                                             <b-nav-item 
                                                 :to="tab.to" 
                                                 :active="tab.status" 
-                                                @click="setIndex(tab.index)">
+                                                @click="setIndex(tab.index), setStatus(tab.name)">
                                                 {{tab.name}}</b-nav-item>
                                         </div>
                                     </b-nav>
@@ -68,7 +68,7 @@ export default {
     props: {
         content_icon: String,
         content_label: String,
-        content_sub_label: String,
+        // content_sub_label: String,
     },
     data(){
         return{
@@ -86,8 +86,13 @@ export default {
                     status:false,
                     to:"/done-revision-tab"
                 },
-            ] 
+            ] ,
+            status_label:'',
         }
+    },
+    mounted()
+    {
+        this.setStatus('For Revision');
     },
     methods:
     {
@@ -101,11 +106,28 @@ export default {
                     contents.status=true;
                     }
             });
+        },
+        setStatus(status)
+        {
+            if(status == "For Revision")
+            {
+                this.status_label = "For Revision";
+            }
+            else
+            {
+                this.status_label = "Done Revision";
+            }
         }
+        
     }
 }
 </script>
 
 <style scoped>
-
+    .icon_style{
+        width: 30px;
+        height: 30px;
+        margin-top: 8px;
+        margin-left: 4px;
+    }
 </style>

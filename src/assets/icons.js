@@ -33,7 +33,8 @@ faClipboardList,
 faBook,
 faSave,
 faCopy,
-faPlus
+faPlus,
+faThumbsDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -69,7 +70,8 @@ library.add(
 	faUpload,
 	faSave,
 	faCopy,
-	faPlus
+	faPlus,
+	faThumbsDown,
 );
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);

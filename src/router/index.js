@@ -54,6 +54,7 @@ const ForPurchasing = () =>import("@/views/ECASList/ForPurchasing");
 const ForPurchasingContent = () =>import("@/views/ECASList/ForPurchasingTab/ForPurchasingContent");
 const DonePurchasingContent = () =>import("../views/ECASList/ForPurchasingTab/DonePurchasingContent");
 const FinishedECAS = () =>import("@/views/ECASList/FinishedECAS");
+const ProductionEngineering = () =>import("@/views/ECASList/Modal/ProductionEngineeringContent");
 
 
 const Process             = () =>import("@/views/Process");
@@ -226,7 +227,6 @@ const routes = [
 				// meta: { requiresAuth: true },
 				children: [
 					{
-
 						path: "/new_ecas",
 						name: "NewECAS",
 						component: NewECAS ,
@@ -235,7 +235,15 @@ const routes = [
 							{
 								path: "/new-ecas-tab",
 								name: "NewECASContent",
-								component: NewECASContent
+								component: NewECASContent,
+								redirect: '/production-engineering/1',
+								children: [
+									{
+										path: "/production-engineering/1",
+										name: "ProductionEngineering",
+										component: ProductionEngineering,
+									}
+								]
 							},
 							{
 								path: "/done-ecas-tab",
@@ -253,7 +261,15 @@ const routes = [
 							{
 								path: "/for-revision-tab",
 								name: "ForRevisionContent",
-								component: ForRevisionContent
+								component: ForRevisionContent,
+								redirect: '/production-engineering/2',
+								children: [
+									{
+										path: "/production-engineering/2",
+										name: "ProductionEngineering",
+										component: ProductionEngineering,
+									}
+								]
 							},
 							{
 								path: "/done-revision-tab",
@@ -271,7 +287,15 @@ const routes = [
 							{
 								path: "/for-checking-tab",
 								name: "ForCheckingContent",
-								component: ForCheckingContent
+								component: ForCheckingContent,
+								redirect: '/production-engineering/3',
+								children: [
+									{
+										path: "/production-engineering/3",
+										name: "ProductionEngineering",
+										component: ProductionEngineering,
+									}
+								]
 							},
 							{
 								path: "/done-checking-tab",
@@ -289,7 +313,15 @@ const routes = [
 							{
 								path: "/for-approval-tab",
 								name: "ForApprovalContent",
-								component: ForApprovalContent
+								component: ForApprovalContent,
+								redirect: '/production-engineering/4',
+								children: [
+									{
+										path: "/production-engineering/4",
+										name: "ProductionEngineering",
+										component: ProductionEngineering,
+									}
+								]
 							},
 							{
 								path: "/done-approval-tab",
@@ -307,7 +339,15 @@ const routes = [
 							{
 								path: "/for-pc-tab",
 								name: "ForPCContent",
-								component: ForPCContent
+								component: ForPCContent,
+								redirect: '/production-engineering/5',
+								children: [
+									{
+										path: "/production-engineering/5",
+										name: "ProductionEngineering",
+										component: ProductionEngineering,
+									}
+								]
 							},
 							{
 								path: "/done-pc-tab",
@@ -325,7 +365,15 @@ const routes = [
 							{
 								path: "/for-purchasing-tab",
 								name: "ForPurchasingContent",
-								component: ForPurchasingContent
+								component: ForPurchasingContent,
+								redirect: '/production-engineering/6',
+								children: [
+									{
+										path: "/production-engineering/6",
+										name: "ProductionEngineering",
+										component: ProductionEngineering,
+									}
+								]
 							},
 							{
 								path: "/done-purchasing-tab",
@@ -338,6 +386,14 @@ const routes = [
 						path: "/finished_ecas",
 						name: "FinishedECAS",
 						component: FinishedECAS,
+						redirect: '/production-engineering/7',
+						children: [
+							{
+								path: "/production-engineering/7",
+								name: "ProductionEngineering",
+								component: ProductionEngineering,
+							}
+						]
 					},
 				]
 			},

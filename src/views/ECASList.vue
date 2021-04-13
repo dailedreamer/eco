@@ -26,13 +26,11 @@
                     <b-col cols="2">
                         <b-row class='mb-3'>
                              <b-col cols="12">
-                                 <router-link to="/new_ecas">
+                                <router-link to="/new_ecas">
                                    <b-card class="custom_side_card" @click="show_label('file-alt','New ECAS','Status: For Verification')"> 
                                         <b-media>
                                         <template #aside>
-                                            <div class="circle-icons">
-                                                <b-icon b-icon icon="file-earmark-plus"  font-scale="1.5" variant="white"></b-icon>
-                                            </div>                                         
+                                            <b-icon b-icon icon="file-earmark-plus"  font-scale="2" variant="secondary"></b-icon>                                       
                                         </template>
                                         <strong class="mt-0 mb-0">New ECAS</strong>
                                         <br>
@@ -50,14 +48,12 @@
                                     <b-card class="custom_side_card"  @click="show_label('redo','For Revision','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
-                                            <div class="circle-icons">
-                                                <b-icon icon="arrow-counterclockwise"  font-scale="1.5" variant="white"></b-icon>
-                                            </div>
+                                            <b-icon icon="arrow-counterclockwise"  font-scale="2" variant="secondary"></b-icon>
                                         </template>
                                         <strong class="mt-0 mb-0">For Revision</strong>
                                         <br>
                                         <small class="text-muted">
-                                            Status: For Verification
+                                            Status: For Revision
                                         </small>
                                         </b-media>
                                     </b-card>
@@ -70,14 +66,12 @@
                                     <b-card class="custom_side_card" @click="show_label('check-double','For Checking','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
-                                            <div class="circle-icons">
-                                                <b-icon icon="check-square"  font-scale="1.5" variant="white"></b-icon>
-                                            </div>
+                                            <b-icon icon="check-square"  font-scale="2" variant="secondary"></b-icon>
                                         </template>
                                         <strong class="mt-0 mb-0">For Checking</strong>
                                         <br>
                                         <small class="text-muted">
-                                            Status: For Verification
+                                            Status: For Checking
                                         </small>
                                         </b-media>
                                     </b-card>
@@ -90,14 +84,12 @@
                                     <b-card class="custom_side_card" @click="show_label('thumbs-up','For Approval','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
-                                            <div class="circle-icons">
-                                                <b-icon icon="hand-thumbs-up"  font-scale="1.5" variant="white"></b-icon>
-                                            </div>
+                                            <b-icon icon="hand-thumbs-up"  font-scale="2" variant="secondary"></b-icon>
                                         </template>
                                         <strong class="mt-0 mb-0">For Approval</strong>
                                         <br>
                                         <small class="text-muted">
-                                            Status: For Verification
+                                            Status: For Approval
                                         </small>
                                         </b-media>
                                     </b-card>
@@ -110,14 +102,12 @@
                                     <b-card class="custom_side_card" @click="show_label('pallet','For PC','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
-                                            <div class="circle-icons">
-                                                <b-icon icon="box-seam"  font-scale="1.5" variant="white"></b-icon>
-                                            </div>
+                                            <b-icon icon="box-seam"  font-scale="2" variant="secondary"></b-icon>
                                         </template>
                                         <strong class="mt-0 mb-0">For PC</strong>
                                         <br>
                                         <small class="text-muted">
-                                            Status: For 
+                                            Status: For PC
                                         </small>
                                         </b-media>
                                     </b-card>
@@ -130,14 +120,12 @@
                                     <b-card class="custom_side_card" @click="show_label('hand-holding-usd','For Purchasing','Status: For Verification')">
                                         <b-media>
                                         <template #aside>
-                                            <div class="circle-icons">
-                                                <b-icon icon="minecart"  font-scale="1.5" variant="white"></b-icon>
-                                            </div>
+                                            <b-icon icon="minecart"  font-scale="2" variant="secondary"></b-icon>
                                         </template>
                                         <strong class="mt-0 mb-0">For Purchasing</strong>
                                         <br>
                                         <small class="text-muted">
-                                            Status: For 
+                                            Status: For Purchasing
                                         </small>
                                         </b-media>
                                     </b-card>
@@ -147,17 +135,15 @@
                         <b-row class='mb-2'>
                              <b-col cols="12">
                                 <router-link to="/finished_ecas">
-                                    <b-card class="custom_side_card" @click="show_label('flag-checkered','Finished ECAS','Status: For Verification')">
+                                    <b-card class="custom_side_card" @click="show_label('flag-checkered','Finished ECAS','Status: Finished ECAS')">
                                         <b-media>
                                         <template #aside>
-                                            <div class="circle-icons">
-                                                <b-icon icon="flag"  font-scale="1.5" variant="white"></b-icon>
-                                            </div>
+                                            <b-icon icon="flag"  font-scale="2" variant="secondary"></b-icon>
                                         </template>
                                         <strong class="mt-0 mb-0">Finished ECAS</strong>
                                         <br>
                                         <small class="text-muted">
-                                            Status: For Verification
+                                            Status: Finished ECAS
                                         </small>
                                         </b-media>
                                     </b-card>
@@ -166,25 +152,10 @@
                         </b-row>
                     </b-col>
                     <b-col cols="10">
-                   
-                        <!-- <b-card>
-                            <b-media>
-                                <template #aside>
-                                    <font-awesome-icon
-                                            :icon="content_icon"
-                                            class="icon text-muted custom_size"
-                                        />
-                                </template>
-                                <strong class="mt-0 mb-0">{{content_label}}</strong>
-                                <br>
-                                <small class="text-muted">
-                                    {{content_sub_label}}
-                                </small>
-                            </b-media>
-                        </b-card> -->
-                       
-                        <router-view :content_icon="content_icon" :content_label="content_label" :content_sub_label="content_sub_label"/>
-
+                        <router-view 
+                            :content_icon="content_icon" 
+                            :content_label="content_label"
+                            :content_sub_label="content_sub_label"/>
                     </b-col>
                 </b-row>
               </b-card-body>
@@ -216,43 +187,37 @@ export default {
         {
             this.content_icon = "file-alt"
             this.content_label = "New ECAS";
-            this.content_sub_label = "Status: For Verification";
         },
         set_for_revision()
         {
             this.content_icon = "redo";
             this.content_label = "For Revision";
-            this.content_sub_label = "Status: For Verification";
         },
         set_for_checking()
         {
             this.content_icon = "check-double";
             this.content_label = "For Checking";
-            this.content_sub_label = "Status: For Verification";
         },
         set_for_approval()
         {
             this.content_icon = "thumbs-up";
             this.content_label = "For Approval";
-            this.content_sub_label = "Status: For Verification";
         },
         set_for_pc()
         {
             this.content_icon = "pallet";
             this.content_label = "For PC";
-            this.content_sub_label = "Status: For Verification";
         },
         set_for_purchasing()
         {
             this.content_icon = "hand-holding-usd";
             this.content_label = "For Purchasing";
-            this.content_sub_label = "Status: For Verification";
         },
         set_finished_ecas()
         {
             this.content_icon = "flag-checkered";
             this.content_label = "Finished ECAS";
-            this.content_sub_label = "Status: For Verification";
+            this.content_sub_label = "Status: Finished ECAS";
         },
     },
     created(){
@@ -262,14 +227,14 @@ export default {
 </script>
 
 <style scoped>
-    .circle-icons
+    /* .circle-icons
     {
         display:inline-flex;
         padding:10px;
         border-radius:50%;
-        background-color:#e84656;
-        color:white
-    }
+        color:white;
+        background-color:#9b9999;
+    } */
     .custom_size
     {
         font-size:2.5em

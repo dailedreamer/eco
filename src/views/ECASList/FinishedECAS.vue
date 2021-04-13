@@ -7,7 +7,7 @@
                         <template #aside>
                             <font-awesome-icon
                                     :icon="content_icon"
-                                    class="icon text-muted custom_size"
+                                    class="icon_style text-muted"
                                 />
                         </template>
                         <strong class="mt-0 mb-0">{{content_label}}</strong>
@@ -25,19 +25,21 @@
                                 hover 
                                 responsive 
                                 small
-                                :items="new_ecas_list"
-                                :fields="new_ecas_fields"
+                                :items="finished_ecas_list"
+                                :fields="finished_ecas_fields"
                                 :per-page="perPage"
                                 :current-page="currentPage">
-                                <template #cell(action)="">
+                                <template #cell(action)="data">
                                    <b-link 
                                         v-b-modal.modal_edit_contents
-                                        class="link_style">
+                                        class="link_style"
+                                        @click="updateFinishedECAS(data.index)">
                                         Edit
                                     </b-link>
                                     <label class="ml-1 mr-1 text-secondary">|</label>
                                     <b-link 
-                                        class="link_style">
+                                        class="link_style"
+                                        @click="finishedEcasSubparts()">
                                         Subparts
                                     </b-link>
                                 </template>
@@ -53,12 +55,20 @@
                 </b-card>
             </b-col>
         </b-row>
+        <EditContents 
+            :status_name="status_name" 
+            :status_id="status_id"
+            :get_data="this.id"/>
     </b-container>
 </template>
 
 <script>
+import EditContents from "../ECASList/Modal/EditContents";
 export default {
     name: 'FinishedECAS',
+    components:{
+        EditContents
+    },
     props: {
         content_icon: String,
         content_label: String,
@@ -68,7 +78,7 @@ export default {
         return{
             perPage: 10,
             currentPage: 1,
-            new_ecas_list:
+            finished_ecas_list:
             [
                 {device_name: "device1", model_name: "model1", unit_number: "unit1", unit_name: "name1", 
                     parts_number: "KD0123", eco_number: "123456", current_revision: "01", ecas_number: "24212",
@@ -77,7 +87,7 @@ export default {
                     parts_number: "KD0456", eco_number: "010101", current_revision: "01", ecas_number: "2121",
                     new_revision: "02", },
             ],
-            new_ecas_fields:
+            finished_ecas_fields:
             [
                 {key: "action", class: 'text-center'},
                 {key: "device_name", label:"Device", sortable: true, class: 'text-center'},
@@ -90,14 +100,28 @@ export default {
                 {key: "ecas_number", sortable: true, class: 'text-center'},
                 {key: "new_revision", sortable: true, class: 'text-center'},
                 {key: "release_date", sortable: true, class: 'text-center'},
-            ]
+            ],
+            status_name: '',
+            status_id: '',
+            id: {},
         }
     },
     computed:{
         rows() {
-            return this.new_ecas_list.length
+            return this.finished_ecas_list.length
         }
     },
+    methods:{
+        updateFinishedECAS: function(id){
+            this.status_name = "Finished ECAS";
+            this.status_id = "7";
+            this.id = {};
+            this.id = this.finished_ecas_list[id];
+        },
+        finishedEcasSubparts: function(){
+            alert("Open Finished ECAS Subparts Modal");
+        }
+    }
 }
 </script>
 
@@ -105,5 +129,12 @@ export default {
     .link_style{
         /* color: red !important; */
         font-size:0.9em;
+    }
+
+    .icon_style{
+        width: 30px;
+        height: 30px;
+        margin-top: 8px;
+        margin-left: 4px;
     }
 </style>

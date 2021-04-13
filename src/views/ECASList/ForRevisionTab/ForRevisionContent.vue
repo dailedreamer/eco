@@ -13,15 +13,17 @@
                     :fields="for_revision_fields"
                     :per-page="perPage"
                     :current-page="currentPage">
-                    <template #cell(action)="">
-                        <b-link 
+                    <template #cell(action)="data">
+                        <b-link
                             v-b-modal.modal_edit_contents
-                            class="link_style">
+                            class="link_style"
+                            @click="updateForRevision(data.index)">
                             Edit
                         </b-link>
                         <label class="ml-1 mr-1 text-secondary">|</label>
                         <b-link 
-                            class="link_style">
+                            class="link_style"
+                            @click="forRevisionSubparts()">
                             Subparts
                         </b-link>
                     </template>
@@ -33,13 +35,21 @@
                     align="right"
                     pills></b-pagination>
             </b-col>
-        </b-row>
+        </b-row>        
+        <EditContents 
+            :status_name="status_name" 
+            :status_id="status_id" 
+            :get_data="this.id"/>
     </b-container>
 </template>
 
 <script>
+import EditContents from "../Modal/EditContents";
 export default {
     name: 'ForRevisionContent',
+    components: {
+        EditContents
+    },
     data(){
         return{
             perPage: 10,
@@ -66,7 +76,10 @@ export default {
                 {key: "ecas_number", sortable: true, class: 'text-center'},
                 {key: "new_revision", sortable: true, class: 'text-center'},
                 {key: "release_date", sortable: true, class: 'text-center'},
-            ]
+            ],
+            status_name: '',
+            status_id: '',
+            id: {},
         }
     },
     computed:{
@@ -74,6 +87,17 @@ export default {
             return this.for_revision_list.length
         }
     },
+    methods:{
+        updateForRevision: function(id){
+            this.status_name = "For Revision";
+            this.status_id = "2";
+            this.id = {};
+            this.id = this.for_revision_list[id];
+        },
+        forRevisionSubparts: function(){
+            alert("Open For Revision Subparts Modal");
+        }
+    }
 }
 </script>
 

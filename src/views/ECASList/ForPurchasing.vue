@@ -7,13 +7,13 @@
                         <template #aside>
                             <font-awesome-icon
                                     :icon="content_icon"
-                                    class="icon text-muted custom_size"
+                                    class="icon_style text-muted"
                                 />
                         </template>
                         <strong class="mt-0 mb-0">{{content_label}}</strong>
                         <br>
                         <small class="text-muted">
-                            {{content_sub_label}}
+                            Status: {{status_label}}
                         </small>
                     </b-media>
                     <b-row class="mt-4">
@@ -86,8 +86,12 @@ export default {
                     status:false,
                     to:"/done-purchasing-tab"
                 },
-            ] 
+            ],
+            status_label: '', 
         }
+    },
+    mounted(){
+        this.setStatus("For Purchasing");
     },
     methods:
     {
@@ -101,11 +105,27 @@ export default {
                     contents.status=true;
                     }
             });
+        },
+        setStatus(status)
+        {
+            if(status == "For Purchasing")
+            {
+                this.status_label = "For Purchasing";
+            }
+            else
+            {
+                this.status_label = "Done Purchasing";
+            }
         }
     }
 }
 </script>
 
 <style scoped>
-
+    .icon_style{
+        width: 30px;
+        height: 30px;
+        margin-top: 8px;
+        margin-left: 4px;
+    }
 </style>

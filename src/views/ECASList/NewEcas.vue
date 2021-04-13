@@ -7,12 +7,13 @@
                         <template #aside>
                             <font-awesome-icon
                                     :icon="content_icon"
-                                    class="icon text-muted custom_size"/>
+                                    class="icon_style text-muted"
+                                   />
                         </template>
                         <strong class="mt-0 mb-0">{{content_label}}</strong>
                         <br>
                         <small class="text-muted">
-                            {{content_sub_label}}
+                            Status: {{status_label}}
                         </small>
                     </b-media>
                     <!-- <b-row class="mt-4">
@@ -44,7 +45,7 @@
                                             <b-nav-item 
                                                 :to="tab.to" 
                                                 :active="tab.status" 
-                                                @click="setIndex(tab.index)">
+                                                @click="setIndex(tab.index), setStatus(tab.name)">
                                                 {{tab.name}}</b-nav-item>
                                         </div>
                                     </b-nav>
@@ -58,17 +59,17 @@
                 </b-card>
             </b-col>
         </b-row>
-        <EditContents />
+        <!-- <EditContents /> -->
     </b-container>
 </template>
 
 <script>
-import EditContents from "../ECASList/Modal/EditContents";
+// import EditContents from "../ECASList/Modal/EditContents";
 export default {
     name: 'NewECAS',
-    components: {
-        EditContents
-    },
+    // components: {
+    //     EditContents
+    // },
     props: {
         content_icon: String,
         content_label: String,
@@ -82,16 +83,21 @@ export default {
                     index:1,
                     name:"New ECAS",
                     status:true,
-                    to:"/new-ecas-tab"
+                    to:"/new-ecas-tab",
                 },
                 {
                     index:2,
                     name:"Done ECAS",
                     status:false,
-                    to:"/done-ecas-tab"
+                    to:"/done-ecas-tab",
                 },
-            ] 
+            ],
+            status_label:'',
         }
+    },
+    mounted()
+    {
+        this.setStatus('New ECAS');
     },
     methods:
     {
@@ -105,11 +111,28 @@ export default {
                     contents.status=true;
                     }
             });
+        },
+        setStatus(status)
+        {
+            if(status == "New ECAS")
+            {
+                this.status_label = "For Verification";
+            }
+            else
+            {
+                this.status_label = "Done ECAS";
+            }
         }
     },
+
 }
 </script>
 
 <style scoped>
-    
+    .icon_style{
+        width: 30px;
+        height: 30px;
+        margin-top: 8px;
+        margin-left: 4px;
+    }
 </style>

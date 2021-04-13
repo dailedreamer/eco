@@ -13,15 +13,17 @@
                     :fields="for_checking_fields"
                     :per-page="perPage"
                     :current-page="currentPage">
-                    <template #cell(action)="">
+                    <template #cell(action)="data">
                         <b-link 
                             v-b-modal.modal_edit_contents
-                            class="link_style">
+                            class="link_style"
+                            @click="updateForChecking(data.index)">
                             Edit
                         </b-link>
                         <label class="ml-1 mr-1 text-secondary">|</label>
                         <b-link 
-                            class="link_style">
+                            class="link_style"
+                            @click="forCheckingSubparts()">
                             Subparts
                         </b-link>
                     </template>
@@ -34,12 +36,20 @@
                     pills></b-pagination>
             </b-col>
         </b-row>
+        <EditContents 
+            :status_name="status_name" 
+            :status_id="status_id"
+            :get_data="this.id"/>
     </b-container>
 </template>
 
 <script>
+import EditContents from "../Modal/EditContents";
 export default {
     name: 'ForCheckingContent',
+    components: {
+        EditContents
+    },
     data(){
         return{
             perPage: 10,
@@ -66,7 +76,10 @@ export default {
                 {key: "ecas_number", sortable: true, class: 'text-center'},
                 {key: "new_revision", sortable: true, class: 'text-center'},
                 {key: "release_date", sortable: true, class: 'text-center'},
-            ]
+            ],
+            status_name: '',
+            status_id: '',
+            id: {}
         }
     },
     computed:{
@@ -74,6 +87,17 @@ export default {
             return this.for_checking_list.length
         }
     },
+    methods:{
+        updateForChecking: function(id){
+            this.status_name = "For Checking";
+            this.status_id = "3";
+            this.id = {};
+            this.id = this.for_checking_list[id];
+        },
+        forCheckingSubparts: function(){
+            alert("Open For Checking Subparts Modal");
+        }
+    }
 }
 </script>
 

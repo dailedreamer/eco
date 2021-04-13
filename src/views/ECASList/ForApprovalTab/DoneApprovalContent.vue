@@ -33,7 +33,8 @@
                     size="md" 
                     variant="danger" 
                     type="submit"
-                    title="Click to save changes">
+                    title="Click to save changes"
+                    @click="done_approval()">
                     <font-awesome-icon icon="thumbs-up" /> Done Approval
                 </b-button> 
             </b-col>
@@ -78,6 +79,11 @@ export default {
             return this.done_approval_list.length
         }
     },
+    methods:{
+        done_approval(){
+            alert("Done Approval!")
+        }
+    }
 }
 </script>
 

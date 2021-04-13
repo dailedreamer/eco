@@ -33,7 +33,8 @@
                     size="md" 
                     variant="danger" 
                     type="submit"
-                    title="Click to save changes">
+                    title="Click to save changes"
+                    @click="done_checking()">
                     <font-awesome-icon icon="thumbs-up" /> Done Checking
                 </b-button> 
             </b-col>
@@ -78,6 +79,11 @@ export default {
             return this.done_checking_list.length
         }
     },
+    methods:{
+        done_checking(){
+            alert("Done Checking!")
+        }
+    }
 }
 </script>
 

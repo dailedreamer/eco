@@ -1,7 +1,8 @@
 <template>
-    <b-container fluid>
-        <b-modal
-            id="modal_edit_contents"
+    <div>
+        <b-modal 
+            id="modal_edit_contents" 
+            ref="modal_edit_contents"
             size="xl"
             hide-footer
             :no-close-on-backdrop="true" 
@@ -34,25 +35,35 @@
                                     :key= "tab.index" >
                                     <b-nav-item 
                                         :to="tab.to" 
-                                        :active="tab.status" 
-                                        @click="setIndex(tab.index)">
+                                        :active="tab.status">
                                         {{tab.name}}</b-nav-item>
                                 </div>
                             </b-nav>
                         </b-card-header>
                         <b-card-body class=" custom_body">
-                            <router-view/>
+                            <router-view 
+                                :status_name="status_name" 
+                                :get_data="get_data"/>
                         </b-card-body>
                     </b-card>
                 </b-col>
             </b-row>
+            <b-row>
+                Status: {{status_name}} <br>
+                Status ID: {{status_id}}
+            </b-row>
         </b-modal>
-    </b-container>
+    </div>
 </template>
 
 <script>
 export default {
     name: 'EditContents',
+    props: {
+        status_name: String,
+        status_id: String,
+        get_data: Object,
+    },
     data(){
         return{
             tab_values:
@@ -61,7 +72,7 @@ export default {
                     index:1,
                     name:"Production Engineering",
                     status:true,
-                    to:"/production-engineering"
+                    to:"/production-engineering/{{status_id}}"
                 },
                 {
                     index:2,
@@ -75,26 +86,23 @@ export default {
                     status:false,
                     to:"/purchasing"
                 }
-            ]
+            ],
         }
+    },
+   mounted()
+    {
+        // this.$root.$on('bv::modal::show', (bvEvent, modal_edit_contents) => {
+        //     console.log(bvEvent);
+        //     console.log(modal_edit_contents);
+        //     this.$router.push('/production-engineering');
+        // })
     },
     methods:
     {
-        setIndex(index)
-        {
-            this.tab_values.forEach(function(contents) 
-            {
-                contents.status=false;
-                if(contents.index === index)
-                    {
-                    contents.status=true;
-                    }
-            });
-        }
-    }
+    },
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>
