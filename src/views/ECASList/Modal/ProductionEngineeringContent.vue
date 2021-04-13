@@ -516,6 +516,7 @@
                 </b-col>
                 <b-col cols="2">
                     <b-button 
+                        id="btn_clear"
                         class="float-right"
                         size="md" 
                         variant="outline-secondary"
@@ -658,6 +659,35 @@ export default {
             }
         }
     },
+    mounted(){
+        if(this.status_name == 'For Checking' || this.status_name == 'For Approval' || this.status_name == 'For PC' || this.status_name == 'For Purchasing' || this.status_name == 'Finished ECAS')
+        {
+            document.getElementById("txt_part_supplier").disabled = true;
+            document.getElementById("slc_parts_delivery_target").disabled = true;
+            document.getElementById("txt_die_supplier").disabled = true;
+            document.getElementById("slc_die_target").disabled = true;
+            document.getElementById("txt_application_mark").disabled = true;
+            document.getElementById("txt_die_sample_level").disabled = true;
+            document.getElementById("txt_die_qty").disabled = true;
+            document.getElementById("slc_die_sample_target_date").disabled = true;
+            document.getElementById("txt_remarks").disabled = true;
+            document.getElementById("chk_die_modification").disabled = true;
+            document.getElementById("chk_new_tooling").disabled = true;
+            document.getElementById("chk_additional_process").disabled = true;
+            document.getElementById("chk_material_changed").disabled = true;
+            document.getElementById("chk_new_die_fabrication").disabled = true;
+            document.getElementById("chk_cable_modification").disabled = true;
+            document.getElementById("chk_part_quality_changed").disabled = true;
+            document.getElementById("chk_hinsei").disabled = true;
+            document.getElementById("chk_shaft_modification").disabled = true;
+            document.getElementById("chk_new_addition_part").disabled = true;
+            document.getElementById("chk_mold_die_modification").disabled = true;
+            document.getElementById("chk_mnfg_work_change").disabled = true;
+            document.getElementById("chk_end_of_life").disabled = true;
+            document.getElementById("chk_new_mold_fabrication").disabled = true;
+            document.getElementById("btn_clear").hidden = true;
+        }
+    },
     methods: {
         isNumber: function(evt) {
             evt = (evt) ? evt : window.event;
@@ -685,123 +715,30 @@ export default {
         },
         clearInputs: function(){
             this.form = {
-                txt_part_supplier: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                txt_application_mark: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                slc_parts_delivery_target: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                txt_die_sample_level: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                txt_die_supplier: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                txt_die_qty: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                slc_die_target: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                slc_die_sample_target_date: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                txt_remarks: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                chk_die_modification: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                chk_new_tooling: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                chk_additional_process: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                chk_material_changed: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                chk_new_die_fabrication: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                chk_cable_modification: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                chk_part_quality_changed: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                chk_hinsei: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                chk_shaft_modification: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                chk_new_addition_part: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                chk_mold_die_modification: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                chk_mnfg_work_change: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                chk_end_of_life: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-                chk_new_mold_fabrication: {
-                    value: "",
-                    state: null,
-                    validation: "", 
-                },
-            }
-            
+                txt_part_supplier: {value: "", state: null, validation: "",},
+                txt_application_mark: {value: "", state: null, validation: "",},
+                slc_parts_delivery_target: {value: "", state: null, validation: "",},
+                txt_die_sample_level: {value: "", state: null, validation: "",},
+                txt_die_supplier: {value: "", state: null, validation: "",},
+                txt_die_qty: {value: "", state: null, validation: "",},
+                slc_die_target: {value: "", state: null, validation: "",},
+                slc_die_sample_target_date: {value: "", state: null, validation: "",},
+                txt_remarks: {value: "", state: null, validation: "",},
+                chk_die_modification: {value: "", state: null, validation: "",},
+                chk_new_tooling: {value: "", state: null, validation: "",},
+                chk_additional_process: {value: "", state: null, validation: "",},
+                chk_material_changed: {value: "", state: null, validation: "",},
+                chk_new_die_fabrication: {value: "", state: null, validation: "",},
+                chk_cable_modification: {value: "", state: null, validation: "",},
+                chk_part_quality_changed: {value: "", state: null, validation: "",},
+                chk_hinsei: {value: "", state: null, validation: "",},
+                chk_shaft_modification: {value: "", state: null, validation: "",},
+                chk_new_addition_part: {value: "", state: null, validation: "",},
+                chk_mold_die_modification: {value: "", state: null, validation: "",},
+                chk_mnfg_work_change: {value: "", state: null, validation: "",},
+                chk_end_of_life: {value: "", state: null, validation: "",},
+                chk_new_mold_fabrication: {value: "", state: null, validation: "",},
+            }    
         }
     }
 }
