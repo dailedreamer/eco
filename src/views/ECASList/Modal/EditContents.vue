@@ -34,8 +34,9 @@
                                     v-for = "tab in tab_values" 
                                     :key= "tab.index" >
                                     <b-nav-item 
-                                        :to="tab.to" 
-                                        :active="tab.status">
+                                        :to="tab.to+'/'+status_id"
+                                        :active="tab.status"
+                                        @click="setIndex(tab.index)">
                                         {{tab.name}}</b-nav-item>
                                 </div>
                             </b-nav>
@@ -48,10 +49,10 @@
                     </b-card>
                 </b-col>
             </b-row>
-            <b-row>
+            <!-- <b-row>
                 Status: {{status_name}} <br>
                 Status ID: {{status_id}}
-            </b-row>
+            </b-row> -->
         </b-modal>
     </div>
 </template>
@@ -72,7 +73,7 @@ export default {
                     index:1,
                     name:"Production Engineering",
                     status:true,
-                    to:"/production-engineering/{{status_id}}"
+                    to:"/production-engineering"
                 },
                 {
                     index:2,
@@ -87,6 +88,7 @@ export default {
                     to:"/purchasing"
                 }
             ],
+            
         }
     },
    mounted()
@@ -99,6 +101,15 @@ export default {
     },
     methods:
     {
+        setIndex: function(index){
+            this.tab_values.forEach(function(contents) {
+                contents.status=false;
+                if(contents.index === index)
+                {
+                contents.status=true;
+                }
+            });
+        }
     },
 }
 </script>

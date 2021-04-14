@@ -55,6 +55,7 @@ const ForPurchasingContent = () =>import("@/views/ECASList/ForPurchasingTab/ForP
 const DonePurchasingContent = () =>import("../views/ECASList/ForPurchasingTab/DonePurchasingContent");
 const FinishedECAS = () =>import("@/views/ECASList/FinishedECAS");
 const ProductionEngineering = () =>import("@/views/ECASList/Modal/ProductionEngineeringContent");
+const ProductionControl = () =>import("@/views/ECASList/Modal/ProductionControlContent");
 
 
 const Process             = () =>import("@/views/Process");
@@ -240,8 +241,13 @@ const routes = [
 								children: [
 									{
 										path: "/production-engineering/1",
-										name: "ProductionEngineering",
+										name: "ProductionEngineering1",
 										component: ProductionEngineering,
+									},
+									{
+										path: "/production-control/1",
+										name: "ProductionControl1",
+										component: ProductionControl,
 									}
 								]
 							},
@@ -266,8 +272,13 @@ const routes = [
 								children: [
 									{
 										path: "/production-engineering/2",
-										name: "ProductionEngineering",
+										name: "ProductionEngineering2",
 										component: ProductionEngineering,
+									},
+									{
+										path: "/production-control/2",
+										name: "ProductionControl2",
+										component: ProductionControl,
 									}
 								]
 							},
@@ -292,8 +303,13 @@ const routes = [
 								children: [
 									{
 										path: "/production-engineering/3",
-										name: "ProductionEngineering",
+										name: "ProductionEngineering3",
 										component: ProductionEngineering,
+									},
+									{
+										path: "/production-control/3",
+										name: "ProductionControl3",
+										component: ProductionControl,
 									}
 								]
 							},
@@ -318,8 +334,13 @@ const routes = [
 								children: [
 									{
 										path: "/production-engineering/4",
-										name: "ProductionEngineering",
+										name: "ProductionEngineering4",
 										component: ProductionEngineering,
+									},
+									{
+										path: "/production-control/4",
+										name: "ProductionControl4",
+										component: ProductionControl,
 									}
 								]
 							},
@@ -344,8 +365,13 @@ const routes = [
 								children: [
 									{
 										path: "/production-engineering/5",
-										name: "ProductionEngineering",
+										name: "ProductionEngineering5",
 										component: ProductionEngineering,
+									},
+									{
+										path: "/production-control/5",
+										name: "ProductionControl5",
+										component: ProductionControl,
 									}
 								]
 							},
@@ -370,8 +396,13 @@ const routes = [
 								children: [
 									{
 										path: "/production-engineering/6",
-										name: "ProductionEngineering",
+										name: "ProductionEngineering6",
 										component: ProductionEngineering,
+									},
+									{
+										path: "/production-control/6",
+										name: "ProductionControl6",
+										component: ProductionControl,
 									}
 								]
 							},
@@ -390,8 +421,13 @@ const routes = [
 						children: [
 							{
 								path: "/production-engineering/7",
-								name: "ProductionEngineering",
+								name: "ProductionEngineering7",
 								component: ProductionEngineering,
+							},
+							{
+								path: "/production-control/7",
+								name: "ProductionControl7",
+								component: ProductionControl,
 							}
 						]
 					},

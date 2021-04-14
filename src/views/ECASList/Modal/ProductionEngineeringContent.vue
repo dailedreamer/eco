@@ -12,7 +12,7 @@
                         label-size="sm">
                         <b-form-input 
                             id="txt_part_number"
-                            v-model="this.get_data.parts_number"
+                            v-model="get_data.parts_number"
                             disabled></b-form-input>
                     </b-form-group>
                     <b-form-group
@@ -697,6 +697,9 @@ export default {
             } else {
                 return true;
             }
+        },
+        submitForm: function(){
+            alert(1);
         },
         saveChanges: function(){
             alert('Successfully Saved!');
