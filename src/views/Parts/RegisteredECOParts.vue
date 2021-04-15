@@ -9,60 +9,81 @@
                   <b-col cols="2">
                     <b-row>
                       <b-card 
-                        class="custom_card_filter"  
+                        class="custom_card_filter no_supplier pl-2"  
                         @click="noSupplierCard">
                           <b-row class="mt-0">
-                              <b-col cols="8">
+                              <b-col cols="6">
                                     <b-row>
-                                        <h6 class="mb-1">No Supplier</h6>
-                                        <small class="text-secondary mt-1">Status: Incomplete</small>
+                                        <h5 class="custom_card_title mb-0"><strong>No Supplier</strong></h5>
+                                        <small class="text-dark mt-0">Incomplete</small>
                                     </b-row>
-                                    <b-row class="mt-lg-3">
-                                        <h6 class="text-secondary mt-1">Total Count: 105</h6>
+                                    <b-row class="mt-5">
+                                        <small class="text-dark mt-1">Total Count:&nbsp;&nbsp;105</small>
                                     </b-row>
                               </b-col>
-                              <b-col cols="4">
-                                <h4 class="text-muted">13%</h4> 
+                              <b-col cols="6">
+                                 <b-img 
+                                    :src="require('../../assets/icon_images/supplier.svg')" 
+                                    class="card_image pr-1"
+                                    width="120" 
+                                    height="120" 
+                                    alt="placeholder">
+                                </b-img>
+                                 <div  class="custom_percentage"><strong>58%</strong></div>
                               </b-col>
                           </b-row>
                       </b-card>
                     </b-row>
                     <b-row class="mt-3">
                       <b-card 
-                        class="custom_card_filter" 
+                        class="custom_card_filter pl-2" 
                         @click="noEcasNoCard">
                           <b-row class="mt-0">
-                              <b-col cols="8">
+                              <b-col cols="6">
                                     <b-row>
-                                        <h6 class="mb-1">No ECAS No.</h6>
-                                        <small class="text-secondary mt-1">Status: Incomplete</small>
+                                        <h5 class="custom_card_title mb-0"><strong>No ECAS No.</strong></h5>
+                                        <small class="text-dark mt-0">Incomplete</small>
                                     </b-row>
-                                    <b-row class="mt-lg-4">
-                                        <h6 class="text-secondary mt-1">Total Count: 105</h6>
+                                    <b-row class="mt-5">
+                                        <small class="text-dark mt-1">Total Count:&nbsp;&nbsp;105</small>
                                     </b-row>
                               </b-col>
-                              <b-col cols="4">
-                                <h4 class="text-muted">50%</h4> 
+                            <b-col cols="6">
+                                 <b-img 
+                                    :src="require('../../assets/icon_images/no_ecas.svg')" 
+                                    class="card_image pr-1"
+                                    width="120" 
+                                    height="120" 
+                                    alt="placeholder">
+                                </b-img>
+                                 <div  class="custom_percentage"><strong>4%</strong></div>
                               </b-col>
                           </b-row>
                       </b-card>
                     </b-row>
                     <b-row class="mt-3">
                       <b-card 
-                        class="custom_card_filter" 
+                        class="custom_card_filter pl-2" 
                         @click="registeredEcasCard">
                           <b-row class="mt-0">
-                              <b-col cols="8">
+                             <b-col cols="6">
                                     <b-row>
-                                        <h6 class="mb-1">Registered ECAS</h6>
-                                        <small class="text-secondary mt-1">Status: For Verification</small>
+                                        <h5 class="custom_card_title mb-0"><strong>Registered ECAS</strong></h5>
+                                        <small class="text-dark mt-0">For Verification</small>
                                     </b-row>
-                                    <b-row class="mt-lg-4">
-                                        <h6 class="text-secondary mt-1">Total Count: 105</h6>
+                                    <b-row class="mt-5">
+                                        <small class="text-dark mt-1">Total Count:&nbsp;&nbsp;105</small>
                                     </b-row>
                               </b-col>
-                              <b-col cols="4">
-                                <h4 class="text-muted">98%</h4> 
+                              <b-col cols="6">
+                                 <b-img 
+                                    :src="require('../../assets/icon_images/registered_ecas.svg')" 
+                                    class="card_image pr-1"
+                                    width="120" 
+                                    height="120" 
+                                    alt="placeholder">
+                                </b-img>
+                                 <div  class="custom_percentage"><strong>4%</strong></div>
                               </b-col>
                           </b-row>
                       </b-card>
@@ -72,7 +93,8 @@
                         class="custom_card_filter" 
                         @click="unnecessaryEcasCard">
                           <b-row class="mt-0">
-                              <b-col cols="8">
+                              <b-col cols="6
+                              ">
                                     <b-row>
                                         <h6 class="mb-1">Unnecessary ECAS</h6>
                                         <small class="text-secondary mt-1">Status: For Verification</small>
@@ -81,8 +103,15 @@
                                         <h6 class="text-secondary mt-1">Total Count: 105</h6>
                                     </b-row>
                               </b-col>
-                              <b-col cols="4">
-                                <h4 class="text-muted">41%</h4> 
+                               <b-col cols="6">
+                                 <b-img 
+                                    :src="require('../../assets/icon_images/unnecessary_ecas.svg')" 
+                                    class="card_image pr-1"
+                                    width="120" 
+                                    height="120" 
+                                    alt="placeholder">
+                                </b-img>
+                                 <div  class="custom_percentage"><strong>98%</strong></div>
                               </b-col>
                           </b-row>
                       </b-card>
@@ -179,7 +208,36 @@ export default {
 </script>
 
 <style scoped>
-    .custom_card_filter{
+    .custom_card_filter
+    {
       width: 100%;
+      border:0;
+      border-radius: 15px;
+      color: #b9081d;
+      box-shadow: 0px 0px 7px 0px rgb(193 193 193);
+      float:left;
+
+    }
+
+    .custom_percentage
+    {
+      position: absolute;
+      top: 9%;
+      left: 71%;
+      transform: translate(-50%, -50%);
+      font-weight: bolder;
+      font-size:29px;
+      color: black;
+    }
+
+    .card_image
+    {
+     opacity: 0.4;
+    }
+
+
+    .custom_card_title
+    {
+      letter-spacing: 1px;
     }
 </style>
