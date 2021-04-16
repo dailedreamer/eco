@@ -38,8 +38,8 @@
                                     </b-link>
                                     <label class="ml-1 mr-1 text-secondary">|</label>
                                     <b-link 
-                                        class="link_style"
-                                        @click="finishedEcasSubparts()">
+                                        v-b-modal.modal_subparts
+                                        class="link_style">
                                         Subparts
                                     </b-link>
                                 </template>
@@ -59,15 +59,18 @@
             :status_name="status_name" 
             :status_id="status_id"
             :get_data="this.id"/>
+        <SubpartsModal />
     </b-container>
 </template>
 
 <script>
 import EditContents from "../ECASList/Modal/EditContents";
+import SubpartsModal from "../ECASList/Modal/SubpartsModal";
 export default {
     name: 'FinishedECAS',
     components:{
-        EditContents
+        EditContents,
+        SubpartsModal
     },
     props: {
         content_icon: String,
