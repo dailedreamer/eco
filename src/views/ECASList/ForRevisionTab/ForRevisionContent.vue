@@ -22,8 +22,8 @@
                         </b-link>
                         <label class="ml-1 mr-1 text-secondary">|</label>
                         <b-link 
-                            class="link_style"
-                            @click="forRevisionSubparts()">
+                            v-b-modal.modal_subparts
+                            class="link_style">
                             Subparts
                         </b-link>
                     </template>
@@ -40,15 +40,18 @@
             :status_name="status_name" 
             :status_id="status_id" 
             :get_data="this.id"/>
+        <SubpartsModal />
     </b-container>
 </template>
 
 <script>
 import EditContents from "../Modal/EditContents";
+import SubpartsModal from "../Modal/SubpartsModal";
 export default {
     name: 'ForRevisionContent',
     components: {
-        EditContents
+        EditContents,
+        SubpartsModal
     },
     data(){
         return{
@@ -94,9 +97,9 @@ export default {
             this.id = {};
             this.id = this.for_revision_list[id];
         },
-        forRevisionSubparts: function(){
-            alert("Open For Revision Subparts Modal");
-        }
+        // forRevisionSubparts: function(){
+        //     alert("Open For Revision Subparts Modal");
+        // }
     }
 }
 </script>
