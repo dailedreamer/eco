@@ -16,7 +16,7 @@
                             Status: {{status_label}}
                         </small>
                     </b-media>
-                    <!-- <b-row class="mt-4">
+                    <b-row class="mt-4">
                         <b-col cols="8">
                              <SearchTemplate field_set='1'>
                                 <b-button 
@@ -29,7 +29,7 @@
                                 </b-button>
                             </SearchTemplate>
                         </b-col>
-                    </b-row> -->
+                    </b-row>
                     <b-row class="mt-4">
                         <b-col cols="12">
                             <b-card class="custom_card">
