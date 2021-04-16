@@ -17,7 +17,7 @@
                         </small>
                     </b-media>
                     <b-row class="mt-4">
-                        <!-- <b-col cols="8" float-left>
+                        <b-col cols="8" float-left>
                              <SearchTemplate field_set='1'>
                                 <b-button 
                                 variant="danger"
@@ -28,7 +28,7 @@
                                     &nbsp;Go!
                                 </b-button>
                             </SearchTemplate>
-                        </b-col> -->
+                        </b-col>
                     </b-row>
                     <b-row class="mt-4">
                         <b-col cols="12">
