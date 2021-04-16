@@ -56,6 +56,7 @@ const DonePurchasingContent = () =>import("../views/ECASList/ForPurchasingTab/Do
 const FinishedECAS = () =>import("@/views/ECASList/FinishedECAS");
 const ProductionEngineering = () =>import("@/views/ECASList/Modal/ProductionEngineeringContent");
 const ProductionControl = () =>import("@/views/ECASList/Modal/ProductionControlContent");
+const Purchasing = () =>import('@/views/ECASList/Modal/PurchasingContent');
 
 
 const Process             = () =>import("@/views/Process");
@@ -248,6 +249,11 @@ const routes = [
 										path: "/production-control/1",
 										name: "ProductionControl1",
 										component: ProductionControl,
+									},
+									{
+										path: "/purchasing/1",
+										name: "Purchasing1",
+										component: Purchasing,
 									}
 								]
 							},
@@ -279,6 +285,11 @@ const routes = [
 										path: "/production-control/2",
 										name: "ProductionControl2",
 										component: ProductionControl,
+									},
+									{
+										path: "/purchasing/2",
+										name: "Purchasing2",
+										component: Purchasing,
 									}
 								]
 							},
@@ -310,6 +321,11 @@ const routes = [
 										path: "/production-control/3",
 										name: "ProductionControl3",
 										component: ProductionControl,
+									},
+									{
+										path: "/purchasing/3",
+										name: "Purchasing3",
+										component: Purchasing,
 									}
 								]
 							},
@@ -341,6 +357,11 @@ const routes = [
 										path: "/production-control/4",
 										name: "ProductionControl4",
 										component: ProductionControl,
+									},
+									{
+										path: "/purchasing/4",
+										name: "Purchasing4",
+										component: Purchasing,
 									}
 								]
 							},
@@ -372,6 +393,11 @@ const routes = [
 										path: "/production-control/5",
 										name: "ProductionControl5",
 										component: ProductionControl,
+									},
+									{
+										path: "/purchasing/5",
+										name: "Purchasing5",
+										component: Purchasing,
 									}
 								]
 							},
@@ -403,6 +429,11 @@ const routes = [
 										path: "/production-control/6",
 										name: "ProductionControl6",
 										component: ProductionControl,
+									},
+									{
+										path: "/purchasing/6",
+										name: "Purchasing6",
+										component: Purchasing,
 									}
 								]
 							},
@@ -428,6 +459,11 @@ const routes = [
 								path: "/production-control/7",
 								name: "ProductionControl7",
 								component: ProductionControl,
+							},
+							{
+								path: "/purchasing/7",
+								name: "Purchasing7",
+								component: Purchasing,
 							}
 						]
 					},

@@ -49,10 +49,6 @@
                     </b-card>
                 </b-col>
             </b-row>
-            <!-- <b-row>
-                Status: {{status_name}} <br>
-                Status ID: {{status_id}}
-            </b-row> -->
         </b-modal>
     </div>
 </template>
@@ -90,14 +86,6 @@ export default {
             ],
             
         }
-    },
-   mounted()
-    {
-        // this.$root.$on('bv::modal::show', (bvEvent, modal_edit_contents) => {
-        //     console.log(bvEvent);
-        //     console.log(modal_edit_contents);
-        //     this.$router.push('/production-engineering');
-        // })
     },
     methods:
     {

@@ -462,7 +462,7 @@
             <b-row class="mt-4">
                 <b-col cols="10">
                     <b-button
-                        v-if="this.status_name == 'For Checking' || this.status_name == 'For Approval' || this.status_name == 'For PC' || this.status_name == 'For Purchasing' || this.status_name == 'Finished ECAS'"
+                        v-if="this.status_name == 'For PC' || this.status_name == 'For Purchasing' || this.status_name == 'Finished ECAS'"
                         id="btn_download" 
                         class="mr-2"
                         size="md" 
@@ -470,16 +470,6 @@
                         title="Click to download excel file"
                         @click="downloadExcel()">
                         <font-awesome-icon icon="download" /> Download Excel
-                    </b-button>
-                    <b-button
-                        v-if="this.status_name == 'For Checking' || this.status_name == 'For Approval'"
-                        id="btn_remarks" 
-                        class="mr-2"
-                        size="md" 
-                        variant="danger"
-                        title="Click to add remarks"
-                        @click="remarks()">
-                        <font-awesome-icon icon="edit" /> Remarks
                     </b-button>
                     <b-button 
                         v-if="this.status_name == 'For Verification' || this.status_name == 'For Revision' || this.status_name == 'For PC' 
@@ -706,9 +696,6 @@ export default {
         },
         downloadExcel: function(){
             alert('Successfully Downloaded Excel File!');
-        },
-        remarks: function(){
-            alert('Open Remarks Modal');
         },
         good: function(){
             alert('Approved');
