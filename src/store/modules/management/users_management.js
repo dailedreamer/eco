@@ -34,11 +34,11 @@ export default{
 					});
 			});
         },
-        async loadRoles({ commit }, system_id) {
-            console.log(system_id);
+        async loadRoles({ commit }) {
+            
 			return new Promise((resolve, reject) => {
 				axios
-					.get(`system-roles/${system_id}`)
+					.get(`system-roles`)
 					.then(function(response) {
                         commit("SET_ROLES", response.data);
                         console.log(response);
@@ -55,6 +55,19 @@ export default{
 					});
 			});
 		},
+		async insertUser(state, form_data) {
+			return new Promise((resolve, reject) => {
+				axios
+					.post("users", form_data)
+					.then(function(response){
+						console.log(response);
+						resolve(response);
+					})
+					.catch(function(error){
+						reject(error.response);
+					});
+			})
+		}
     },
     getters:{
         getEmployees: (state) => state.load_employees,

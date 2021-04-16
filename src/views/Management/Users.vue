@@ -41,7 +41,11 @@
                                         <b-container fluid>
                                             <b-row>
                                                 <b-col cols="12">
-                                                    <b-form>
+                                                    <b-form
+                                                        id="form_user"
+                                                        @submit.prevent="submitForm"
+                                                        method="post"
+                                                        >
                                                         <b-form-group
                                                             label-for="slc_employee_name"
                                                             label="Employee Name:"
@@ -49,13 +53,15 @@
                                                             label-align-sm="left">
                                                             <multiselect  
                                                                 id="slc_employee_name"
-                                                                v-model="employeeValue"
+                                                                name="emp_id"
+                                                                v-model="form.employee.value"
                                                                 :options="employeeOptions" 
                                                                 :searchable="true"
                                                                 :show-labels="false"
                                                                 placeholder="Select Employee" 
-                                                                label="Full Name" 
-                                                                track-by="employee_number"></multiselect>
+                                                                label="full_name" 
+                                                                track-by="employee_number"
+                                                            ></multiselect>
                                                         </b-form-group>
 
                                                         <b-form-group
@@ -65,37 +71,40 @@
                                                             label-align-sm="left">
                                                             <multiselect
                                                                 id="slc_roles"  
-                                                                v-model="rolesValue"
+                                                                name="role_id"          
+                                                                v-model="form.roles.value"
                                                                 :options="rolesOptions" 
                                                                 :searchable="true"
                                                                 :show-labels="false"
                                                                 placeholder="Select Roles" 
                                                                 label="role" 
-                                                                track-by="id"></multiselect>
+                                                                track-by="id"                                               
+                                                            ></multiselect>
                                                         </b-form-group>
+                                                        <b-row class="float-right">
+                                                            <b-button 
+                                                                size="sm" 
+                                                                variant="danger"
+                                                                type="submit"
+                                                                id="btn_add_employee">
+                                                                <font-awesome-icon
+                                                                    icon="save"
+                                                                    class="icon"/>
+                                                                    Save Values
+                                                            </b-button>
+                                                            <b-button 
+                                                                class="ml-2"
+                                                                @click="clearForm();"
+                                                                size="sm" 
+                                                                variant="outline-secondary">
+                                                                <font-awesome-icon
+                                                                    icon="trash"
+                                                                    class="icon"/>
+                                                                    Clear
+                                                            </b-button>
+                                                        </b-row>
                                                     </b-form>
-                                                    <b-row class="float-right">
-                                                        <b-button 
-                                                            size="sm" 
-                                                            variant="danger"
-                                                            type="submit"
-                                                            id="btn_add_employee">
-                                                            <font-awesome-icon
-                                                                icon="save"
-                                                                class="icon"/>
-                                                                Save Values
-                                                        </b-button>
-                                                        <b-button 
-                                                            class="ml-2"
-                                                            @click="clearForm();"
-                                                            size="sm" 
-                                                            variant="outline-secondary">
-                                                            <font-awesome-icon
-                                                                icon="trash"
-                                                                class="icon"/>
-                                                                Clear
-                                                        </b-button>
-                                                    </b-row>
+                                                   
                                                 </b-col>
                                             </b-row> 
                                         </b-container>
@@ -448,6 +457,21 @@ export default {
                 { key: "control"},
                 { key: "action"}
             ],
+           form: 
+           {
+                employee: 
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+                roles:
+                {
+                    value: "",
+                    state: null,
+                    validation: "",
+                },
+            },
         }
     },
     computed: {
@@ -464,19 +488,54 @@ export default {
         loadEmployees: function()
         {
             this.$store.dispatch("loadEmployees").then((response) => {
-                 let data = response.data;
-                 this.employeeOptions = data;        
-
+                let data = response.data;
+                this.employeeOptions = data;        
+                console.log(data);
            });  
+
         },
         loadRoles: function()
         {
-            this.$store.dispatch("loadRoles", '44').then((response) => {             
+            this.$store.dispatch("loadRoles").then((response) => {             
                  let data = response.data;
-                 this.rolesOptions = data;        
+                 this.rolesOptions = data; 
+                 console.log(data);       
 
            });  
+        },
+      
+        submitForm: function()
+        {
+            var formData = new FormData(document.getElementById("form_user"));
+            formData.append("emp_id", this.form.employee.value.employee_number);
+            formData.append("role_id",this.form.roles.value.id);
+
+            document.getElementById("btn_add_employee").disabled = true;
+            this.$store
+            .dispatch("insertUser", formData)
+            .then((response) => {
+                console.log(response);
+                document.getElementById("btn_add_employee").disabled = false;
+                this.clear();
+            })
+        },
+
+        clear: function()
+        {
+            this.form = {
+                employee: {
+                value: '',
+                state: null,
+                validation: "",
+                },
+                roles: {
+                value: '',
+                state: null,
+                validation: "",
+                },
+            }
         }
+
     },
 }
 </script>
