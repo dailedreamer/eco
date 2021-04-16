@@ -197,17 +197,17 @@
                     <b-col cols="6">
                         <b-form-group
                             label="Remarks:"
-                            label-for="txt_pc_remarks"
+                            label-for="txt_remarks"
                             label-size="sm"
-                            :state="form.txt_pc_remarks.state">
+                            :state="form.txt_remarks.state">
                             <b-form-textarea 
-                                id="txt_pc_remarks"
-                                name="txt_pc_remarks"
+                                id="txt_remarks"
+                                name="txt_remarks"
                                 rows="5"
                                 max-rows="6"
                                 placeholder="Enter Remarks"
-                                v-model="form.txt_pc_remarks.value"
-                                :state="form.txt_pc_remarks.state"></b-form-textarea>
+                                v-model="form.txt_remarks.value"
+                                :state="form.txt_remarks.state"></b-form-textarea>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -215,7 +215,7 @@
                 <b-row class="mt-4">
                     <b-col cols="10">
                         <b-button
-                            v-if="this.status_name == 'For Checking' || this.status_name == 'For Approval' || this.status_name == 'For PC' || this.status_name == 'For Purchasing' || this.status_name == 'Finished ECAS'"
+                            v-if="this.status_name == 'For PC' || this.status_name == 'For Purchasing' || this.status_name == 'Finished ECAS'"
                             id="btn_download" 
                             class="mr-2"
                             size="md" 
@@ -223,16 +223,6 @@
                             title="Click to download excel file"
                             @click="downloadExcel()">
                             <font-awesome-icon icon="download" /> Download Excel
-                        </b-button>
-                        <b-button
-                            v-if="this.status_name == 'For Checking' || this.status_name == 'For Approval'"
-                            id="btn_remarks" 
-                            class="mr-2"
-                            size="md" 
-                            variant="danger"
-                            title="Click to add remarks"
-                            @click="remarks()">
-                            <font-awesome-icon icon="edit" /> Remarks
                         </b-button>
                         <b-button 
                             v-if="this.status_name == 'For Verification' || this.status_name == 'For Revision' || this.status_name == 'For PC' 
@@ -343,7 +333,7 @@ export default {
                     state: null,
                     validation: "", 
                 },
-                txt_pc_remarks: {
+                txt_remarks: {
                     value: "",
                     state: null,
                     validation: "", 
@@ -364,7 +354,7 @@ export default {
             document.getElementById("slc_start_date_of_buffer").disabled = true;
             document.getElementById("slc_del_date_of_old_rev").disabled = true;
             document.getElementById("slc_del_date_of_new_rev").disabled = true;
-            document.getElementById("txt_pc_remarks").disabled = true;
+            document.getElementById("txt_remarks").disabled = true;
             document.getElementById("btn_clear").hidden = true;
         }
     },
@@ -387,9 +377,6 @@ export default {
         downloadExcel: function(){
             alert('Successfully Downloaded Excel File!');
         },
-        remarks: function(){
-            alert('Open Remarks Modal');
-        },
         good: function(){
             alert('Approved');
         },
@@ -408,7 +395,7 @@ export default {
                 slc_start_date_of_buffer: {value: "", state: null, validation: "",},
                 slc_del_date_of_old_rev: {value: "", state: null, validation: "",},
                 slc_del_date_of_new_rev: {value: "", state: null, validation: "",},
-                txt_pc_remarks: {value: "", state: null, validation: "",},
+                txt_remarks: {value: "", state: null, validation: "",},
             }    
         }
     }
