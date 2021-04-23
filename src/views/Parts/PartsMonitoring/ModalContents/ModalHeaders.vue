@@ -8,11 +8,9 @@
                             <b-icon icon="flag"  font-scale="1.5" variant="white"></b-icon>
                         </div>
                     </template>
-                        <h5 class="head--title mb-0">{{page_title}}</h5>
-                        <small class="text-muted">Lorem ipsum dolor sit amet.</small>
-                    </b-media>
-                <!-- <strong style="color">{{page_title}}</strong><br>
-                <small class="text-muted">Lorem ipsum dolor sit amet.</small> -->
+                    <h5 class="head--title mb-0">{{page_title}}</h5>
+                    <small class="text-muted">Lorem ipsum dolor sit amet.</small>
+                </b-media>
             </b-col>
             <b-col cols="7">
                 <b-row class="mt-1 ml-1"> 

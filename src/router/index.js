@@ -129,6 +129,7 @@ const routes = [
 						path: "/parts-monitoring",
 						name: "PartsMonitoring",
 						component: PartsMonitoring ,
+						redirect: "/parts-details",
 						// meta: { requiresAuth: true },
 						children: [
 							{
