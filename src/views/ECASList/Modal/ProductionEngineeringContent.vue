@@ -179,6 +179,8 @@
                     <b-form-textarea 
                         id="txt_remarks"
                         name="txt_remarks"
+                        rows="3"
+                        max-rows="6"
                         placeholder="Enter Remarks"
                         v-model="form.txt_remarks.value"
                         :state="form.txt_remarks.state"></b-form-textarea>
@@ -189,7 +191,14 @@
                 <b-col cols="12">
                     <b-media class="mb-4">
                         <template #aside>
-                            <b-icon icon="card-list"  font-scale="2.5" variant="secondary"></b-icon>
+                            <!-- <b-icon icon="card-list"  font-scale="2.5" variant="secondary"></b-icon> -->
+                            <b-img 
+                                class="mt-1"
+                                :src="require('@/assets/icon_images/list.png')" 
+                                width="40" 
+                                height="40" 
+                                alt="placeholder">
+                            </b-img>
                         </template>
                         <h5 class="mb-0">Engineering Change Order</h5>
                         <small class="text-secondary">
@@ -688,9 +697,9 @@ export default {
                 return true;
             }
         },
-        submitForm: function(){
-            alert(1);
-        },
+        // submitForm: function(){
+        //     alert(1);
+        // },
         saveChanges: function(){
             alert('Successfully Saved!');
         },

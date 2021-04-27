@@ -5,10 +5,16 @@
                 <b-card>
                     <b-media>
                         <template #aside>
-                            <font-awesome-icon
+                            <!-- <font-awesome-icon
                                     :icon="content_icon"
                                     class="icon_style text-muted"
-                                   />
+                                   /> -->
+                             <b-img 
+                                :src="require('../../assets/icon_images/ecas/new-ecas.png')" 
+                                width="40" 
+                                height="40" 
+                                alt="placeholder">
+                            </b-img>
                         </template>
                         <strong class="mt-0 mb-0">{{content_label}}</strong>
                         <br>
