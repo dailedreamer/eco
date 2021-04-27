@@ -1,8 +1,8 @@
 <template>
   <b-container fluid>
-    <Header 
-        part_number="KDTEST" 
-        page_title="Die DFM"/>
+    <Header  
+        page_title="Die DFM"
+        :get_data="get_data"/>
         <b-row class='pl-2'>
             <b-col cols="9">
                 <strong>
@@ -423,6 +423,9 @@ export default {
     name: "DieDFM",
     components: {
         Header,
+    },
+    props:{
+        get_data: Object
     },
     data(){
         return{

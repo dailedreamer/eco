@@ -1,6 +1,8 @@
 <template>
   <b-container fluid>
-    <Header part_number="KDTEST" page_title="Die Trial Details"/>
+    <Header 
+        page_title="Die Trial Details"
+        :get_data="get_data"/>
         <b-row class="pt-2">
             <b-col>
                 <b-row>
@@ -439,6 +441,9 @@ export default {
     name: "DieTrialDetails",
     components: {
         Header,
+    },
+    props:{
+        get_data: Object
     },
     data(){
         return{

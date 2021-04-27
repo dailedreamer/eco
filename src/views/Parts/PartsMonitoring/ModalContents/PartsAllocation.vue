@@ -1,6 +1,8 @@
 <template>
   <b-container fluid>
-    <Header part_number="KDTEST" page_title="Parts Allocation"/>
+    <Header 
+        page_title="Parts Allocation"
+        :get_data="get_data"/>
         <b-row class="p-2 mb-3">
             <b-col cols="4">
                 <b-form-group 
@@ -82,6 +84,9 @@ export default {
     name: "AssemblyApplication",
     components: {
         Header,
+    },
+    props:{
+        get_data: Object
     },
     methods:{
         update: function(){

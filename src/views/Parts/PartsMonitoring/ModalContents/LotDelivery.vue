@@ -1,6 +1,8 @@
 <template>
   <b-container fluid>
-    <Header part_number="KDTEST" page_title="Lot Delivery"/>
+    <Header 
+        page_title="Lot Delivery"
+        :get_data="get_data"/>
         <b-row class="mt-2 mb-4">
             <b-col>
                 <b-button 
@@ -185,6 +187,9 @@ export default {
     name: "AssemblyApplication",
     components: {
         Header,
+    },
+    props:{
+        get_data: Object
     },
     data(){
         return{

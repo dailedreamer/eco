@@ -27,8 +27,10 @@
                             squared 
                             size="sm" 
                             router-link to="/parts-details" 
-                            class="pt-4 pb-4 pr-5 custom_button custom_active" 
-                            variant="outline-secondary">
+                            class="pt-4 pb-4 pr-5 custom_button custom_inactive" 
+                            variant="outline-secondary"
+                            @click="setActive('parts_details')"
+                            :class="{ active: isActive('parts_details')}">
                             <b-media>
                                 <template #aside>
                                     <b-img 
@@ -52,7 +54,9 @@
                             size="sm" 
                             router-link to="/meeting" 
                             class="pt-4 pb-4 pr-5 custom_button custom_inactive" 
-                            variant="outline-secondary">
+                            variant="outline-secondary"
+                             @click="setActive('meeting')"
+                            :class="{ active: isActive('meeting')}">
                             <b-media>
                                 <template #aside>
                                     <b-img 
@@ -76,7 +80,9 @@
                         size="sm" 
                         router-link to="/eco_details" 
                         class="pt-4 pb-4 pr-5 custom_button custom_inactive" 
-                        variant="outline-secondary">
+                        variant="outline-secondary"
+                        @click="setActive('eco_details')"
+                            :class="{ active: isActive('eco_details')}">
                             <b-media>
                                 <template #aside>
                                     <b-img 
@@ -99,7 +105,9 @@
                             squared size="sm" 
                             router-link to="/die_sample" 
                             class="pt-4 pb-4 pr-5 custom_button custom_inactive" 
-                            variant="outline-secondary">
+                            variant="outline-secondary"
+                            @click="setActive('die_sample')"
+                            :class="{ active: isActive('die_sample')}">
                             <b-media>
                                 <template #aside>
                                     <b-img 
@@ -123,7 +131,9 @@
                             size="sm" 
                             router-link to="/drawing_issuance" 
                             class="pt-3 pb-3 pr-5 custom_button custom_inactive" 
-                            variant="outline-secondary">
+                            variant="outline-secondary"
+                            @click="setActive('drawing_issuance')"
+                            :class="{ active: isActive('drawing_issuance')}">
                             <b-media>
                                 <template #aside>
                                     <b-img 
@@ -147,7 +157,9 @@
                             size="sm" 
                             router-link to="/die_quotation_details" 
                             class="pt-3 pb-3 pr-5 custom_button custom_inactive" 
-                            variant="outline-secondary">
+                            variant="outline-secondary"
+                            @click="setActive('die_quotation')"
+                            :class="{ active: isActive('die_quotation')}">
                             <b-media>
                                 <template #aside>
                                     <b-img 
@@ -171,7 +183,9 @@
                             size="sm" 
                             router-link to="/die_dfm" 
                             class="pt-4 pb-4 pr-5 custom_button custom_inactive" 
-                            variant="outline-secondary">
+                            variant="outline-secondary"
+                            @click="setActive('die_dfm')"
+                            :class="{ active: isActive('die_dfm')}">
                             <b-media>
                                 <template #aside>
                                     <b-img 
@@ -195,7 +209,9 @@
                             size="sm" 
                             router-link to="/qc_igm" 
                             class="pt-4 pb-4 pr-5 custom_button custom_inactive" 
-                            variant="outline-secondary">
+                            variant="outline-secondary"
+                            @click="setActive('qc_igm')"
+                            :class="{ active: isActive('qc_igm')}">
                             <b-media>
                                 <template #aside>
                                     <b-img 
@@ -219,7 +235,9 @@
                             size="sm" 
                             router-link to="/die_trial_details" 
                             class="pt-4 pb-4 pr-5 custom_button custom_inactive" 
-                            variant="outline-secondary">
+                            variant="outline-secondary"
+                            @click="setActive('die_trial')"
+                            :class="{ active: isActive('die_trial')}">
                             <b-media>
                                 <template #aside>
                                     <b-img 
@@ -242,7 +260,9 @@
                             size="sm" 
                             router-link to="/lot_po_issuance" 
                             class="pt-4 pb-4 pr-5 custom_button custom_inactive" 
-                            variant="outline-secondary">
+                            variant="outline-secondary"
+                            @click="setActive('lot_po_issuance')"
+                            :class="{ active: isActive('lot_po_issuance')}">
                             <b-media>
                                 <template #aside>
                                     <b-img 
@@ -266,7 +286,9 @@
                             size="sm" 
                             router-link to="/lot_delivery" 
                             class="pt-4 pb-4 pr-5 custom_button custom_inactive" 
-                            variant="outline-secondary">
+                            variant="outline-secondary"
+                            @click="setActive('lot_delivery')"
+                            :class="{ active: isActive('lot_delivery')}">
                             <b-media>
                                 <template #aside>
                                     <b-img 
@@ -290,7 +312,9 @@
                             size="sm" 
                             router-link to="/product_audit" 
                             class="pt-4 pb-4 pr-5 custom_button custom_inactive" 
-                            variant="outline-secondary">
+                            variant="outline-secondary"
+                            @click="setActive('product_audit')"
+                            :class="{ active: isActive('product_audit')}">
                             <b-media>
                                 <template #aside>
                                     <b-img 
@@ -314,7 +338,9 @@
                             size="sm" 
                             router-link to="/parts_allocation" 
                             class="pt-4 pb-4 pr-5 custom_button custom_inactive" 
-                            variant="outline-secondary">
+                            variant="outline-secondary"
+                            @click="setActive('parts_allocation')"
+                            :class="{ active: isActive('parts_allocation')}">
                             <b-media>
                                 <template #aside>
                                     <b-img 
@@ -337,7 +363,9 @@
                             size="sm" 
                             router-link to="/assembly_application" 
                             class="pt-3 pb-3 pr-5 custom_button custom_inactive" 
-                            variant="outline-secondary">
+                            variant="outline-secondary"
+                            @click="setActive('assembly_application')"
+                            :class="{ active: isActive('assembly_application')}">
                             <b-media>
                                 <template #aside>
                                     <b-img 
@@ -356,7 +384,7 @@
             </b-col>
             <b-col cols="9">
                 <b-container fluid class="mr-2 head">
-                    <router-view />
+                    <router-view :get_data="get_data"/>
                 </b-container>
             </b-col>
         </b-row>
@@ -366,7 +394,22 @@
 
 <script>
 export default {
-
+    props: {
+        get_data: Object
+    },
+    data(){
+        return{
+            activeItem: 'parts_details'
+        }
+    },
+    methods: {
+        isActive: function (menuItem) {
+            return this.activeItem === menuItem
+        },
+        setActive: function (menuItem) {
+            this.activeItem = menuItem 
+        }
+    }
 }
 </script>
 
@@ -417,13 +460,24 @@ export default {
     margin-top:-17px;
     margin-bottom:-17px;
 }
-
-/* .modal-content{
-    max-width: 1500px;
-} */
-
-/* .modal-xl {
-    max-width: 1223px;
-} */
-
+.btn-outline-secondary:not(:disabled):not(.disabled):active, 
+.btn-outline-secondary:not(:disabled):not(.disabled).active, .show > 
+.btn-outline-secondary.dropdown-toggle 
+{
+    border-left: 4px solid #e84656;
+    background: white;
+    color: rgb(59, 59, 59);
+    border-right:  transparent;
+    border-top: transparent;
+    border-bottom: transparent;
+}
+.btn-outline-secondary[data-v-6bfbc512]:hover, 
+.btn-outline-secondary[data-v-6bfbc512]:active 
+{
+    /* box-shadow: 0 2px 4px 0 rgba(0,0,0,0.18) !important; */
+    /* background: unset; */
+    box-shadow: 0 2px 4px 0 #f70a0a2e !important;
+    background-color: #e8e8e8 !important; 
+    
+    }
 </style>

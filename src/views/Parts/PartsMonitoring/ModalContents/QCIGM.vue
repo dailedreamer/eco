@@ -1,6 +1,8 @@
 <template>
   <b-container fluid>
-    <Header part_number="KDTEST" page_title="QC IGM"/>
+    <Header 
+        page_title="QC IGM"
+        :get_data="get_data"/>
         <b-row class="p-2 mb-5 mt-5">
             <b-col class='pt-3 pl-5 pr-5 pb-5'>
             <b-form-group 
@@ -68,6 +70,9 @@ export default {
     name: "QCIGM",
     components: {
         Header,
+    },
+    props:{
+        get_data: Object
     },
     methods:{
         update: function(){

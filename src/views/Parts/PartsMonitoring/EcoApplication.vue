@@ -69,16 +69,33 @@
                     </b-row>
                 </b-card>
             </b-col>
-            <b-col cols="6">
-            
-            </b-col>
+        </b-row>
+        <b-row>
+           <Body :title="title"/>
         </b-row>
     </b-container>
 </template>
 
 <script>
+import Body from "../../../components/Parts/PartsMonitoring/Body.vue";
 export default {
     name: "EcoApplication",
+    components:{
+        Body
+    },
+    data(){
+        return{
+            title: "",
+        }
+    },
+    mounted(){
+        this.showEcoPartsTable();
+    },
+    methods:{
+        showEcoPartsTable: function(){
+            this.title = "ECOPARTS"
+        },
+    }
     
 }
 </script>

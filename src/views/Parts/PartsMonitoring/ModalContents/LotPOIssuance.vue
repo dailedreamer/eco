@@ -1,6 +1,8 @@
 <template>
   <b-container fluid>
-    <Header part_number="KDTEST" page_title="Lot PO Issuance"/>
+    <Header 
+        page_title="Lot PO Issuance"
+        :get_data="get_data"/>
         <b-row>
             <b-col cols="4">
                 <b-media class="mt-3 mb-5">
@@ -180,6 +182,9 @@ export default {
     name: "AssemblyApplication",
     components: {
         Header,
+    },
+    props:{
+        get_data: Object
     },
     methods:{
         isNumber: function(evt) {

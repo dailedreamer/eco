@@ -1,6 +1,8 @@
 <template>
   <b-container fluid>
-    <Header part_number="KDTEST" page_title="Assembly Application"/>
+    <Header 
+        page_title="Assembly Application"
+        :get_data="get_data"/>
         <b-row class="p-2 ml-3 mr-3">
             <b-col>
                 <b-form-group 
@@ -170,6 +172,9 @@ export default {
     name: "AssemblyApplication",
     components: {
         Header
+    },
+    props:{
+        get_data: Object
     },
     data(){
         return{

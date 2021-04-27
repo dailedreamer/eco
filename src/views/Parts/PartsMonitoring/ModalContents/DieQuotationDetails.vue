@@ -1,6 +1,8 @@
 <template>
   <b-container fluid>
-    <Header part_number="KDTEST" page_title="Die Quotation Details"/>
+    <Header  
+        page_title="Die Quotation Details"
+        :get_data="get_data"/>
         <b-row class="p-2">
             <b-col cols="4">
                 <b-form-group 
@@ -236,6 +238,9 @@ export default {
     name: "DieQuatationDetails",
     components: {
         Header,
+    },
+    props:{
+        get_data: Object
     },
     methods:{
         isNumber: function(evt) {

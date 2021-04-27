@@ -1,8 +1,8 @@
 <template>
   <b-container fluid>
     <Header 
-        part_number="KDTEST" 
-        page_title="Meeting"/>
+        page_title="Meeting"
+        :get_data="get_data"/>
         <center>
             <b-row class="p-2 mb-5 mt-5 ml-3">
                 <b-col>
@@ -10,8 +10,7 @@
                     <b-row class="mt-2 ml-3 mr-3">
                         <b-form-timepicker 
                             v-model="tokyo_niigata_time_value" 
-                            hide-header
-                            no-close-button="true" 
+                            hide-header 
                             class="meeting_datepicker"></b-form-timepicker>
                     </b-row>
                     <b-row class="mt-2 ml-3 mr-3">
@@ -31,7 +30,6 @@
                         <b-form-timepicker 
                             v-model="ftec_fdtp_time_value" 
                             hide-header
-                            no-close-button="true"
                             class="meeting_datepicker"></b-form-timepicker>  
                     </b-row>
                     <b-row class="mt-2 ml-3 mr-3">
@@ -53,7 +51,6 @@
                         <b-form-timepicker 
                             v-model="national_eco_time_value" 
                             hide-header
-                            no-close-button="true"
                             class="meeting_datepicker"></b-form-timepicker>
                     </b-row>
                     <b-row class="mt-2 ml-3 mr-3">
@@ -73,7 +70,6 @@
                         <b-form-timepicker 
                             v-model="meeting_with_supplier_time_value" 
                             hide-header
-                            no-close-button="true"
                             class="meeting_datepicker">
                         </b-form-timepicker>  
                     </b-row>
@@ -127,6 +123,9 @@ export default {
     name: "AssemblyApplication",
     components: {
         Header,
+    },
+    props:{
+        get_data: Object
     },
     data(){
         return{
