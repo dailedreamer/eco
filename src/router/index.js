@@ -34,8 +34,30 @@ const ProductAudit        = () =>import("@/views/Parts/PartsMonitoring/ModalCont
 const QCIGM               = () =>import("@/views/Parts/PartsMonitoring/ModalContents/QCIGM");
 
 
-
 const ECASList = () =>import("@/views/ECASList");
+const NewECAS = () =>import("@/views/ECASList/NewEcas");
+const NewECASContent = () =>import("@/views/ECASList/NewECASTab/NewECASContent");
+const DoneECASContent = () =>import("../views/ECASList/NewECASTab/DoneECASContent");
+const ForRevision = () =>import("@/views/ECASList/ForRevision");
+const ForRevisionContent = () =>import("@/views/ECASList/ForRevisionTab/ForRevisionContent");
+const DoneRevisionContent = () =>import("../views/ECASList/ForRevisionTab/DoneRevisionContent");
+const ForChecking = () =>import("@/views/ECASList/ForChecking");
+const ForCheckingContent = () =>import("@/views/ECASList/ForCheckingTab/ForCheckingContent");
+const DoneCheckingContent = () =>import("../views/ECASList/ForCheckingTab/DoneCheckingContent");
+const ForApproval = () =>import("@/views/ECASList/ForApproval");
+const ForApprovalContent = () =>import("@/views/ECASList/ForApprovalTab/ForApprovalContent");
+const DoneApprovalContent = () =>import("../views/ECASList/ForApprovalTab/DoneApprovalContent");
+const ForPC = () =>import("@/views/ECASList/ForPC");
+const ForPCContent = () =>import("@/views/ECASList/ForPCTab/ForPCContent");
+const DonePCContent = () =>import("../views/ECASList/ForPCTab/DonePCContent");
+const ForPurchasing = () =>import("@/views/ECASList/ForPurchasing");
+const ForPurchasingContent = () =>import("@/views/ECASList/ForPurchasingTab/ForPurchasingContent");
+const DonePurchasingContent = () =>import("../views/ECASList/ForPurchasingTab/DonePurchasingContent");
+const FinishedECAS = () =>import("@/views/ECASList/FinishedECAS");
+const ProductionEngineering = () =>import("@/views/ECASList/Modal/ProductionEngineeringContent");
+const ProductionControl = () =>import("@/views/ECASList/Modal/ProductionControlContent");
+const Purchasing = () =>import('@/views/ECASList/Modal/PurchasingContent');
+
 
 const Process             = () =>import("@/views/Process");
 const ProcessRegistration = () =>import("@/views/Process/Registration");
@@ -107,6 +129,7 @@ const routes = [
 						path: "/parts-monitoring",
 						name: "PartsMonitoring",
 						component: PartsMonitoring ,
+						redirect: "/parts-details",
 						// meta: { requiresAuth: true },
 						children: [
 							{
@@ -202,8 +225,250 @@ const routes = [
 			{
 				path: "/ecas_list",
 				name: "ECASList ",
+				redirect: '/new_ecas',
 				component: ECASList ,
 				// meta: { requiresAuth: true },
+				children: [
+					{
+						path: "/new_ecas",
+						name: "NewECAS",
+						component: NewECAS ,
+						redirect: '/new-ecas-tab',
+						children: [
+							{
+								path: "/new-ecas-tab",
+								name: "NewECASContent",
+								component: NewECASContent,
+								redirect: '/production-engineering/1',
+								children: [
+									{
+										path: "/production-engineering/1",
+										name: "ProductionEngineering1",
+										component: ProductionEngineering,
+									},
+									{
+										path: "/production-control/1",
+										name: "ProductionControl1",
+										component: ProductionControl,
+									},
+									{
+										path: "/purchasing/1",
+										name: "Purchasing1",
+										component: Purchasing,
+									}
+								]
+							},
+							{
+								path: "/done-ecas-tab",
+								name: "DoneECASContent",
+								component: DoneECASContent
+							},
+						]
+					},
+					{
+						path: "/for_revision",
+						name: "ForRevision",
+						component: ForRevision,
+						redirect: '/for-revision-tab',
+						children: [
+							{
+								path: "/for-revision-tab",
+								name: "ForRevisionContent",
+								component: ForRevisionContent,
+								redirect: '/production-engineering/2',
+								children: [
+									{
+										path: "/production-engineering/2",
+										name: "ProductionEngineering2",
+										component: ProductionEngineering,
+									},
+									{
+										path: "/production-control/2",
+										name: "ProductionControl2",
+										component: ProductionControl,
+									},
+									{
+										path: "/purchasing/2",
+										name: "Purchasing2",
+										component: Purchasing,
+									}
+								]
+							},
+							{
+								path: "/done-revision-tab",
+								name: "DoneRevisionContent",
+								component: DoneRevisionContent
+							},
+						]
+					},
+					{
+						path: "/for_checking",
+						name: "ForChecking",
+						component: ForChecking,
+						redirect: "/for-checking-tab",
+						children: [
+							{
+								path: "/for-checking-tab",
+								name: "ForCheckingContent",
+								component: ForCheckingContent,
+								redirect: '/production-engineering/3',
+								children: [
+									{
+										path: "/production-engineering/3",
+										name: "ProductionEngineering3",
+										component: ProductionEngineering,
+									},
+									{
+										path: "/production-control/3",
+										name: "ProductionControl3",
+										component: ProductionControl,
+									},
+									{
+										path: "/purchasing/3",
+										name: "Purchasing3",
+										component: Purchasing,
+									}
+								]
+							},
+							{
+								path: "/done-checking-tab",
+								name: "DoneCheckingContent",
+								component: DoneCheckingContent
+							},
+						]
+					},
+					{
+						path: "/for_approval",
+						name: "ForApproval",
+						component: ForApproval,
+						redirect: "/for-approval-tab",
+						children: [
+							{
+								path: "/for-approval-tab",
+								name: "ForApprovalContent",
+								component: ForApprovalContent,
+								redirect: '/production-engineering/4',
+								children: [
+									{
+										path: "/production-engineering/4",
+										name: "ProductionEngineering4",
+										component: ProductionEngineering,
+									},
+									{
+										path: "/production-control/4",
+										name: "ProductionControl4",
+										component: ProductionControl,
+									},
+									{
+										path: "/purchasing/4",
+										name: "Purchasing4",
+										component: Purchasing,
+									}
+								]
+							},
+							{
+								path: "/done-approval-tab",
+								name: "DoneApprovalContent",
+								component: DoneApprovalContent
+							},
+						]
+					},
+					{
+						path: "/for_pc",
+						name: "ForPC",
+						component: ForPC,
+						redirect: "/for-pc-tab",
+						children: [
+							{
+								path: "/for-pc-tab",
+								name: "ForPCContent",
+								component: ForPCContent,
+								redirect: '/production-engineering/5',
+								children: [
+									{
+										path: "/production-engineering/5",
+										name: "ProductionEngineering5",
+										component: ProductionEngineering,
+									},
+									{
+										path: "/production-control/5",
+										name: "ProductionControl5",
+										component: ProductionControl,
+									},
+									{
+										path: "/purchasing/5",
+										name: "Purchasing5",
+										component: Purchasing,
+									}
+								]
+							},
+							{
+								path: "/done-pc-tab",
+								name: "DonePCContent",
+								component: DonePCContent
+							},
+						]
+					},
+					{
+						path: "/for_purchasing",
+						name: "ForPurchasing",
+						component: ForPurchasing,
+						redirect: "/for-purchasing-tab",
+						children: [
+							{
+								path: "/for-purchasing-tab",
+								name: "ForPurchasingContent",
+								component: ForPurchasingContent,
+								redirect: '/production-engineering/6',
+								children: [
+									{
+										path: "/production-engineering/6",
+										name: "ProductionEngineering6",
+										component: ProductionEngineering,
+									},
+									{
+										path: "/production-control/6",
+										name: "ProductionControl6",
+										component: ProductionControl,
+									},
+									{
+										path: "/purchasing/6",
+										name: "Purchasing6",
+										component: Purchasing,
+									}
+								]
+							},
+							{
+								path: "/done-purchasing-tab",
+								name: "DonePurchasingContent",
+								component: DonePurchasingContent
+							},
+						]
+					},
+					{
+						path: "/finished_ecas",
+						name: "FinishedECAS",
+						component: FinishedECAS,
+						redirect: '/production-engineering/7',
+						children: [
+							{
+								path: "/production-engineering/7",
+								name: "ProductionEngineering7",
+								component: ProductionEngineering,
+							},
+							{
+								path: "/production-control/7",
+								name: "ProductionControl7",
+								component: ProductionControl,
+							},
+							{
+								path: "/purchasing/7",
+								name: "Purchasing7",
+								component: Purchasing,
+							}
+						]
+					},
+				]
 			},
 			{
 				path: "/process",

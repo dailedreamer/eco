@@ -97,16 +97,34 @@
                     </b-row>
                 </b-card>
             </b-col>
-            <b-col cols="3">
-            
-            </b-col>
+        </b-row>
+        <b-row>
+           <Body :title="title"/>
         </b-row>
       </b-container>
 </template>
+
 <script>
+import Body from "../../../components/Parts/PartsMonitoring/Body.vue";
 export default {
     name: "PartsManufacturing",
-    
+    components:{
+        Body
+    },
+    data(){
+        return{
+            title: "",
+        }
+    },
+    mounted(){
+        this.showPartsManufacturingTable();
+    },
+    methods:{
+        showPartsManufacturingTable: function(){
+            this.title = "PARTSMANUFACTURING"
+            // alert("PARTSMANUFACTURING")
+        },
+    }  
 }
 </script>
 

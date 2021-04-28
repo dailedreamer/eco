@@ -86,21 +86,25 @@
                     </b-row>
                     <b-row class="mt-3">
                         <b-col cols="12">
-                            <b-card class="pl-2 pr-2">
+                            <b-card>
                                 <b-card-body>
+                                    <UnitRevContent />
                                 </b-card-body>
                             </b-card>
                         </b-col>
                     </b-row>
       </b-col>
     </b-row>
-  
   </b-container>
 </template>
 
 <script>
+import UnitRevContent from "../components/UnitRevision/UnitRevContent";
 export default {
   name: "UnitRev",
+  components:{
+      UnitRevContent
+  },
   data() {
       return {
         value: 45,
