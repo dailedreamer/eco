@@ -135,8 +135,11 @@
                                                         <template #cell(control)="">
                                                              <b-form-checkbox></b-form-checkbox>
                                                         </template>
+                                                         <template #cell(no)="data">
+                                                            {{data.index+1}}
+                                                        </template>
                                                         <template #cell(action)="">
-                                                            <b-button
+                                                            <!-- <b-button
                                                                 class="ml-2"
                                                                 size="sm" 
                                                                 variant="danger"
@@ -145,7 +148,11 @@
                                                                     icon="save"
                                                                     class="icon"/>
                                                                     Edit
-                                                            </b-button>
+                                                            </b-button> -->
+                                                            <b-link
+                                                                v-b-modal.edit_module_modal_id>
+                                                                EDIT
+                                                            </b-link>
                                                         </template>
                                                     </b-table>
                                                     <b-pagination
@@ -445,17 +452,17 @@ export default {
             rolesValue: [],
             rolesOptions: [],
             user_masterlist: [
-                { no: "1", id_number: "161822", name: "Edralyn Afelo", section: "MIS", },
-                { no: "2", id_number: "111111", name: "Erika Reformado", section: "MIS", },
-                { no: "3", id_number: "222222", name: "Mary Rose Magango", section: "MIS", }
+                // { no: "1", id_number: "161822", name: "Edralyn Afelo", section: "MIS", },
+                // { no: "2", id_number: "111111", name: "Erika Reformado", section: "MIS", },
+                // { no: "3", id_number: "222222", name: "Mary Rose Magango", section: "MIS", }
             ],
             user_fields: [
-                { key: "no"},
-                { key: "id_number"},
-                { key: "name"},
-                { key: "section"},
-                { key: "control"},
-                { key: "action"}
+                { key: "no", class:"text-center"},
+                { key: "employee_number", class:"text-center"},
+                { key: "full_name", class:"text-center"},
+                { key: "section", class:"text-center"},
+                { key: "control", class:"text-center"},
+                { key: "action", class:"text-center"}
             ],
            form: 
            {
@@ -475,7 +482,8 @@ export default {
         }
     },
     computed: {
-         ...mapGetters(["getEmployees"]),
+        ...mapGetters(["getEmployees"]),
+        ...mapGetters(["getUsers"]),
         rows() {
             return this.user_masterlist.length
         }
@@ -483,6 +491,8 @@ export default {
     mounted() {
         this.loadEmployees();
         this.loadRoles();
+        this.loadSystemUsers();
+
     },
     methods: {
         loadEmployees: function()
@@ -494,6 +504,7 @@ export default {
            });  
 
         },
+       
         loadRoles: function()
         {
             this.$store.dispatch("loadRoles").then((response) => {             
@@ -511,29 +522,75 @@ export default {
             formData.append("role_id",this.form.roles.value.id);
 
             document.getElementById("btn_add_employee").disabled = true;
+
             this.$store
-            .dispatch("insertUser", formData)
-            .then((response) => {
-                console.log(response);
-                document.getElementById("btn_add_employee").disabled = false;
-                this.clear();
+                .dispatch("insertUser", formData)
+                .then((response) => {
+                let status = response.data.status;
+                    if (status == "Success") {
+                        this.toast(status, response.data.message);
+                        this.clearForm();
+                        this.loadSystemUsers();
+                        document.getElementById("btn_add_employee").disabled = false;
+                    } else if (status == "Warning") {
+                        Object.keys(response.data.data).forEach((key) => {
+                        this.form[key]["state"] = false;
+                        this.form[key]["validation"] = response.data.data[key][0];
+                        });
+                        this.toast(status, "Please review your inputs.");
+                    } else if (status == "Error") {
+                        this.toast(status, response.data.message);
+                    }
             })
+            .catch((error) => {
+            let error_data = error.data;
+                    let status = error.data.status;
+                    console.log(error_data.error);
+                    for(const[key] of Object.entries(error_data.error))
+                    {
+                        this.toast(status,error_data.error[key][0]);
+                    };
+                    this.clearForm();
+                })
+            .finally(() => {
+            });
+            // .then((response) => {
+            //     console.log(response);
+            //     document.getElementById("btn_add_employee").disabled = false;
+            //     this.clearForm();
+            // })
         },
 
-        clear: function()
+        clearForm: function()
         {
             this.form = {
                 employee: {
-                value: '',
-                state: null,
-                validation: "",
+                    value: '',
+                    state: null,
+                    validation: "",
                 },
                 roles: {
-                value: '',
-                state: null,
-                validation: "",
+                    value: '',
+                    state: null,
+                    validation: "",
                 },
             }
+        },
+
+        loadSystemUsers: function()
+        {
+             this.$store.dispatch("loadSystemUsers").then((response) => {             
+                 let data = response.data;
+                 this.user_masterlist = data; 
+                 console.log(response);       
+
+           });  
+        },
+         toast: function (status, message){
+            this.$toast(message, {
+                type:status.toLowerCase().trim(),
+                position: "bottom-right",
+            });
         }
 
     },

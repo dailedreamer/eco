@@ -4,8 +4,9 @@
             id="edit_module_modal_id"
             centered
             size="lg"
-            :no-close-on-backdrop="true">
-            <template #modal-header="" >
+            :no-close-on-backdrop="true"
+            hide-footer>
+            <template #modal-title="" >
                 <b-media>
                     <template #aside>
                         <b-img 
@@ -253,18 +254,39 @@
                                         </b-tbody>
                                     </b-table-simple>
                                 </b-col>
-                            </b-row>  
+                            </b-row> 
+                            <hr> 
+                            <b-row>
+                                <b-col cols="12">
+                                    <b-button 
+                                        class="float-right mr-2"
+                                        size="md" 
+                                        variant="outline-secondary"
+                                        title="Click to clear inputs">
+                                        <font-awesome-icon icon="times-circle" /> Clear
+                                    </b-button>
+                                    <b-button 
+                                        class="float-right mr-2"
+                                        id="btn_update" 
+                                        size="md" 
+                                        variant="danger" 
+                                        type="submit"
+                                        title="Click to update users modules">
+                                        <font-awesome-icon icon="save" /> Update
+                                    </b-button> 
+                                </b-col>
+                            </b-row>
                         </b-form>
                     </b-col> 
                 </b-row>
-                <template #modal-footer="{ Update, hide }">
+                <!-- <template #modal-footer="{ Update, hide }">
                     <b-button size="sm" variant="danger" @click="Update">
                         <font-awesome-icon icon="save" /> Update
                     </b-button>
                     <b-button size="sm" variant="outline-secondary" @click="hide('close')">
                         <font-awesome-icon icon="times-circle" /> Close 
                     </b-button>
-                </template> 
+                </template>  -->
         </b-modal>
     </b-container>
 </template>
