@@ -19,23 +19,37 @@
                     <small class="text-secondary">Upload Data Description</small>
                   </div>
                 </div><br>
-                <b-col lg="12">
-                    <b-row>
-                      <b-col lg="3" class="md-2">
-                        <b-form-file id="file" accept=".csv"></b-form-file>
-                      </b-col>
-                      <b-col lg="2" class="md-2">
-                        <AButton
-                          id="button-submit"
-                          type="submit"
-                          title="Click to add budget"
-                          variant="primary"
-                        >
-                        <font-awesome-icon icon="upload" size="sm" class="icon" /> Upload
-                        </AButton>
+                <b-form
+                  id="form-upload"
+                  @submit.prevent="uploadFile"
+                  method="post"
+                >
+                  <b-col lg="12">
+                      <b-row>
+                        <b-col lg="3" class="md-2">
+                          <!-- <b-form-file id="input-file" accept=".csv" @submit.prevent="uploadFile"></b-form-file> -->
+                          <input
+                            class="alpha-input"
+                            id="input-file"
+                            name="file"
+                            type="file"
+                            placeholder="Enter remarks"
+                            required
+                          />
                         </b-col>
-                     </b-row>
+                        <b-col lg="2" class="md-2">
+                          <AButton
+                            id="button-upload"
+                            type="submit"
+                            title="Click to add budget"
+                            variant="primary"
+                          >
+                          <font-awesome-icon icon="upload" size="sm" class="icon" /> Upload
+                          </AButton>
+                          </b-col>
+                      </b-row>
                 </b-col>
+              </b-form>
                  <br>
                   <b-col cols="12">
                     <b-table class="alpha__table text-nowrap"
@@ -135,6 +149,7 @@ export default {
   name: "ProcessManagement",
   data(){
     return {
+      userDetails : JSON.parse(localStorage.getItem("auth_token")),
        currentPage: 1,
         perPage: 10,
         fields: [
@@ -221,6 +236,52 @@ export default {
         this.items[index].model=[];
         this.items[index].unit=[];
     },
+    uploadFile: function()
+    {
+      var formData = new FormData();
+      var excelFile = document.querySelector("#input-file");
+      let fileType = excelFile.files[0].name.split('.')[1];
+      // var token = this.userDetails.token 
+      var token = "Zcz5Gagl6lz5ATQ71IWVGFwGZSMZQXcpDynsa7PKUETeq7xp1uPV8MNMd0MASOyk"
+
+      if(fileType !== 'xlsx')
+      {
+        document.getElementById("input-file").value = "";
+      }
+      else
+      {
+        document.getElementById("button-upload").disabled = true;
+        formData.append("file_name", excelFile.files[0]);
+
+        this.$store
+          .dispatch("uploadFile", [formData, token])
+          .then((response) => {
+            let status = response.data.status;
+            if(status == "Success")
+            {
+              document.getElementById("input-file").value = "";
+              this.toast(status, response.data.message);
+            }
+            else if(status == "Warning")
+              this.toast(status, response.data.message);
+            else
+              this.toast(status, response.data.message);
+          })
+          .catch((error) => {
+            this.toast("error", "Something went wrong");
+            console.log(error);
+          })
+          .finally(() => {
+            document.getElementById("button-upload").disabled = false;
+          });
+      }
+    },
+    toast: function (status, message){
+            this.$toast(message, {
+                type:status.toLowerCase().trim(),
+                position: "bottom-right",
+            });
+        }
   },
   computed: {
     ...mapGetters(["getDevice"]),
