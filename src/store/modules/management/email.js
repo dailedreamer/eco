@@ -11,20 +11,19 @@ export default{
         async loadEmailMasterlist(){
             return new Promise((resolve, reject) => {
                 axios
-                    // .get("email-masterlist")
-                    .get('http://10.164.58.63/training3/public/api/employee')
+                    .get("email")
                     .then(function(response){
+                        // console.log(response)
                         let result = {
-                            // code: response.data.code,
+                            code: response.data.status_code,
                             status: response.data.status,
                             message: response.data.message,
                             data: response.data.data,
                         };
-                        resolve(result);  
+                        resolve(result); 
                     })
                     .catch(function(error){
                         reject(error);
-                        // console.log(error)
                     });
             })
         },

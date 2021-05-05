@@ -25,7 +25,7 @@
                                         <label for="txt_subject">Subject: </label>
                                     </b-col>
                                     <b-col sm="8">
-                                        <b-form-input id="txt_subject" disabled></b-form-input>
+                                        <b-form-input id="txt_subject" disabled v-model="get_data.subject"></b-form-input>
                                     </b-col>
                                 </b-row>
                             </b-col>
@@ -35,7 +35,7 @@
                                         <label for="txt_classification">Classification: </label>
                                     </b-col>
                                     <b-col sm="8">
-                                        <b-form-input id="txt_classification" type="text" disabled ></b-form-input>
+                                        <b-form-input id="txt_classification" type="text" disabled v-model="get_data.email_classification"></b-form-input>
                                     </b-col>
                                 </b-row>
                             </b-col>
@@ -162,7 +162,6 @@
                     <font-awesome-icon icon="times-circle" /> Close 
                 </b-button>
             </template> 
-                {{test.id}}
         </b-modal>   
     </b-container>
 </template>
@@ -174,8 +173,8 @@ export default {
     components:{
          Multiselect
     },
-    props:{
-        data: Array
+    props: {
+        get_data: Object,
     },
     data() {
         return {
@@ -202,10 +201,6 @@ export default {
         this.loadMainEmployee();
     },
     methods: {
-         test(id)
-        {
-           console.log(id);
-        },
         addTag(newTag) {
             console.log("newTag", newTag);
         },
