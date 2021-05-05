@@ -44,7 +44,7 @@
                                         v-b-modal.email_modal_id 
                                         :disabled="disable" 
                                         :id="'btn_actions_'+data.item.id"
-                                        @click="updateEmailRecipient(data.index)">
+                                        @click="updateEmailRecipient(data.item.id)">
                                         Edit
                                     </b-link>
                                 </template>
@@ -99,17 +99,16 @@ export default {
         this.loadEmailMasterlist();
     },
     computed:{
-      totalRows: function(){
-        return this.email_masterlists.length
-      }, 
+        totalRows: function(){
+            return this.email_masterlists.length
+        }, 
     },
     methods: {
-        
         loadEmailMasterlist() {
             this.$store.dispatch("loadEmailMasterlist")
             .then((response) => {
-                 this.email_masterlists = response.data;
-                //  console.log(this.email_masterlists);
+                this.toast(response.status,response.message);
+                this.email_masterlists = response.data;
             })
         },
         toggle(data, event) {
@@ -127,7 +126,13 @@ export default {
         updateEmailRecipient: function(id){
             // console.log(id);
             this.id = {};
-            this.id = this.email_masterlists[id];
+            this.id = this.email_masterlists[id-1];
+        },
+        toast: function (status, message){
+            this.$toast(message, {
+                type:status.toLowerCase().trim(),
+                position: "bottom-right",
+            });
         }
     }
 }
