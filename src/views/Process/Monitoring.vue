@@ -7,7 +7,7 @@
             <b-row>
               <b-col cols="2">
                 <b-card 
-                @click="LoadContents('for_applied')"
+                @click="loadContents('for_applied')"
                   class="custom_card_filter">
                     <b-row class="mt-0">
                         <b-col cols="9">
@@ -35,7 +35,7 @@
               </b-col>
               <b-col cols="2">
                 <b-card 
-                @click="LoadContents('for_application')"
+                @click="loadContents('for_application')"
                   class="custom_card_filter">
                     <b-row class="mt-0">
                         <b-col cols="9">
@@ -77,7 +77,7 @@
               </b-col>
             </b-row>
             <b-row class="mt-4">
-                <ProcessContent />
+                <ProcessContent :fields="this.for_application_list"/>
             </b-row>
           </vessel-body>
         </vessel>
@@ -91,7 +91,8 @@ import ProcessContent from '../../components/Process/ProcessMonitoring/ProcessCo
 export default {
   name: "Blank",
   components: {
-    ProcessContent
+    ProcessContent,
+  
   },
   data(){
     return{
@@ -99,10 +100,12 @@ export default {
      applied_percentage: '',
      for_application_count: '',
      for_application_percentage: '',
+     for_application_list: [],
     }
   },
   mounted(){
    this.loadPercentage();
+   this.loadContents('for_applied');
   },
    methods:{
      loadPercentage()
@@ -117,13 +120,22 @@ export default {
               this.for_application_percentage = data.application_percentage;
           });  
      },
-     LoadContents(content)
+     loadContents(content)
      {
        this.$store.dispatch("loadContents",content).then((response) => {
               let data = response.data;
-              console.log(data);
+              this.for_application_list = data;
+              console.log(this.for_application_list);
           }); 
      },
+
+      toast: function (status, message){
+        this.$toast(message, {
+              type:status.toLowerCase().trim(),
+              position: "bottom-right",
+        });
+      }
+        
   }
 };
 </script>
