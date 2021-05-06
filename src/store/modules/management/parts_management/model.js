@@ -37,7 +37,6 @@ export default {
 
 		//load per device
 		async loadModelPerDevice({ commit }, id) {
-			console.log(id);
 			return new Promise((resolve, reject) => {
 				axios
 					.get(`model-name-load/${id}`)
