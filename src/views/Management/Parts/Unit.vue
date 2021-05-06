@@ -119,17 +119,17 @@
                         <template #cell(no)="data" v-else>
                             {{(data.index+1) + (currentPage*perPage) - 10}}
                         </template>
-                        <template #cell(actions)>
+                        <template #cell(actions)="data">
                             <b-link
-                             v-b-modal.model-modal-update
-                            @click="loadUnitInfo(
-                                data.item.id, 
-                                data.item.device_name, 
-                                data.item.model_name_id, 
-                                data.item.unit_number,
-                                data.item.unit_name,    
-                                )">
-                            Edit</b-link>
+                                v-if="currentPage == 1"
+                                v-b-modal.model-modal-update
+                                @click="editUnit(data.index)">
+                                Edit</b-link>
+                            <b-link
+                                v-else
+                                v-b-modal.model-modal-update
+                                @click="editUnit(data.index + (currentPage*perPage) - 10)">
+                                Edit</b-link>
                             <label class="ml-2 mr-2 text-secondary">|</label>
                             <b-link
                                  @click="removeUnit(data.item.id)"
@@ -151,85 +151,97 @@
             id="model-modal-update"
             size="md"
             hide-footer
-            title="Update Device"
-            title-class="alpha__modal__title">
+            title-class="alpha__modal__title"
+            :no-close-on-backdrop="true" 
+            centered>
+            <template #modal-title="">
+                <b-media>
+                    <template #aside>
+                        <b-img 
+                            :src="require('../../../assets/icon_images/edit_content.svg')" 
+                            width="44" 
+                            height="37" 
+                            alt="placeholder">
+                        </b-img>
+                    </template>
+                    <h5 class="mt-2">Update Device</h5>
+                </b-media>
+            </template>
             <b-form
                 class="pl-4 pr-4"
                 id="form-update"
                 @submit.prevent="updateForm"
                 method="post">
-                <b-row>
-                    <b-col lg="12" class="mb-2">    
+                <b-row class="mt-3 mr-3 ml-3 mb-3">
+                    <b-col>
                         <b-form-group 
+                            label-size="sm" 
                             label-for="device_id" 
                             label="Device Name:">
-                        <b-form-input
-                            id="device_id"
-                            name="device_id"
-                            type="text"
-                            v-model="unit.device_name.value"
-                            :state="unit.device_name.state"
-                            required
-                        />
+                            <b-form-input
+                                id="device_id"
+                                name="device_id"
+                                type="text"
+                                v-model="unit.device_name.value"
+                                :state="unit.device_name.state"
+                                required/>
+                        </b-form-group>
+                        <b-form-group 
+                            label-size="sm" 
+                            label-for="name" 
+                            label="Model Name:">
+                            <b-form-input
+                                id="name"
+                                name="name"
+                                type="text"
+                                v-model="unit.model_name_id.value"
+                                :state="unit.model_name_id.state"
+                                required/>
+                        </b-form-group>
+                        <b-form-group 
+                            label-size="sm" 
+                            label-for="name" 
+                            label="Unit Name:">
+                            <b-form-input
+                                id="model_code"
+                                name="model_code"
+                                type="text"
+                                v-model="unit.unit_name.value"
+                                :state="unit.unit_name.state"
+                                required/>
+                        </b-form-group>
+                        <b-form-group 
+                            label-size="sm" 
+                            label-for="name" 
+                            label="Unit Number:">
+                            <b-form-input
+                                id="model_code"
+                                name="model_code"
+                                type="text"
+                                v-model="unit.unit_number.value"
+                                :state="unit.unit_number.state"
+                                required/>
                         </b-form-group>
                     </b-col>
                 </b-row>
-                <b-row>
-                    <b-col lg="12" class="mb-2">    
-                        <b-form-group label-for="name" label="Model Name:">
-                        <b-form-input
-                            id="name"
-                            name="name"
-                            type="text"
-                            v-model="unit.model_name_id.value"
-                            :state="unit.model_name_id.state"
-                            required
-                        />
-                        </b-form-group>
-                    </b-col>
-                </b-row>
-                <b-row>
-                    <b-col lg="12" class="mb-2">    
-                        <b-form-group label-for="name" label="Unit Name:">
-                        <b-form-input
-                            id="model_code"
-                            name="model_code"
-                            type="text"
-                            v-model="unit.unit_name.value"
-                            :state="unit.unit_name.state"
-                            required
-                        />
-                        </b-form-group>
-                    </b-col>
-                </b-row>
-                 <b-row>
-                    <b-col lg="12" class="mb-2">    
-                        <b-form-group label-for="name" label="Unit Number:">
-                        <b-form-input
-                            id="model_code"
-                            name="model_code"
-                            type="text"
-                            v-model="unit.unit_number.value"
-                            :state="unit.unit_number.state"
-                            required
-                        />
-                        </b-form-group>
-                    </b-col>
-                </b-row>
-                <b-row class="mb-1 pl-2 pr-2">
-                    <b-col>
+                 <hr>
+                <b-row class="mt-4 mb-3">
+                    <b-col cols="12">
                         <b-button 
-                            variant="danger" 
-                            block
-                            type="submit"
-                            id="button-submit"
-                            >
-                            <font-awesome-icon
-                                icon="save"
-                                class="icon"
-                            />
-                        Update Values
+                            class="float-right mr-2"
+                            variant="outline-secondary"
+                            title="Click to Clear Inputs"
+                            @click="clearForm()">
+                            <font-awesome-icon icon="times-circle" /> Clear
                         </b-button>
+                        <b-button 
+                            class="float-right mr-2"
+                            id="button-submit" 
+                            variant="danger" 
+                            type="submit"
+                            title="Click to Update Units">
+                            <font-awesome-icon icon="save" /> Update
+                        </b-button> 
                     </b-col>
                 </b-row>
             </b-form>
@@ -322,6 +334,7 @@ export default {
                     validation: "",
                 }
         },
+        unit_details: {},
       }
     },
     computed: {
@@ -424,13 +437,14 @@ export default {
         },
 
         //update
-        loadUnitInfo: function (id, device_name, model_name, unit_number, unit_name) {
-            this.update_id = id;
-            this.unit.device_name.value = device_name;
-            this.unit.model_name.value = model_name;
-            this.unit.unit_number.value = unit_number;
-            this.unit.unit_name.value = unit_name;
-        },
+        // loadUnitInfo: function (id, device_name, model_name, unit_number, unit_name) {
+        //     this.update_id = id;
+        //     this.unit.device_name.value = device_name;
+        //     this.unit.model_name.value = model_name;
+        //     this.unit.unit_number.value = unit_number;
+        //     this.unit.unit_name.value = unit_name;
+        //     alert(1);
+        // },
 
         updateForm: function () {
         var formData = new FormData(document.getElementById("form-update"));
@@ -501,13 +515,23 @@ export default {
                 type:status.toLowerCase().trim(),
                 position: "bottom-right",
             });
+        },
+        editUnit: function(id){
+            console.log(id)
+            this.unit_details = {};
+            this.unit_details = this.getUnit.data[id];
+
+            this.unit.device_name.value = this.unit_details.device_name;
+            this.unit.model_name_id.value = this.unit_details.model_name;
+            this.unit.unit_number.value = this.unit_details.unit_number;
+            this.unit.unit_name.value = this.unit_details.unit_name;
         }
     }
 };
 </script>
 
 <style scoped>
-hr
+.hr_device
 {
     border:2px solid #C3C3C3; 
     margin-top: 7.5px;
