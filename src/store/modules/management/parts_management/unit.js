@@ -16,12 +16,12 @@ export default {
 
 		//save
 		async insertUnit(state, payload) {
-			console.log(payload);
+			// console.log(payload);
 			return new Promise((resolve, reject) => {
 				axios
 					.post("units", payload)
 					.then(function(response) {
-						console.log(response);
+						// console.log(response);
 						resolve(response);
 					})
 					.catch(function(error) {
@@ -75,7 +75,7 @@ export default {
 							message: response.data.message,
 							data: response.data.data,
 						};
-						console.log(result);
+						// console.log(result);
 						resolve(result);
 					})
 					.catch(function(error) {
@@ -91,7 +91,7 @@ export default {
 					.get(`units-load/${id}`)
 					.then(function(response) {
 						commit("SET_MANAGENT_SPECIFIC", response.data);
-						console.log(response);
+						// console.log(response);
 						let result = {
 							code: response.data.code,
 							status: response.data.status,
