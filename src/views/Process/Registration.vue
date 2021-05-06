@@ -62,46 +62,47 @@
                         :busy="isBusy" 
                         :per-page="perPage"
                         :current-page="currentPage">
-                         <template #cell(No)="data">
-                            {{data.index+1}}
-                        </template>
+                      <template #cell(no)="data">
+                        {{data.index+1}}
+                      </template>
                       <template #cell(device)="data"> 
-                          <multiselect  
-                            v-model="data.item.device"
-                            placeholder="Select device" 
-                            label="device_name" 
-                            track-by="id" 
-                            :options="device_options"
-                            :show-labels="false"
-                            @input="loadModel(data.item.device.id, data.index) ,changeDevice(data.index)"  
-                                             
-                            ></multiselect>
-                      </template>
-                      <template #cell(model)="data"> 
-                          <multiselect  
-                            v-model="data.item.model"
-                            placeholder="Select model" 
-                            label="name" 
-                            track-by="id" 
-                            :options="data.item.model_options"
-                            :show-labels="false"
-                            @input="loadUnit(data.item.model.id, data.index)"
-                            
-                          ></multiselect>
-                      </template>
-                      <template #cell(unit_name)="data"> 
-                          <multiselect  
-                            v-model="data.item.unit"
-                            placeholder="Select Unit" 
-                            label="unit_name" 
-                            track-by="id" 
-                            :options="data.item.unit_options"
-                            :show-labels="false"
-                          ></multiselect>
-                      </template>
-                      <template #cell(unit_no)="data">  
-                       {{data.item.unit.unit_number}}
-                      </template>
+                    <multiselect  
+                      v-model="data.item.device"
+                      placeholder="Select Device Name" 
+                      label="text" 
+                      track-by="id" 
+                      :options="device_options"
+                      :show-labels="false"
+                      :allow-empty="false"
+                      @input="loadModel(data.item.device.id, data.index) ,changeDevice(data.index)"  
+                      ></multiselect>
+                    </template>
+                    <template #cell(model)="data"> 
+                        <multiselect  
+                          v-model="data.item.model"
+                          placeholder="Select Model Name" 
+                          label="model_name" 
+                          track-by="model_id" 
+                          :options="model_options"
+                          :show-labels="false"
+                          :allow-empty="false"
+                          @input="loadUnit(data.item.model.model_id, data.index)"
+                          
+                        ></multiselect>
+                    </template>
+                    <template #cell(unit_name)="data"> 
+                        <multiselect  
+                          v-model="data.item.unit"
+                          placeholder="Select Unit Name/Number" 
+                          label="unit_name" 
+                          track-by="unit_id" 
+                          :options="unit_options"
+                          :show-labels="false"
+                        ></multiselect>
+                    </template>
+                      <!-- <template #cell(unit_no)="data">  
+                       {{data.item.unit.unit_no}}
+                      </template> -->
                       
                       <template #table-busy>
                             <div class="text-center text-default my-2">
@@ -115,6 +116,7 @@
                       pills
                       v-model="currentPage"
                       :per-page="perPage"
+                      :total-rows="totalRows"
                     ></b-pagination>
                  </b-col>
                  <div class = "mt-4">
@@ -152,6 +154,7 @@ export default {
       userDetails : JSON.parse(localStorage.getItem("auth_token")),
        currentPage: 1,
         perPage: 10,
+        totalRows: null,
         fields: [
         {
           key: "no",
@@ -180,21 +183,16 @@ export default {
         {
           key: "unit_name",
           sortable: true,
-        },
-        {
-          key: "unit_no",
-          sortable: true,
-        },         
+        },        
       ],
       device_options: [],
-      // model_options: [],
-      // unit_options: [],
+      model_options: [],
+      unit_options: [],
       items: 
       [
-        {id: 1,eco_number: '123456877',unit_options:[], model_options:[],part_number: 'KD021-13254', revision: '04',device:[],model:[], unit:[]},
-        {id: 2,eco_number: '123456877',unit_options:[], model_options:[],part_number: 'KD021-13254', revision: '04',device:[],model:[], unit:[]},
-        {id: 1,eco_number: '123456877',unit_options:[], model_options:[],part_number: 'KD021-13254', revision: '04',device:[],model:[], unit:[]},
- 
+        // {id: 1,eco_number: '123456877',unit_options:[], model_options:[],part_number: 'KD021-13254', revision: '04',device:[],model:[], unit:[]},
+        // {id: 2,eco_number: '123456877',unit_options:[], model_options:[],part_number: 'KD021-13254', revision: '04',device:[],model:[], unit:[]},
+        // {id: 1,eco_number: '123456877',unit_options:[], model_options:[],part_number: 'KD021-13254', revision: '04',device:[],model:[], unit:[]},
       ],
       //loading
         isBusy: false,
@@ -204,37 +202,80 @@ export default {
   {
     loadDevice: function()
     {
-      
-      this.$store.dispatch("loadDevice").then((response) => {
-        let data = response.data.data;
-        this.device_options = data;      
-
+      this.$store.dispatch("loadDevice")
+      .then((response) => {
+        let information = response.data.data;
+          Object.keys(information).forEach((key) => {
+              this.device_options.push({
+                'id':information[key].id, 
+                'text':information[key].device_name
+              })
+          });
       });  
     },
-    loadModel: function(device_id, index)
+    loadModel: function(device_id)
     {
-      this.items[index].model_options = [];     
-      this.$store.dispatch("loadModelPerDevice", device_id).then((response) => {
-        let data = response.data;
-          this.items[index].model=[];
-          this.items[index].model_options = data;
-          console.log(data);
-        });  
+       this.$store.dispatch("loadModelPerDevice", device_id)
+      .then((response) => {
+
+          let information = response.data;
+     
+          this.model_options = [];
+
+          Object.keys(information).forEach(key =>
+          {
+            let model = `${information[key]["name"]}`
+            let model_id = `${information[key]["id"]}`
+            let obj = {};
+
+            obj["model_name"] = model;
+            obj["model_id"] = model_id;
+            this.model_options.push(obj);
+           
+          })
+          
+          // Object.keys(information).forEach((key) => {
+          //     this.items[index].model_options.push({
+          //       'id':information[key].id, 
+          //       'text':information[key].name
+          //     })
+          // });
+      });   
+    },
+    loadUnit: function(model_id)
+    {  
+       this.$store.dispatch("loadUnitPerModel", model_id)
+      .then((response) => {
+
+        let information = response.data;
         
+        this.unit_options = [];
+
+        Object.keys(information).forEach(key =>
+        {
+          let unit = `${information[key]["unit_name"]}`
+          let unit_id = `${information[key]["id"]}`
+          let obj = {};
+
+          obj["unit_name"] = unit;
+          obj["unit_id"] = unit_id;
+          this.unit_options.push(obj);
+        })
+
+        // Object.keys(information).forEach((key) => {
+        //     this.items[index].unit_options.push({
+        //         'id':information[key].id, 
+        //         'text':information[key].unit_name  + '/' + information[key].unit_number
+        //     })
+        // });
+      });  
     },
-    loadUnit: function(model_id, index)
-    {
-          this.unit_options = [];
-          this.$store.dispatch("loadUnitPerModel", model_id).then((response) => {
-            let data = response.data;
-            this.items[index].unit=[];
-            this.items[index].unit_options = data;
-          });  
-    },
+  
     changeDevice: function(index)
     {
-        this.items[index].model=[];
-        this.items[index].unit=[];
+      console.log(this.items[index]);
+        // this.items[index].model=[];
+        // this.items[index].unit=[];
     },
     uploadFile: function()
     {
@@ -276,6 +317,38 @@ export default {
           });
       }
     },
+    loadAllProcess: function()
+    {
+      this.$store.dispatch("loadAllProcess").then(response =>
+      {
+        
+        this.items = response.data;
+        // console.log(this.items);
+        let obj = {};
+                    
+        obj["device"] = [];
+        obj["model"] = [];
+        obj["unit"] = [];
+        this.items.push(obj);
+        this.toast(response.status, response.message);
+
+        if(!this.getAllProcess.data)
+        {
+          this.totalRows = 1;
+        }
+        else
+        {
+          this.totalRows = this.items.length;
+        }
+      });
+    },
+    loadEmailMasterlist() {
+            this.$store.dispatch("loadEmailMasterlist")
+            .then((response) => {
+                 this.email_masterlists = response.data;
+                //  console.log(this.email_masterlists);
+            })
+        },
     toast: function (status, message){
             this.$toast(message, {
                 type:status.toLowerCase().trim(),
@@ -286,10 +359,12 @@ export default {
   computed: {
     ...mapGetters(["getDevice"]),
     ...mapGetters(["getModel"]),
-    ...mapGetters(["getUnit"])
+    ...mapGetters(["getUnit"]),
+    ...mapGetters(["getAllProcess"])
   },
    mounted() {
      this.loadDevice();
+     this.loadAllProcess();
     }
 };
 </script>
