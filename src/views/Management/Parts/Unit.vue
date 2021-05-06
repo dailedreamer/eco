@@ -57,29 +57,6 @@
                             required
                             autocomplete="off"></b-form-input>
                     </b-form-group>
-                    <!-- <b-row class="pl-2 pr-2">
-                        <b-col>
-                            <b-button 
-                                variant="danger" 
-                                block
-                                type="submit"
-                                id="button-submit">
-                                <font-awesome-icon
-                                    icon="save"
-                                    class="icon"/>
-                                Save Values
-                            </b-button>
-                        </b-col>
-                        <b-col>
-                            <b-button block
-                                @click="clearForm()">
-                                <font-awesome-icon
-                                    icon="trash"
-                                    class="icon"/>
-                                Clear
-                            </b-button>
-                        </b-col>
-                    </b-row> -->
                     <b-row class="float-right">
                         <b-button 
                             variant="danger"
@@ -121,37 +98,42 @@
                         </small>
                     </b-media>
                     <b-table 
+                        class="alpha__table text-nowrap"
                         responsive 
-                        outlined
                         hover 
+                        bordered
                         head-variant="light"
                         :fields="fields"
                         :items="getUnit.data" 
-                        :busy="isBusy">
+                        :busy="isBusy"
+                        :per-page="perPage"
+                        :current-page="currentPage">
                         <template #table-busy>
                             <div class="text-center text-default my-2">
                             <b-spinner class="align-middle"></b-spinner>
                             </div>
                         </template>
-                        <template #cell(No)="data">
+                        <template #cell(no)="data" v-if="currentPage == 1">
                             {{data.index+1}}
                         </template>
+                        <template #cell(no)="data" v-else>
+                            {{(data.index+1) + (currentPage*perPage) - 10}}
+                        </template>
                         <template #cell(actions)>
-                            
-                            <a href="#"
+                            <b-link
                              v-b-modal.model-modal-update
-                                @click="loadUnitInfo(
-                                    data.item.id, 
-                                    data.item.device_name, 
-                                    data.item.model_name_id, 
-                                    data.item.unit_number,
-                                    data.item.unit_name,    
-                                    )">
-                            Edit</a>
+                            @click="loadUnitInfo(
+                                data.item.id, 
+                                data.item.device_name, 
+                                data.item.model_name_id, 
+                                data.item.unit_number,
+                                data.item.unit_name,    
+                                )">
+                            Edit</b-link>
                             <label class="ml-2 mr-2 text-secondary">|</label>
-                            <a href="#"
+                            <b-link
                                  @click="removeUnit(data.item.id)"
-                            >Delete</a>                         
+                            >Delete</b-link>                         
                         </template>
                     </b-table>
                     <b-pagination
@@ -170,17 +152,17 @@
             size="md"
             hide-footer
             title="Update Device"
-            title-class="alpha__modal__title"
-        >
+            title-class="alpha__modal__title">
             <b-form
                 class="pl-4 pr-4"
                 id="form-update"
                 @submit.prevent="updateForm"
-                method="post"
-            >
+                method="post">
                 <b-row>
                     <b-col lg="12" class="mb-2">    
-                        <b-form-group label-for="device_id" label="Device Name:">
+                        <b-form-group 
+                            label-for="device_id" 
+                            label="Device Name:">
                         <b-form-input
                             id="device_id"
                             name="device_id"
@@ -272,29 +254,18 @@ export default {
         isBusy: false,
         device_name: '',
         fields: [ 
-            {
-                key: "No",sortable: true,
-            }, 
-            {
-                key: "device_name",sortable: true,
-            }, 
-            {
-                key: "model_name",sortable: true,
-            }, 
-            {
-                key: "unit_number",sortable: true,
-            }, 
-            {
-                key: "unit_name",sortable: true,
-            },
-            { 
-                key: 'actions',label: 'Actions' 
-            }],
+            
+            {key: "No",sortable: true, class: "text-center"}, 
+            {key: "device_name",sortable: true, class: "text-center"}, 
+            {key: "model_name",sortable: true, class: "text-center"}, 
+            {key: "unit_number",sortable: true, class: "text-center"}, 
+            {key: "unit_name",sortable: true, class: "text-center"},
+            {key: 'actions', class: "text-center"}],
 
         //pagination
         currentPage: 1,
         perPage: 10,
-
+       
         //saving
         form: {
                 device_name: 
@@ -354,18 +325,19 @@ export default {
       }
     },
     computed: {
-    ...mapGetters(["getUnit","getModel"]),
-    rows() {
-        if (!this.getUnit.data) {
-        return 1;
-        } else {
-        return this.getUnit.data.length;
-        }
-    },
+        ...mapGetters(["getUnit"]),
+        rows: function() {
+            if (!this.getUnit.data) {
+                return 1;
+            } else {
+                return this.getUnit.data.length;
+            }
+        },
+        
     },
     mounted() {
         this.loadDevice();
-        this.loadUnit();
+        this.loadUnit();      
     },
     
     methods: {
