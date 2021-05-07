@@ -8,6 +8,7 @@
             :current-page="currentPage">
             <template #cell(action)="data">
                 <b-button 
+                    @click="loadSpecificDetails(data.item.id)"
                     variant="danger" 
                     size="sm"
                     v-b-modal.process_modal_id
@@ -25,7 +26,7 @@
             :per-page="perPage"
             align="right"
             pills></b-pagination>
-            <ProcessMonitoringUpdateModal />
+            <ProcessMonitoringUpdateModal :details="this.details" :details_change="this.details_change" :device="this.deviceValue" :model="this.modelValue" :unitName="this.unitValue"/>
     </b-container>
 </template>
 
@@ -50,7 +51,7 @@ export default {
                {key: "eco_number", sortable: true},
                {key: "device_name", sortable: true},
                {key: "model_name", sortable: true}, 
-               {key: "units", label:"Unit No/Unit Name", sortable: true},
+               {key: "unit_name", label:"Unit No/Unit Name", sortable: true},
                {key: "parent_drawing_number", sortable: true}, 
                {key: "part_number", sortable: true}, 
                {key: "part_number_revision", sortable: true}, 
@@ -64,6 +65,11 @@ export default {
                {key: "manhour_difference", sortable: true}, 
                {key: "remarks", sortable: true}, 
             ],
+            details:{},
+            details_change:[],
+            deviceValue: [],
+            modelValue: [],
+            unitValue: []
         }
     },
     computed:{
@@ -73,10 +79,34 @@ export default {
         }
     },
     methods:{
-        // loadForApplication()
-        // {
-        //     this.process_table_list = 
-        // }
+        loadSpecificDetails(id)
+        {
+            console.log(id);
+            this.$store.dispatch("loadSpecificID",id).then((response) => {
+                let data = response;
+                this.details = data.data.details[0];
+                this.details_change = data.data.part_numbers;
+                console.log(data);
+                this.deviceValue =[];
+                let obj_device = {};
+                obj_device["name"] = this.details.device_name;
+                obj_device["id"]   = this.details.device_id;
+                this.deviceValue.push(obj_device);
+              
+                this.modelValue =[];
+                let obj_model = {};
+                obj_model["name"] = this.details.model_name;
+                obj_model["id"]   = this.details.model_id;
+                this.modelValue.push(obj_model);
+
+                this.unitValue =[];
+                let obj_unit = {};
+                obj_unit["name"] = this.details.unit_name;
+                obj_unit["id"]   = this.details.unit_id;
+                this.unitValue.push(obj_unit);         
+               
+          });
+        },   
     }
 }
 </script>

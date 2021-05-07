@@ -4,6 +4,7 @@ export default{
     state:{
         load_percentage: [],
         load_contents: [],
+		load_specific_id: []
     },
     mutations:{
         SET_PERCENTAGE(state, load_percentage) {
@@ -11,6 +12,9 @@ export default{
         },
         SET_CONTENTS(state, load_contents) {
 			state.load_contents = load_contents;
+        },
+		SET_SPECIFIC_ID(state, load_specific_id) {
+			state.load_specific_id = load_specific_id;
         },
     },
     actions:{      
@@ -40,13 +44,35 @@ export default{
 					.get(`load-process-monitoring/${content}`)
 					.then(function(response) {
                         commit("SET_CONTENTS", response.data);
-                        console.log(response);
+						
+						let result = {
+							code: response.status_code,
+							status: response.status,
+							message: response.message,
+							data: response.data,
+						};
+						
+                        resolve(result);
+					})
+					.catch(function(error) {
+						reject(error);
+					});
+			});
+        },
+		async loadSpecificID({ commit },id) {
+			return new Promise((resolve, reject) => {
+				axios
+					.get(`process-monitoring/${id}`)
+					.then(function(response) {
+                        commit("SET_SPECIFIC_ID", response.data);
+						// console.log(response);
 						let result = {
 							code: response.data.status_code,
 							status: response.data.status,
 							message: response.data.message,
 							data: response.data.data,
 						};
+						
                         resolve(result);
 					})
 					.catch(function(error) {
