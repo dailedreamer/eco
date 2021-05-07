@@ -41,7 +41,7 @@
                           <AButton
                             id="button-upload"
                             type="submit"
-                            title="Click to add budget"
+                            title="Click to add file"
                             variant="primary"
                           >
                           <font-awesome-icon icon="upload" size="sm" class="icon" /> Upload
@@ -50,7 +50,12 @@
                       </b-row>
                 </b-col>
               </b-form>
-                 <br>
+              <br>
+              <b-form
+                  id="form-update-process"
+                  @submit.prevent="updateProcess"
+                  method="post"
+                >
                   <b-col cols="12">
                     <b-table class="alpha__table text-nowrap"
                         responsive 
@@ -69,12 +74,13 @@
                     <multiselect  
                       v-model="data.item.device"
                       placeholder="Select Device Name" 
+                      id="device__id"
                       label="text" 
                       track-by="id" 
                       :options="device_options"
                       :show-labels="false"
                       :allow-empty="false"
-                      @input="loadModel(data.item.device.id, data.index) ,changeDevice(data.index)"  
+                      @input="loadModel(data.item.device.id, data.index) ,changeDevice(data.index, data.item.device.id)"  
                       ></multiselect>
                     </template>
                     <template #cell(model)="data"> 
@@ -121,16 +127,16 @@
                  </b-col>
                  <div class = "mt-4">
                     <AButton class = "float-right mr-3"
-                      id="button-submit"
+                      id="button-update"
                       type="submit"
                       title="Update Selected"
                       variant="primary"
                     >
                     <font-awesome-icon icon="save" size="sm" class="icon" /> Update Selected
                     </AButton>
-              </div>
+                </div>
+              </b-form>
              </div>
-              
           </vessel-header>
           <vessel-body>
           </vessel-body>
@@ -188,6 +194,7 @@ export default {
       device_options: [],
       model_options: [],
       unit_options: [],
+      data: [],
       items: 
       [
         // {id: 1,eco_number: '123456877',unit_options:[], model_options:[],part_number: 'KD021-13254', revision: '04',device:[],model:[], unit:[]},
@@ -196,6 +203,8 @@ export default {
       ],
       //loading
         isBusy: false,
+        process_id: null,
+        index: null
     }
   },
   methods:
@@ -273,9 +282,48 @@ export default {
   
     changeDevice: function(index)
     {
-      console.log(this.items[index]);
-        // this.items[index].model=[];
-        // this.items[index].unit=[];
+      this.data.push(this.items[index]);
+    },
+    updateProcess: function()
+    {
+      var data_value = [];
+
+      for (let index = 0; index < this.data.length; index++) 
+      {
+        var main_id = this.data[index].id;
+        var device_id = this.data[index].device.id;
+        var unit_id = this.data[index].unit.unit_id;
+        var model_id = this.data[index].model.model_id;
+
+        let obj = {};
+
+          obj["id"] = main_id;
+          obj["device_id"] = device_id;
+          obj["model_id"] = model_id;
+          obj["unit_id"] = unit_id;
+
+          data_value.push(obj);
+      }
+      
+      this.$store
+            .dispatch("updateUnit", data_value)
+            .then((response) => {
+              let information = response.data.status;
+              if(information == "Success")
+                this.toast(information, response.data.message);
+              else if(information == "Warning")
+                this.toast(information, response.data.message);
+              else  
+                this.toast(information, response.data.message);
+            })
+            .catch((error) => {
+              this.toast("error", "Something went wrong");
+              console.log(error)
+                })
+            .finally(() => {
+              location.reload()
+            });
+        
     },
     uploadFile: function()
     {
@@ -324,12 +372,12 @@ export default {
         
         this.items = response.data;
         // console.log(this.items);
-        let obj = {};
+        // let obj = {};
                     
-        obj["device"] = [];
-        obj["model"] = [];
-        obj["unit"] = [];
-        this.items.push(obj);
+        // obj["device"] = [];
+        // obj["model"] = [];
+        // obj["unit"] = [];
+        // this.items.push(obj);
         this.toast(response.status, response.message);
 
         if(!this.getAllProcess.data)

@@ -49,6 +49,20 @@ export default {
                         reject(error);
                     });
             });
+        },
+        async updateUnit(state, payload)
+        {
+            return new Promise((resolve, reject) =>
+            {
+                axios   
+                    .patch("update-process-details", payload)
+                    .then(function(response) {
+                        resolve(response);
+                    })
+                    .catch(function(error){
+                        reject(error);
+                    });
+            })
         }
     },
     getters: {
