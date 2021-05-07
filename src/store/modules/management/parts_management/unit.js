@@ -16,12 +16,12 @@ export default {
 
 		//save
 		async insertUnit(state, payload) {
-			console.log(payload);
+			// console.log(payload);
 			return new Promise((resolve, reject) => {
 				axios
 					.post("units", payload)
 					.then(function(response) {
-						console.log(response);
+						// console.log(response);
 						resolve(response);
 					})
 					.catch(function(error) {
@@ -45,7 +45,7 @@ export default {
 		},
 
 		//update
-		async updatUnit(state, payload) {
+		async updateUnit(state, payload) {
 			return new Promise((resolve, reject) => {
 				payload["formData"].append("_method", "PATCH");
 				axios
@@ -68,6 +68,7 @@ export default {
 				axios
 					.get("units")
 					.then(function(response) {
+						// console.log(response)
 						commit("SET_MANAGENT_UNIT", response.data);
 						let result = {
 							code: response.data.code,
@@ -75,7 +76,7 @@ export default {
 							message: response.data.message,
 							data: response.data.data,
 						};
-						console.log(result);
+						// console.log(result);
 						resolve(result);
 					})
 					.catch(function(error) {
@@ -91,7 +92,7 @@ export default {
 					.get(`units-load/${id}`)
 					.then(function(response) {
 						commit("SET_MANAGENT_SPECIFIC", response.data);
-	
+						// console.log(response);
 						let result = {
 							code: response.data.code,
 							status: response.data.status,

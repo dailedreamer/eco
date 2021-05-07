@@ -11,36 +11,34 @@ export default{
         async loadEmailMasterlist(){
             return new Promise((resolve, reject) => {
                 axios
-                    // .get("email-masterlist")
-                    .get('http://10.164.58.63/training3/public/api/employee')
+                    .get("email")
                     .then(function(response){
                         let result = {
-                            // code: response.data.code,
+                            code: response.data.status_code,
                             status: response.data.status,
                             message: response.data.message,
                             data: response.data.data,
                         };
-                        resolve(result);  
+                        resolve(result); 
                     })
                     .catch(function(error){
                         reject(error);
-                        // console.log(error)
                     });
             })
         },
         async loadSection(){
             return new Promise((resolve, reject) =>{
                 axios
-                    // .get("email-details")
-                    .get('http://10.164.58.63/training3/public/api/employee')
+                    .get("sections")
                     .then(function(response){
+                        
                          let result = {
-                            // code: response.data.code,
+                            code: response.data.status_code,
                             status: response.data.status,
                             message: response.data.message,
                             data: response.data.data,
                         };
-                        resolve(result);  
+                        resolve(result); 
                     })
                     .catch(function(error){
                         reject(error);
@@ -50,11 +48,10 @@ export default{
         async loadEmployee(){
             return new Promise((resolve, reject) =>{
                 axios   
-                    // .get("email-details")
-                    .get('http://10.164.58.63/training3/public/api/employee')
+                    .get("portal-users")
                     .then(function(response){
                         let result = {
-                            // code: response.data.code,
+                            code: response.data.status_code,
                             status: response.data.status,
                             message: response.data.message,
                             data: response.data.data,
@@ -65,6 +62,19 @@ export default{
                         reject(error);
                     })
             })
+        },
+        async updateEmail(state, payload){
+            return new Promise((resolve, reject) => {
+                payload["formData"].append("_method", "PATCH");
+                axios
+                    .post(`email/${payload["id"]}`,  payload["formData"])
+                    .then(function(response){
+                        resolve(response)
+                    })
+                    .catch(function(error) {
+						reject(error.response);
+					});
+            });
         }
 
     },

@@ -29,30 +29,47 @@
                                     This is a description.
                                 </small>
                             </b-media>
-
-                             <b-table outlined hover fixed :items="email_masterlists" :fields="email_fields" primary-key="id">
+                             <b-table 
+                                class="alpha__table text-nowrap"
+                                responsive 
+                                hover 
+                                bordered
+                                head-variant="light" 
+                                :items="email_masterlists" 
+                                :fields="email_fields"
+                                :per-page="perPage"
+                                :current-page="currentPage">
                                 <template #cell(actions)="data">
-                                    <b-button variant="primary" size="sm"
+                                    <b-link
                                         v-b-modal.email_modal_id 
                                         :disabled="disable" 
                                         :id="'btn_actions_'+data.item.id"
-                                        @click="test=data.item">
-                                        <font-awesome-icon icon="edit" />
-                                    </b-button>
+                                        @click="updateEmailRecipient(data.item.id)">
+                                        Edit
+                                    </b-link>
                                 </template>
                                 <template #cell(status)="data">
-                                    <toggle-button @change="toggle(data.item.id, $event)"
+                                    <toggle-button 
+                                        @change="toggle(data.item.id, $event)"
                                         :value="true" 
                                         :labels="{checked: 'On', unchecked: 'Off'}" 
                                         :color="{checked: '#118f22', unchecked: '#FF0000'}"/>
                                 </template>   
-                             </b-table>    
+                             </b-table>  
+                            <b-pagination 
+                            class="alpha__table__pagination"
+                            :total-rows="totalRows" 
+                            v-model="currentPage"
+                            :per-page="perPage"
+                            align="right"
+                            pills></b-pagination>  
                         </b-card>
                     </b-card-body>   
                 </b-card>
             </b-col>  
         </b-row>
-        <EmailUpdateModal/>
+        <EmailUpdateModal
+            :get_data="this.id"/>
     </b-container>
 </template>
 
@@ -64,33 +81,40 @@ export default {
     },
     data() {
       return {
+        currentPage: 1,
+        perPage: 10,
         email_masterlists: [],
         email_fields: [
-            { key: "id", label: "No", sortable: true },
-            { key: "actions"},
-            { key: "id_number", label: "Subject", sortable: true }, //change yung key to key:"id_number" to key:"subject"
-            { key: "last_name", label: "Classification", sortable: true }, //change yung key:"last_name" to key:"classification"
-            { key: "status"},
+            { key: "id", label:"No", sortable: true, class: "text-center"},
+            { key: "actions", class: "text-center"},
+            { key: "subject", sortable: true, },
+            { key: "email_classification", label: "Classification", sortable: true, class: "text-center"}, 
+            { key: "status", class: "text-center"},
         ],
         disable: false,
+        id: {},
       }
     },
     mounted(){
         this.loadEmailMasterlist();
     },
+    computed:{
+        totalRows: function(){
+            return this.email_masterlists.length
+        }, 
+    },
     methods: {
-        
         loadEmailMasterlist() {
             this.$store.dispatch("loadEmailMasterlist")
             .then((response) => {
-                 this.email_masterlists = response.data;
-                //  console.log(this.email_masterlists);
+                this.toast(response.status,response.message);
+                this.email_masterlists = response.data;
             })
         },
         toggle(data, event) {
-            console.log(data);
+            // console.log(data);
             let event_status = event.value;
-            console.log(event_status);
+            // console.log(event_status);
              if (event_status != true) {
                 this.event_status = true;
                 document.getElementById(`btn_actions_${data}`).disabled = true;
@@ -99,6 +123,17 @@ export default {
                 document.getElementById(`btn_actions_${data}`).disabled = false;
             }
         },
+        updateEmailRecipient: function(id){
+            // console.log(id);
+            this.id = {};
+            this.id = this.email_masterlists[id-1];
+        },
+        toast: function (status, message){
+            this.$toast(message, {
+                type:status.toLowerCase().trim(),
+                position: "bottom-right",
+            });
+        }
     }
 }
 </script>
