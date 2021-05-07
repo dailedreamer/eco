@@ -45,7 +45,7 @@ export default {
 		},
 
 		//update
-		async updatUnit(state, payload) {
+		async updateUnit(state, payload) {
 			return new Promise((resolve, reject) => {
 				payload["formData"].append("_method", "PATCH");
 				axios
@@ -68,6 +68,7 @@ export default {
 				axios
 					.get("units")
 					.then(function(response) {
+						// console.log(response)
 						commit("SET_MANAGENT_UNIT", response.data);
 						let result = {
 							code: response.data.code,
