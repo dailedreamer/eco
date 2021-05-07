@@ -92,7 +92,11 @@ export default {
 					.get(`units-load/${id}`)
 					.then(function(response) {
 						commit("SET_MANAGENT_SPECIFIC", response.data);
+<<<<<<< HEAD
 						// console.log(response);
+=======
+	
+>>>>>>> develop
 						let result = {
 							code: response.data.code,
 							status: response.data.status,
