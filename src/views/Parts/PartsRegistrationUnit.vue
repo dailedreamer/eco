@@ -209,6 +209,7 @@ export default {
     },
     loadDevice: function()
     {
+      console.log(this.items);
       this.$store.dispatch("loadDevice")
       .then((response) => {
         let information = response.data.data;
