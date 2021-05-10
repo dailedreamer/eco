@@ -33,7 +33,7 @@
                         label-for="txt_drawing_number">
                         <b-form-input 
                             id="txt_drawing_number"
-                            v-model="this.details.parent_drawing_number"
+                            v-model="details.parent_drawing_number"
                             disabled
                             placeholder="Enter Drawing Number"
                             required></b-form-input>
@@ -44,8 +44,8 @@
                         label="Revision Number:"
                         label-for="txt_revision_number">
                         <b-form-input 
-                            id="txt_drawing_number"
-                            v-model="this.details.drawing_number_revision"
+                            id="txt_revision_number"
+                            v-model="details.drawing_number_revision"
                             disabled
                             placeholder="Enter Revision Number"
                             required></b-form-input>
@@ -54,22 +54,25 @@
             </b-row>
             <b-row class="ml-5 mr-5">
                 <b-col cols="3">
-                   <!-- {{deviceValue}}  -->
+                  
                     <b-form-group
                         label="Device:"
                         label-for="slc_device">
                         <multiselect 
                             id="slc_device" 
-                            v-model="device"
+                            v-model="device_value"
                             name="slc_device"
-                            :options="this.deviceOptions" 
+                            :options="deviceOptions" 
                             :searchable="true"
                             :show-labels="false"
                             placeholder='Select Device'
                             label="name" 
                             track-by="id"
-                            @input="loadModel()"></multiselect>
+                            @input="loadDevice()"></multiselect>
                     </b-form-group>
+
+                    {{device_value}} || {{device_data}}
+
                 </b-col>
                 <b-col cols="3">
                     <b-form-group 
@@ -113,7 +116,7 @@
                             id="txt_unit_number"
                             name="txt_unit_number"
                             type="text"
-                            v-model="this.details.unit_number"
+                            v-model="details.unit_number"
                             disabled></b-form-input>
                     </b-form-group>
                 </b-col>
@@ -144,7 +147,7 @@
                         label="Target Application:"
                         label-for="slc_target_application">
                         <b-form-datepicker
-                            v-model="this.details.target_application"
+                            v-model="details.target_application"
                             id="slc_target_application"
                             placeholder="Choose a date" 
                             class="date_picker"
@@ -159,7 +162,7 @@
                         label="Actual Application:"
                         label-for="slc_actual_application">
                         <b-form-datepicker 
-                            v-model="this.details.actual_application"
+                            v-model="details.actual_application"
                             id="slc_actual_application" 
                             placeholder="Choose a date" 
                             class="date_picker"
@@ -174,7 +177,7 @@
                         label="CARF:"
                         label-for="txt_carf">
                         <b-form-input 
-                            v-model="this.details.carf_number"
+                            v-model="details.carf_number"
                             id="txt_carf"
                             placeholder="Enter Carf"
                             required></b-form-input>
@@ -185,7 +188,7 @@
                         label="Serial No.:"
                         label-for="txt_serial_number">
                         <b-form-input 
-                            v-model="this.details.serial_number"
+                            v-model="details.serial_number"
                             id="txt_serial_number"
                             placeholder="Enter Serial No"
                             required></b-form-input>
@@ -237,7 +240,7 @@
                         label="Remarks:"
                         label-for="txt_remarks">
                         <b-form-textarea 
-                            v-model="this.details.remarks"
+                            v-model="details.remarks"
                             id="txt_remarks"
                             name="txt_remarks"
                             type="text"
@@ -249,8 +252,8 @@
                 </b-col>
             </b-row>
         </b-form>
-        <template #modal-footer="{ Update, hide }">
-            <b-button size="sm" variant="danger" @click="Update">
+        <template #modal-footer="{ hide }">
+            <b-button size="sm" variant="danger" @click="updateForm">
                 <font-awesome-icon icon="save" /> Update Values
             </b-button>
             <b-button size="sm" variant="outline-secondary" @click="hide('close')">
@@ -262,7 +265,7 @@
 </template>
 
 <script>
-
+import { mapGetters } from "vuex";
 export default {
     
     name: 'ProcessMonitoringUpdateModal',
@@ -271,7 +274,7 @@ export default {
     props: {
         details:Object,
         details_change:Array,
-        device:Array,
+        device_data:Array,
         model:Array,
         unitName:Array
     },
@@ -298,11 +301,27 @@ export default {
             modelOptions: [],
             unitNameOptions: [],
             unitNumberValue: '',
+
+            //updating
+            update_id:'',
+            target_application  : this.details.target_application,
+            actual_application  : this.details.actual_application,
+            carf_number         : this.details.carf_number,
+            serial_number       : this.details.serial_number,
+            manhour_before      : this.details.manhour_before,
+            manhour_after       : this.details.manhour_after,
+            manhour_difference  : this.details.manhour_difference,
+            remarks             : this.details.remarks,
+            device_value        : this.device_data,
+            model_value         : this.model,
+            unit_value          : this.unitName
+
+            
         }
     },
+    
     methods:{
         loadDevice: function () {
-
             this.deviceOptions=[];
             this.clearFields();
             this.$store.dispatch("loadDevice")
@@ -315,51 +334,50 @@ export default {
                         })
                     });
                 })
-           
         },
-        loadModel: function () {
-            this.modelOptions=[];
-            this.modelValue=[];
-            this.unitNameOptions=[];
-            this.unitNameValue=[];
-            this.unitNumberValue= '',
+        // loadModel: function () {
+        //     this.modelOptions=[];
+        //     this.modelValue=[];
+        //     this.unitNameOptions=[];
+        //     this.unitNameValue=[];
+        //     this.unitNumberValue= '',
 
-            this.$store.dispatch("loadModelPerDevice", this.deviceValue.id)
-                .then((response) => {
-                    let information = response.data;
-                    Object.keys(information).forEach((key) => {
-                        this.modelOptions.push({
-                            'id':information[key].id, 
-                            'name':information[key].model_code
-                        })
-                    });
-                })
-        },
-        loadUnitName: function () {
-            this.unitNameOptions= [];
-            this.unitNameValue = [];
-            this.unitNumberValue= '',
+        //     this.$store.dispatch("loadModelPerDevice", this.deviceValue.id)
+        //         .then((response) => {
+        //             let information = response.data;
+        //             Object.keys(information).forEach((key) => {
+        //                 this.modelOptions.push({
+        //                     'id':information[key].id, 
+        //                     'name':information[key].model_code
+        //                 })
+        //             });
+        //         })
+        // },
+        // loadUnitName: function () {
+        //     this.unitNameOptions= [];
+        //     this.unitNameValue = [];
+        //     this.unitNumberValue= '',
 
-            this.$store.dispatch("loadUnitPerModel", this.modelValue.id)
-                .then((response) => {
-                    let information = response.data;
-                    // console.log(information);
+        //     this.$store.dispatch("loadUnitPerModel", this.modelValue.id)
+        //         .then((response) => {
+        //             let information = response.data;
+        //             // console.log(information);
 
-                    Object.keys(information).forEach((key) => {
-                        this.unitNameOptions.push({
-                            'id':information[key].id, 
-                            'name':information[key].unit_name,
-                            'unit_number':information[key].unit_number,
-                        })
-                    });
+        //             Object.keys(information).forEach((key) => {
+        //                 this.unitNameOptions.push({
+        //                     'id':information[key].id, 
+        //                     'name':information[key].unit_name,
+        //                     'unit_number':information[key].unit_number,
+        //                 })
+        //             });
 
-                })
-        },
-        loadUnitNo: function (unit_no)
-        {
+        //         })
+        // },
+        // loadUnitNo: function (unit_no)
+        // {
             
-            this.unitNumberValue = unit_no;
-        },
+        //     this.unitNumberValue = unit_no;
+        // },
         clearFields: function ()
         {
             this.modelValue = [];
@@ -369,15 +387,66 @@ export default {
             this.modelOptions=[];
             this.unitNameOptions=[];
         },
+        updateForm() 
+        {           
+            var formData = {
+                id                  : this.details.id,
+                target_application  : this.details.target_application,
+                actual_application  : this.details.actual_application,
+                carf_number         : this.details.carf_number,
+                serial_number       : this.details.serial_number,
+                manhour_before      : this.details.manhour_before,
+                manhour_after       : this.details.manhour_after,
+                manhour_difference  : this.details.manhour_difference,
+                remarks             : this.details.remarks,
+                device_id           : this.device.id,
+                model_name_id       : this.model.id,
+                unit_id             : this.unitName.id,
+                section             : 'ASSEMBLY'
+            };
+
+            this.$store
+            .dispatch("updateProcess", formData)
+            .then((response) => {
+            let status = response.data.status;
+                if (status == "Success") {
+                    this.toast(status, response.data.message);
+                    this.$bvModal.hide("unit-modal-update");
+                } else if (status == "Warning") {
+                    Object.keys(response.data.data).forEach((key) => {
+                    this.form[key]["state"] = false;
+                    this.form[key]["validation"] = response.data .data[key][0];
+                    });
+                    this.toast(status, "Please review your inputs.");
+                } else if (status == "Error") {
+                    this.toast(status, response.data.message);
+                }
+            })
+            .catch((error) => {
+            let error_data = error.data;
+                    let status = error.data.status;
+                    for(const[key] of Object.entries(error_data.error))
+                    {
+                        this.toast(status,error_data.error[key][0]);
+                    };
+                    this.clearForm();
+                })
+            .finally(() => {
+            });
+        },
+        toast: function (status, message){
+            this.$toast(message, {
+                type:status.toLowerCase().trim(),
+                position: "bottom-right",
+            });
+        },
+     
     },
     mounted(){
         this.loadDevice();
-        
     },
-    computed: 
-    {
-
-        //  this.deviceValue = this.device;
+    computed:{
+        ...mapGetters(["getDevice"]),
     }
 }
 </script>

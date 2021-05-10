@@ -26,7 +26,9 @@
             :per-page="perPage"
             align="right"
             pills></b-pagination>
-            <ProcessMonitoringUpdateModal :details="this.details" :details_change="this.details_change" :device="this.deviceValue" :model="this.modelValue" :unitName="this.unitValue"/>
+            <ProcessMonitoringUpdateModal :details="this.details" :details_change="this.details_change" :device_data="this.deviceValue" :model="this.modelValue" :unitName="this.unitValue"/>
+            <!-- <ProcessMonitoringUpdateModal :details="this.details" :details_change="this.details_change" :id="this.id"/> --> -->
+
     </b-container>
 </template>
 
@@ -81,12 +83,17 @@ export default {
     methods:{
         loadSpecificDetails(id)
         {
-            console.log(id);
+            // console.log(id);
             this.$store.dispatch("loadSpecificID",id).then((response) => {
                 let data = response;
                 this.details = data.data.details[0];
                 this.details_change = data.data.part_numbers;
-                console.log(data);
+
+                // console.log(response)
+
+                // this.id = id;
+                // console.log(data);
+
                 this.deviceValue =[];
                 let obj_device = {};
                 obj_device["name"] = this.details.device_name;

@@ -112,7 +112,7 @@ export default {
      {
        this.$store.dispatch("loadPercentage").then((response) => {
               let data = response.data;
-              console.log(data);
+              // console.log(data);
               this.applied_count = data.applied_count;
               this.applied_percentage = data.applied_percentage;
               this.for_application_count = data.application_count;
@@ -125,7 +125,7 @@ export default {
               let data = response.data.data;
               // console.log(data);
               this.for_application_list = data;
-              console.log(this.for_application_list);
+              // console.log(this.for_application_list);
           }); 
      },
 

@@ -80,6 +80,22 @@ export default{
 					});
 			});
         },
+		async updateProcess(state, payload) {
+			return new Promise((resolve, reject) => {
+				// payload["formData"].append("_method", "PATCH");
+				axios
+					.patch(
+						`process-monitoring/${payload["id"]}`,
+						payload
+					)
+					.then(function(response) {
+						resolve(response);
+					})
+					.catch(function(error) {
+						reject(error.response);
+					});
+			});
+		},
     },
     getters:{
        
