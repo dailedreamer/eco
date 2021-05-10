@@ -50,7 +50,7 @@ export default {
                     });
             });
         },
-        async updateUnit(state, payload)
+        async updateProcessRegistration(state, payload)
         {
             return new Promise((resolve, reject) =>
             {
