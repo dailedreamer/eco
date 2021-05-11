@@ -16,7 +16,7 @@ export default {
 
 		//save
 		async insertUnit(state, payload) {
-			// console.log(payload);
+			console.log(payload);
 			return new Promise((resolve, reject) => {
 				axios
 					.post("units", payload)
@@ -47,14 +47,15 @@ export default {
 		//update
 		async updateUnit(state, payload) {
 			return new Promise((resolve, reject) => {
-				payload["formData"].append("_method", "PATCH");
+				// payload["formData"].append("_method", "PATCH");
 				axios
-					.post(
+					.patch(
 						`units/${payload["id"]}`,
 						payload["formData"]
 					)
 					.then(function(response) {
 						resolve(response);
+					
 					})
 					.catch(function(error) {
 						reject(error.response);
