@@ -5,7 +5,18 @@
             :items="this.fields"
             :fields="process_table_fields"
             :per-page="perPage"
-            :current-page="currentPage">
+            :current-page="currentPage"
+            :filter="this.filter_data"
+            >
+            <!-- <template #cell(no)="data">
+                {{data.index+1}}
+            </template>   -->
+            <template #cell(no)="data" v-if="currentPage == 1">
+                {{data.index+1}}
+            </template>
+            <template #cell(no)="data" v-else>
+                {{(data.index+1) + (currentPage*perPage) - 10}}
+            </template>  
             <template #cell(action)="data">
                 <b-button 
                     @click="loadSpecificDetails(data.item.id)"
@@ -26,8 +37,13 @@
             :per-page="perPage"
             align="right"
             pills></b-pagination>
-            <ProcessMonitoringUpdateModal :details="this.details" :details_change="this.details_change" :device_data="this.deviceValue" :model="this.modelValue" :unitName="this.unitValue"/>
-            <!-- <ProcessMonitoringUpdateModal :details="this.details" :details_change="this.details_change" :id="this.id"/> --> -->
+            <ProcessMonitoringUpdateModal 
+                :details="this.details" 
+                :details_change="this.details_change" 
+                :device_data="this.deviceValue" 
+                :model="this.modelValue" 
+                :unitName="this.unitValue"/>
+            <!-- <ProcessMonitoringUpdateModal :details="this.details" :details_change="this.details_change" :id="this.id"/> -->
 
     </b-container>
 </template>
@@ -41,6 +57,8 @@ export default {
     },
    props: {
         fields:Array,
+        device: Object,
+        filter_data: String,
     },
     data(){
         return{ 
@@ -49,6 +67,7 @@ export default {
             process_table_list:[],
             process_table_fields:
             [
+                {key: "no"},
                {key: "action"},
                {key: "eco_number", sortable: true},
                {key: "device_name", sortable: true},
@@ -77,7 +96,7 @@ export default {
     computed:{
         
         rows(){
-            return this.process_table_list.length
+            return this.fields.length
         }
     },
     methods:{
@@ -88,6 +107,9 @@ export default {
                 let data = response;
                 this.details = data.data.details[0];
                 this.details_change = data.data.part_numbers;
+
+                // console.log(this.details);
+                // console.log(this.details_change)
 
                 // console.log(response)
 
