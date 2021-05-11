@@ -99,17 +99,44 @@
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, illum.
                         </small>
                     </b-media>
+                    <b-row class="mt-2 mb-3 mr-1 float-right">
+                        <b-input-group size="sm">
+                            <b-form-input
+                                id="filter-input"
+                                name="search"
+                                v-model="filter"
+                                type="search"
+                                placeholder="Type to Search"
+                                autocomplete="off">
+                            </b-form-input>
+                            <b-input-group-append>
+                                <b-button 
+                                    variant="danger"
+                                    title="Click to Clear Inputs"
+                                    :disabled="!filter" 
+                                    @click="filter = ''">
+                                    <font-awesome-icon
+                                        icon="times-circle"
+                                        class="icon"/>
+                                        Clear
+                                </b-button>
+                            </b-input-group-append>
+                        </b-input-group>
+                    </b-row>
                     <b-table 
                         class="alpha__table text-nowrap"
                         responsive 
                         hover 
                         bordered
                         head-variant="light"
+                        :filter="filter"
                         :fields="fields"
                         :items="getUnit.data" 
                         :busy="isBusy"
+                        :filter-included-fields="filterOn"
                         :per-page="perPage"
-                        :current-page="currentPage">
+                        :current-page="currentPage"
+                        @filtered="onFiltered">
                         <template #table-busy>
                             <div class="text-center text-default my-2">
                             <b-spinner class="align-middle"></b-spinner>
@@ -123,14 +150,15 @@
                         </template>
                         <template #cell(actions)="data">
                             <b-link
-                                v-if="currentPage == 1"
                                 v-b-modal.unit-modal-update
-                                @click="editUnit(data.index)">
-                                Edit</b-link>
-                            <b-link
-                                v-else
-                                v-b-modal.unit-modal-update
-                                @click="editUnit(data.index + (currentPage*perPage) - 10)">
+                                @click="editUnit(
+                                    data.item.id, 
+                                    data.item.device_id, 
+                                    data.item.device_name, 
+                                    data.item.model_id, 
+                                    data.item.model_name, 
+                                    data.item.unit_name,
+                                    data.item.unit_number)">
                                 Edit</b-link>
                             <label class="ml-2 mr-2 text-secondary">|</label>
                             <b-link
@@ -190,8 +218,7 @@
                                     :show-labels="false"
                                     label="name" 
                                     track-by="id"
-                                    @input="loadModel()"></multiselect>
-                                    
+                                    @input="loadModelforModal()"></multiselect>
                         </b-form-group>
                         <b-form-group 
                             label-size="sm" 
@@ -202,7 +229,7 @@
                                 name="name"
                                 v-model="unit.model_name_id.value"
                                 :state="unit.model_name_id.state"
-                                :options="options_model" 
+                                :options="options_model_modal" 
                                 :searchable="true"
                                 :show-labels="false"
                                 label="name" 
@@ -213,24 +240,26 @@
                             label-for="name" 
                             label="Unit Name:">
                             <b-form-input
-                                id="model_code"
-                                name="model_code"
+                                id="modal_unit_name"
+                                name="modal_unit_name"
                                 type="text"
                                 v-model="unit.unit_name.value"
                                 :state="unit.unit_name.state"
-                                required/>
+                                required
+                                autocomplete="off"/>
                         </b-form-group>
                         <b-form-group 
                             label-size="sm" 
                             label-for="name" 
                             label="Unit Number:">
                             <b-form-input
-                                id="model_code"
-                                name="model_code"
+                                id="modal_unit_number"
+                                name="modal_unit_number"
                                 type="text"
                                 v-model="unit.unit_number.value"
                                 :state="unit.unit_number.state"
-                                required/>
+                                required
+                                autocomplete="off"/>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -257,6 +286,7 @@ export default {
   name: "PartsManagementUnit",
     data() {
       return {
+        filter: null,
         //select
         selected_device: '',
         selected_model: '',
@@ -264,6 +294,7 @@ export default {
         options_device: [],
 
         options_model: [],
+        options_model_modal: [],
 
         //device table
         isBusy: false,
@@ -273,14 +304,14 @@ export default {
             {key: "No",sortable: true, class: "text-center"}, 
             {key: "device_name",sortable: true, class: "text-center"}, 
             {key: "model_name",sortable: true, class: "text-center"}, 
-            {key: "unit_number",sortable: true, class: "text-center"}, 
             {key: "unit_name",sortable: true, class: "text-center"},
+            {key: "unit_number",sortable: true, class: "text-center"}, 
             {key: 'actions', class: "text-center"}],
 
         //pagination
         currentPage: 1,
         perPage: 10,
-       
+        filterOn: ['device_name', 'model_name', 'unit_number', 'unit_name', 'actions'],
         //saving
         form: {
                 device_name: 
@@ -337,19 +368,12 @@ export default {
                     validation: "",
                 }
         },
-        unit_details: {},
+        unit_details: [],
+        rows: null
       }
     },
     computed: {
         ...mapGetters(["getUnit"]),
-        rows: function() {
-            if (!this.getUnit.data) {
-                return 1;
-            } else {
-                return this.getUnit.data.length;
-            }
-        },
-        
     },
     mounted() {
         this.loadDevice();
@@ -361,17 +385,19 @@ export default {
             alert(id);
         },
 
-        loadUnit: function()
-        {
+        loadUnit: function(){
            this.$store.dispatch("loadUnit")
             .then((response) => {
             this.toast(response.status, response.message);
             this.isBusy=false;
+             if (!this.getUnit.data) 
+                this.rows = 0;
+            else 
+                this.rows = this.getUnit.data.length;
            });  
         },
 
-        loadDevice: function()
-        {   
+        loadDevice: function(){   
            this.$store.dispatch("loadDevice")
             .then((response) => {
                 this.options_model=[];
@@ -385,10 +411,10 @@ export default {
            });  
         },
 
-        loadModel: function()
-        {
+        loadModel: function(){
             this.options_model = [];
             this.form.model_name_id.value = [];
+            this.unit.model_name_id.value = [];
             this.$store.dispatch("loadModelPerDevice", this.form.device_name.value.id)
             .then((response) => {
                 let information = response.data;
@@ -401,15 +427,14 @@ export default {
             }); 
         },
 
-        loadModelforModal: function()
-        {
-            this.options_model = [];
-            this.form.model_name_id.value = [];
+        loadModelforModal: function(){
+            this.options_model_modal = [];
+            this.unit.model_name_id.value = [];
             this.$store.dispatch("loadModelPerDevice", this.unit.device_name.value.id)
             .then((response) => {
                 let information = response.data;
                     Object.keys(information).forEach((key) => {
-                        this.options_model.push({
+                        this.options_model_modal.push({
                             'id':information[key].id, 
                             'name':information[key].model_code
                         })
@@ -461,22 +486,47 @@ export default {
             });
         },
 
+        editUnit: function(id, device_id, device_name, model_id, model_name, unit_name, unit_number){
+            this.update_id = id;
+            this.unit.unit_number.value = unit_number;
+            this.unit.unit_name.value = unit_name;
+
+            let obj_device = {
+                'id'    :  device_id,
+                'name'  : device_name
+            };
+            this.unit.device_name.value = obj_device;
+
+            let obj_model = {
+                'id'    :  model_id,
+                'name'  : model_name
+            };
+            this.unit.model_name_id.value = obj_model;
+        },
+
         updateForm: function () {
-            var formData = new FormData(document.getElementById("form-update"));
+            var modal_unit_name = document.getElementById("modal_unit_name").value;
+            var modal_unit_number = document.getElementById("modal_unit_number").value;
+            var formData = {
+                "model_name_id"     : this.unit.model_name_id.value.id,
+                "unit_name"         : modal_unit_name,
+                "unit_number"       : modal_unit_number
+            };
+
             var patchData = {
-                id: this.unit_details.id,
+                id       : this.update_id,
                 formData : formData,
             };
 
             this.$store
             .dispatch("updateUnit", patchData)
             .then((response) => {
-            let status = response.data.status;
+                let status = response.data.status;
                 if (status == "Success") {
                     this.toast(status, response.data.message);
                     this.clearForm();
                     this.$bvModal.hide("unit-modal-update");
-                     this.loadUnit();
+                    this.loadUnit();
                 } else if (status == "Warning") {
                     Object.keys(response.data.data).forEach((key) => {
                     this.form[key]["state"] = false;
@@ -488,7 +538,7 @@ export default {
                 }
             })
             .catch((error) => {
-            let error_data = error.data;
+                    let error_data = error.data;
                     let status = error.data.status;
                     console.log(error_data.error);
                     for(const[key] of Object.entries(error_data.error))
@@ -533,48 +583,36 @@ export default {
                 position: "bottom-right",
             });
         },
-        editUnit: function(id){
-            this.unit_details = {};
-            this.unit_details = this.getUnit.data[id];
-            this.unit.unit_number.value = this.unit_details.unit_number;
-            this.unit.unit_name.value = this.unit_details.unit_name;
 
-            let obj_device = {};
-            this.unit.device_name.value=[];
-            obj_device["id"] = this.unit_details.device_id;
-            obj_device["name"] = this.unit_details.device_name;
-            this.unit.device_name.value.push(obj_device);
-
-            let obj_model = {};
-            this.unit.model_name_id.value=[];
-            obj_model["id"] = this.unit_details.model_id;
-            obj_model["name"] = this.unit_details.model_name;
-            this.unit.model_name_id.value.push(obj_model);
-        }
+        onFiltered(filteredItems) 
+        {
+            this.rows = filteredItems.length
+            this.currentPage = 1
+        }, 
     }
 };
 </script>
 
 <style scoped>
-.hr_device
-{
-    border:2px solid #C3C3C3; 
-    margin-top: 7.5px;
-    width:35%;
-}
-.custom_size
-{
-    font-size:2.5em
-}
-.hr_model
-{
-    width:26%
-}
-.custom_col_unit_container
-{
-    background-color: #F9F9F9;
-    margin-top:-20px;
-    margin-bottom:-20px;
-    margin-left:-5px;
-}
+    .hr_device
+    {
+        border:2px solid #C3C3C3; 
+        margin-top: 7.5px;
+        width:35%;
+    }
+    .custom_size
+    {
+        font-size:2.5em
+    }
+    .hr_model
+    {
+        width:26%
+    }
+    .custom_col_unit_container
+    {
+        background-color: #F9F9F9;
+        margin-top:-20px;
+        margin-bottom:-20px;
+        margin-left:-5px;
+    }
 </style>
