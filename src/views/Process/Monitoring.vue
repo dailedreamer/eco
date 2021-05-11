@@ -7,16 +7,17 @@
             <b-row>
               <b-col cols="2">
                 <b-card 
+                @click="loadContents('for_applied')"
                   class="custom_card_filter">
                     <b-row class="mt-0">
                         <b-col cols="9">
                             <b-media>
                                 <h5 class="mb-2 text-muted text-left">Applied</h5>
-                                <p class="mb-0  text-left custom_p_percentage text-muted text-left"><strong>36%</strong></p>
+                                <p class="mb-0  text-left custom_p_percentage text-muted text-left"><strong>{{ applied_percentage }}%</strong></p>
                             </b-media>
                         </b-col>
                         <b-col cols="3">
-                            <h5 class="mb-0  text-right custom_p_count text-muted">54</h5>
+                            <h5 class="mb-0  text-right custom_p_count text-muted">{{applied_count}}</h5>
                         </b-col>
                     </b-row>
                     <b-row class="mt-0">
@@ -24,7 +25,7 @@
                             <b-progress 
                               class='mt-3' 
                               variant="danger" 
-                              :value="36" 
+                              :value="this.applied_percentage"
                               :max="100" 
                               animated 
                               show-progress></b-progress>
@@ -34,16 +35,17 @@
               </b-col>
               <b-col cols="2">
                 <b-card 
+                @click="loadContents('for_application')"
                   class="custom_card_filter">
                     <b-row class="mt-0">
                         <b-col cols="9">
                             <b-media>
                                 <h5 class="mb-2 text-muted text-left">For Application</h5>
-                                <p class="mb-0  text-left custom_p_percentage text-muted text-left"><strong>64%</strong></p>
+                                <p class="mb-0  text-left custom_p_percentage text-muted text-left"><strong>{{for_application_percentage}}%</strong></p>
                             </b-media>
                         </b-col>
                         <b-col cols="3">
-                            <h5 class="mb-0  text-right custom_p_count text-muted">96</h5>
+                            <h5 class="mb-0  text-right custom_p_count text-muted">{{for_application_count}}</h5>
                         </b-col>
                     </b-row>
                     <b-row class="mt-0">
@@ -51,7 +53,7 @@
                             <b-progress 
                               class='mt-3' 
                               variant="danger" 
-                              :value="64" 
+                              :value="this.for_application_percentage" 
                               :max="100" 
                               animated 
                               show-progress></b-progress>
@@ -75,7 +77,7 @@
               </b-col>
             </b-row>
             <b-row class="mt-4">
-                <ProcessContent />
+                <ProcessContent :fields="this.for_application_list"/>
             </b-row>
           </vessel-body>
         </vessel>
@@ -89,12 +91,51 @@ import ProcessContent from '../../components/Process/ProcessMonitoring/ProcessCo
 export default {
   name: "Blank",
   components: {
-    ProcessContent
+    ProcessContent,
+  
   },
   data(){
     return{
-     
+     applied_count:'',
+     applied_percentage: '',
+     for_application_count: '',
+     for_application_percentage: '',
+     for_application_list: [],
     }
+  },
+  mounted(){
+   this.loadPercentage();
+   this.loadContents('for_applied');
+  },
+   methods:{
+     loadPercentage()
+     {
+       this.$store.dispatch("loadPercentage").then((response) => {
+              let data = response.data;
+              // console.log(data);
+              this.applied_count = data.applied_count;
+              this.applied_percentage = data.applied_percentage;
+              this.for_application_count = data.application_count;
+              this.for_application_percentage = data.application_percentage;
+          });  
+     },
+     loadContents(content)
+     {
+       this.$store.dispatch("loadContents",content).then((response) => {
+              let data = response.data.data;
+              // console.log(data);
+              this.for_application_list = data;
+              // console.log(this.for_application_list);
+          }); 
+     },
+
+      toast: function (status, message){
+        this.$toast(message, {
+              type:status.toLowerCase().trim(),
+              position: "bottom-right",
+        });
+      }
+        
   }
 };
 </script>

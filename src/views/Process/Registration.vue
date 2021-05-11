@@ -41,7 +41,7 @@
                           <AButton
                             id="button-upload"
                             type="submit"
-                            title="Click to add budget"
+                            title="Click to add file"
                             variant="primary"
                           >
                           <font-awesome-icon icon="upload" size="sm" class="icon" /> Upload
@@ -50,7 +50,12 @@
                       </b-row>
                 </b-col>
               </b-form>
-                 <br>
+              <br>
+              <b-form
+                  id="form-update-process"
+                  @submit.prevent="updateProcess"
+                  method="post"
+                >
                   <b-col cols="12">
                     <b-table class="alpha__table text-nowrap"
                         responsive 
@@ -62,31 +67,35 @@
                         :busy="isBusy" 
                         :per-page="perPage"
                         :current-page="currentPage">
-                      <template #cell(no)="data">
-                        {{data.index+1}}
+                      <template #cell(no)="data" v-if="currentPage == 1">
+                          {{data.index+1}}
+                      </template>
+                      <template #cell(no)="data" v-else>
+                          {{(data.index+1) + (currentPage*perPage) - 10}}
                       </template>
                       <template #cell(device)="data"> 
-                    <multiselect  
-                      v-model="data.item.device"
-                      placeholder="Select Device Name" 
-                      label="text" 
-                      track-by="id" 
-                      :options="device_options"
-                      :show-labels="false"
-                      :allow-empty="false"
-                      @input="loadModel(data.item.device.id, data.index) ,changeDevice(data.index)"  
-                      ></multiselect>
+                        <multiselect  
+                          v-model="data.item.device"
+                          placeholder="Select Device Name" 
+                          id="device__id"
+                          label="text" 
+                          track-by="id" 
+                          :options="device_options"
+                          :show-labels="false"
+                          :allow-empty="false"
+                          @input="loadModel(data.item.device.id, data.index) ,changeDevice(data.index, data.item.device.id)"  
+                          ></multiselect>
                     </template>
                     <template #cell(model)="data"> 
                         <multiselect  
                           v-model="data.item.model"
                           placeholder="Select Model Name" 
-                          label="model_name" 
-                          track-by="model_id" 
-                          :options="model_options"
+                          label="name" 
+                          track-by="id" 
+                          :options="data.item.model_options"
                           :show-labels="false"
                           :allow-empty="false"
-                          @input="loadUnit(data.item.model.model_id, data.index)"
+                          @input="loadUnit(data.item.model.id, data.index)"
                           
                         ></multiselect>
                     </template>
@@ -96,8 +105,9 @@
                           placeholder="Select Unit Name/Number" 
                           label="unit_name" 
                           track-by="unit_id" 
-                          :options="unit_options"
+                          :options="data.item.unit_options"
                           :show-labels="false"
+                          :allow-empty="false"
                         ></multiselect>
                     </template>
                       <!-- <template #cell(unit_no)="data">  
@@ -121,16 +131,16 @@
                  </b-col>
                  <div class = "mt-4">
                     <AButton class = "float-right mr-3"
-                      id="button-submit"
+                      id="button-update"
                       type="submit"
                       title="Update Selected"
                       variant="primary"
                     >
                     <font-awesome-icon icon="save" size="sm" class="icon" /> Update Selected
                     </AButton>
-              </div>
+                </div>
+              </b-form>
              </div>
-              
           </vessel-header>
           <vessel-body>
           </vessel-body>
@@ -169,7 +179,7 @@ export default {
           sortable: true,
         },
         {
-          key: "revision",
+          key: "part_number_revision",
           sortable: true,
         },
         {
@@ -188,6 +198,7 @@ export default {
       device_options: [],
       model_options: [],
       unit_options: [],
+      data: [],
       items: 
       [
         // {id: 1,eco_number: '123456877',unit_options:[], model_options:[],part_number: 'KD021-13254', revision: '04',device:[],model:[], unit:[]},
@@ -196,10 +207,13 @@ export default {
       ],
       //loading
         isBusy: false,
+        process_id: null,
+        index: null
     }
   },
   methods:
   {
+
     loadDevice: function()
     {
       this.$store.dispatch("loadDevice")
@@ -213,43 +227,40 @@ export default {
           });
       });  
     },
-    loadModel: function(device_id)
+    loadModel: function(device_id, index)
     {
-       this.$store.dispatch("loadModelPerDevice", device_id)
-      .then((response) => {
+     
+      this.items[index].model_options= [];  
+
+      this.$store
+        .dispatch("loadModelPerDevice",  device_id)
+        .then((response) => {
 
           let information = response.data;
-     
-          this.model_options = [];
-
+    
           Object.keys(information).forEach(key =>
           {
+
             let model = `${information[key]["name"]}`
             let model_id = `${information[key]["id"]}`
             let obj = {};
 
-            obj["model_name"] = model;
-            obj["model_id"] = model_id;
-            this.model_options.push(obj);
+            obj["name"] = model;
+            obj["id"] = model_id;
            
+             this.items[index].model_options.push(obj);
           })
           
-          // Object.keys(information).forEach((key) => {
-          //     this.items[index].model_options.push({
-          //       'id':information[key].id, 
-          //       'text':information[key].name
-          //     })
-          // });
       });   
     },
-    loadUnit: function(model_id)
+    loadUnit: function(model_id, index)
     {  
-       this.$store.dispatch("loadUnitPerModel", model_id)
+      this.items[index].unit_options= [];  
+     
+      this.$store.dispatch("loadUnitPerModel", model_id)
       .then((response) => {
 
         let information = response.data;
-        
-        this.unit_options = [];
 
         Object.keys(information).forEach(key =>
         {
@@ -258,8 +269,8 @@ export default {
           let obj = {};
 
           obj["unit_name"] = unit;
-          obj["unit_id"] = unit_id;
-          this.unit_options.push(obj);
+          obj["id"] = unit_id;
+          this.items[index].unit_options.push(obj);
         })
 
         // Object.keys(information).forEach((key) => {
@@ -273,9 +284,47 @@ export default {
   
     changeDevice: function(index)
     {
-      console.log(this.items[index]);
-        // this.items[index].model=[];
-        // this.items[index].unit=[];
+      this.data.push(this.items[index]);
+    },
+    updateProcess: function()
+    {
+      var data_value = [];
+
+      for (let index = 0; index < this.data.length; index++) 
+      {
+        var main_id = this.data[index].id;
+        var device_id = this.data[index].device.id;
+        var unit_id = this.data[index].unit.id;
+        var model_id = this.data[index].model.id;
+
+        let obj = {};
+
+          obj["id"] = main_id;
+          obj["device_id"] = device_id;
+          obj["model_id"] = model_id;
+          obj["unit_id"] = unit_id;
+
+          data_value.push(obj);
+      }
+     
+      this.$store
+            .dispatch("updateProcessRegistration", data_value)
+            .then((response) => {
+              let information = response.data.status;
+              if(information == "Success")
+                this.toast(information, response.data.message);
+              else if(information == "Warning")
+                this.toast(information, response.data.message);
+              else  
+                this.toast(information, response.data.message);
+            })
+            .catch((error) => {
+              console.log(error)
+                })
+            .finally(() => {
+              location.reload();
+            });
+        
     },
     uploadFile: function()
     {
@@ -313,34 +362,40 @@ export default {
             console.log(error);
           })
           .finally(() => {
-            document.getElementById("button-upload").disabled = false;
+            location.reload();
           });
       }
     },
     loadAllProcess: function()
     {
-      this.$store.dispatch("loadAllProcess").then(response =>
-      {
-        
-        this.items = response.data;
-        // console.log(this.items);
-        let obj = {};
-                    
-        obj["device"] = [];
-        obj["model"] = [];
-        obj["unit"] = [];
-        this.items.push(obj);
-        this.toast(response.status, response.message);
+      this.$store
+        .dispatch("loadAllProcess")
+        .then(response =>
+        {
 
-        if(!this.getAllProcess.data)
-        {
-          this.totalRows = 1;
+        for (let index = 0; index < response.data.length; index++) {
+          let obj = {};
+
+          obj["id"] = response.data[index].id;
+          obj["eco_number"] = response.data[index].eco_number;
+          obj["part_number"] = response.data[index].part_number;
+          obj["part_number_revision"] = response.data[index].part_number_revision;
+          obj["model"] = [];
+          obj["unit_name"] = [];
+          obj["model_options"] = [];
+          obj["unit_options"] = [];
+
+          this.items.push(obj);
+
         }
-        else
-        {
-          this.totalRows = this.items.length;
-        }
-      });
+
+          this.toast(response.status, response.message);
+
+          if(!this.getAllProcess.data)
+            this.totalRows = 1;
+          else
+            this.totalRows = this.items.length;
+        })
     },
     loadEmailMasterlist() {
             this.$store.dispatch("loadEmailMasterlist")
