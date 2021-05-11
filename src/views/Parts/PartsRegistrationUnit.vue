@@ -20,31 +20,44 @@
                   <small class="text-secondary">Upload Data Description</small>
                 </div>
               </div><br>
-              <b-col lg="12">
-                <b-row>
-                  <b-col lg="3" class="md-2">
-                    <b-form-file 
-                      id="file" 
-                      accept=".csv" 
-                      v-on:change="FileUpload()">
-                    </b-form-file>
-                  </b-col>
-                  <b-col lg="2" class="md-2">
-                    <b-button
-                      class="mt-1"
-                      id="button-submit"
-                      type="submit"
-                      title="Click to add budget"
-                      variant="danger">
-                      <font-awesome-icon 
-                        icon="upload" 
-                        size="sm" 
-                        class="icon"/> 
-                        Upload
-                    </b-button>
-                  </b-col>
-                </b-row>
-              </b-col>
+              <b-form
+                id="form-upload"
+                @submit.prevent="uploadFile"
+                method="post"
+              >
+                <b-col lg="12">
+                  <b-row>
+                    <b-col lg="3" class="md-2">
+                      <!-- <b-form-file 
+                        id="file" 
+                        accept=".csv" 
+                        v-on:change="FileUpload()">
+                      </b-form-file> -->
+                      <input
+                          class="alpha-input"
+                          id="input-file"
+                          name="file"
+                          type="file"
+                          required
+                        />
+                    </b-col>
+                    <b-col lg="2" class="md-2">
+                      <b-button
+                        class="mt-1"
+                        id="button-upload"
+                        type="submit"
+                        title="Click to Registered Parts"
+                        variant="danger">
+                        <font-awesome-icon 
+                          icon="upload" 
+                          size="sm" 
+                          class="icon"/> 
+                          Upload
+                      </b-button>
+                    </b-col>
+                  </b-row>
+                </b-col>
+              </b-form>
               <br>
               <b-col cols="12">
               <b-table 
@@ -134,7 +147,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import { mapGetters } from "vuex";
 export default {
   name: "partsRegistrationUnits",
@@ -178,35 +191,78 @@ export default {
   },
   methods: 
   {
-    loadTable: function () 
+    uploadFile: function(){
+      var formData = new FormData();
+      var excelFile = document.querySelector("#input-file");
+      let fileType = excelFile.files[0].name.split('.')[1];
+
+      var token = "Zcz5Gagl6lz5ATQ71IWVGFwGZSMZQXcpDynsa7PKUETeq7xp1uPV8MNMd0MASOyk"
+
+      if((fileType !== 'csv') && (fileType !== 'xlsx')){
+        document.getElementById("input-file").value = "";
+        this.toast("Warning", "Please Upload a CSV or XLSX file type only.");
+      }
+      else{
+        document.getElementById("button-upload").disabled = true;
+        formData.append("file_name", excelFile.files[0]);
+
+        this.$store
+        .dispatch("uploadPartsRegistrationUnit", [formData, token])
+        .then((response)=>{
+          let status = response.data.status;
+          // console.log(status)
+          if(status == "Success")
+          {
+            document.getElementById("input-file").value = "";
+            this.toast(status, response.data.message);
+          }
+          else if(status == "Warning")
+            this.toast(status, response.data.message);
+          else
+            this.toast(status, response.data.message);
+        })
+        .catch((error) => {
+          this.toast("error", "Something went wrong");
+          console.log(error);
+        })
+        .finally(() => {
+          location.reload();
+        });
+      }
+    },
+
+    loadUnitsPe: function () 
     {
+      this.$store.dispatch("loadUnitsPe")
         //  this.$store.dispatch("loadparts").then((result) => {
         //  this.toast(result.status, result.message);
         // });
     },
-    submitFile()
-    {
-      let formData = new FormData();
-      formData.append('file', this.file);
+    
 
-      axios.post('/parts-registration-units',
-        formData,
-        {
-          headers: 
-          {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      ).then(function(){
-        console.log('success');
-      })
-      .catch(function() {
-        console.log('fail');
-      });
-    },
-    FileUpload(){
-      this.file = this.$refs.file.files[0];
-    },
+    // submitFile()
+    // {
+    //   let formData = new FormData();
+    //   formData.append('file', this.file);
+
+    //   axios.post('/parts-registration-units',
+    //     formData,
+    //     {
+    //       headers: 
+    //       {
+    //         'Content-Type': 'multipart/form-data'
+    //       }
+    //     }
+    //   ).then(function(){
+    //     console.log('success');
+    //   })
+    //   .catch(function() {
+    //     console.log('fail');
+    //   });
+    // },
+    // FileUpload(){
+    //   this.file = this.$refs.file.files[0];
+    // },
     loadDevice: function()
     {
       console.log(this.items);
@@ -257,7 +313,13 @@ export default {
     },
     updateSelected: function(){
       alert('Successfully Updated!')
-    }
+    },
+    toast: function (status, message){
+            this.$toast(message, {
+                type:status.toLowerCase().trim(),
+                position: "bottom-right",
+            });
+        }
   }
 };
 </script>

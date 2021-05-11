@@ -13,44 +13,61 @@ export default {
    //composed pf all methods and call the mutation
    actions:
    {
-        async uploadExcel(state, payload)
-        {
+        async uploadPartsRegistrationUnit(state, payload){
             return new Promise((resolve, reject) => {
-				axios
-					.post("http://localhost/laravel_training01/public/api/testing", payload, {
-						headers: {
-							"Content-Type": "multipart/form-data",
-						},
-					})
-					.then(function(response) {
-						resolve(response);
-                        console.log('this is the payload; -> ');
-                        console.log(payload);					
+                axios   
+                    .post(`units-pe/file-upload/${payload[1]}`, payload[0], {
+                        header: {
+                            "Content-Type": "multipart/form-data",
+                        },
                     })
-					.catch(function(error) {
-						reject(error);
-					});
-			});
-        },
-        async insertPartsRegistrationPe(state, payload)
-        {
-            return new Promise((resolve, reject) => {
-                axios
-					.post("http://localhost/laravel_training01/public/api/testing", payload, {
-						headers: {
-							"Content-Type": "multipart/form-data",
-						},
-					})
-					.then(function(response) {
-						resolve(response);
-                        console.log('this is the payload; -> ');
-                        console.log(payload);					
+                    .then(function(response) {
+                        resolve(response);
                     })
-					.catch(function(error) {
-						reject(error);
-					});
+                    .catch(function(error){
+                        reject(error);
+                    });
             });
-        }
+        },
+
+        // async uploadExcel(state, payload)
+        // {
+        //     return new Promise((resolve, reject) => {
+		// 		axios
+		// 			.post("http://localhost/laravel_training01/public/api/testing", payload, {
+		// 				headers: {
+		// 					"Content-Type": "multipart/form-data",
+		// 				},
+		// 			})
+		// 			.then(function(response) {
+		// 				resolve(response);
+        //                 console.log('this is the payload; -> ');
+        //                 console.log(payload);					
+        //             })
+		// 			.catch(function(error) {
+		// 				reject(error);
+		// 			});
+		// 	});
+        // },
+        // async insertPartsRegistrationPe(state, payload)
+        // {
+        //     return new Promise((resolve, reject) => {
+        //         axios
+		// 			.post("http://localhost/laravel_training01/public/api/testing", payload, {
+		// 				headers: {
+		// 					"Content-Type": "multipart/form-data",
+		// 				},
+		// 			})
+		// 			.then(function(response) {
+		// 				resolve(response);
+        //                 console.log('this is the payload; -> ');
+        //                 console.log(payload);					
+        //             })
+		// 			.catch(function(error) {
+		// 				reject(error);
+		// 			});
+        //     });
+        // }
    },
    getters:{
 
