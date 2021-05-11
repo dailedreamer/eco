@@ -56,27 +56,27 @@
                                     <b-row>
                                         <b-col cols="6">
                                             <multiselect  
-                                                v-model="form.to_section.to_section_value" 
+                                                v-model="form.to_section.value" 
                                                 tag-placeholder="Add this as new tag" 
                                                 placeholder="List of Sections" 
-                                                label="section" 
+                                                label="name" 
                                                 track-by="id" 
                                                 :options="to_section_options" 
                                                 :multiple="true" 
                                                 :show-labels="false"
-                                                @tag="addTag"></multiselect>
+                                                ></multiselect>
                                         </b-col>
                                         <b-col cols="6">
                                             <multiselect 
-                                                v-model="form.to_employee.to_employee_value" 
+                                                v-model="form.to_employee.value" 
                                                 tag-placeholder="Add this as new tag" 
                                                 placeholder="List of Employees" 
-                                                label="full_name" 
-                                                track-by="employee_number" 
+                                                label="name" 
+                                                track-by="id" 
                                                 :options="to_employee_options" 
                                                 :multiple="true" 
                                                 :show-labels="false" 
-                                                @tag="addTag">
+                                                >
                                             </multiselect>
                                         </b-col>
                                     </b-row>
@@ -93,27 +93,27 @@
                                     <b-row>
                                         <b-col>
                                             <multiselect 
-                                                v-model="form.cc_section.cc_section_value" 
+                                                v-model="form.cc_section.value" 
                                                 tag-placeholder="Add this as new tag" 
                                                 placeholder="List of Sections" 
-                                                label="section" 
+                                                label="name" 
                                                 track-by="id" 
                                                 :options="cc_section_options" 
                                                 :multiple="true" 
                                                 :show-labels="false"
-                                                @tag="addTag"></multiselect>
+                                                ></multiselect>
                                         </b-col>
                                         <b-col cols="6">
                                             <multiselect  
-                                                v-model="form.cc_employee.cc_employee_value" 
+                                                v-model="form.cc_employee.value" 
                                                 tag-placeholder="Add this as new tag" 
                                                 placeholder="List of Employees" 
-                                                label="full_name" 
-                                                track-by="employee_number" 
+                                                label="name" 
+                                                track-by="id" 
                                                 :options="cc_employee_options" 
                                                 :multiple="true" 
                                                 :show-labels="false"
-                                                @tag="addTag"></multiselect>
+                                                ></multiselect>
                                         </b-col>
                                     </b-row>
                                 </b-form-group>
@@ -131,28 +131,26 @@
                                     <b-row>
                                         <b-col cols="6">
                                             <multiselect 
-                                                v-model="form.mr_section.mr_section_value" 
+                                                v-model="form.mr_section.value" 
                                                 tag-placeholder="Add this as new tag" 
                                                 placeholder="List of Sections" 
-                                                label="section"  
+                                                label="name"  
                                                 track-by="id" 
                                                 :options="mr_section_options" 
                                                 :multiple="true"  
                                                 :show-labels="false"
-                                                @tag="addTag"></multiselect> 
+                                                ></multiselect> 
                                         </b-col>
                                         <b-col cols="6">
                                             <multiselect  
-                                                v-model="form.mr_employee.mr_employee_value" 
+                                                v-model="form.mr_employee.value" 
                                                 tag-placeholder="Add this as new tag" 
                                                 placeholder="List of Employees" 
-                                                label="full_name" 
-                                                track-by="employee_number" 
+                                                label="name" 
+                                                track-by="id" 
                                                 :options="mr_employee_options" 
                                                 :multiple="true"  
-                                                :show-labels="false"
-                                                @tag="addTag"
-                                                :searchable="true"></multiselect> 
+                                                :show-labels="false"></multiselect> 
                                         </b-col>
                                     </b-row>
                                 </b-form-group>
@@ -183,6 +181,7 @@
                         </b-button> 
                     </b-col>
                 </b-row>
+                {{get_data}}
             </b-form>
         </b-modal>   
     </b-container>
@@ -214,32 +213,32 @@ export default {
             mr_employee_options: [],
             form: {
                 to_section:{
-                    to_section_value: [],
+                    value: [],
                     state: null,
                     validation: "",
                 },
                 cc_section:{
-                    cc_section_value: [],
+                    value: [],
                     state: null,
                     validation: "",
                 },
                 mr_section:{
-                    mr_section_value: [],
+                    value: [],
                     state: null,
                     validation: "",
                 },
                 to_employee:{
-                    to_employee_value: [],
+                    value: [],
                     state: null,
                     validation: "",
                 },
                 cc_employee:{
-                    cc_employee_value: [],
+                    value: [],
                     state: null,
                     validation: "",
                 },
                 mr_employee:{
-                    mr_employee_value: [],
+                    value: [],
                     state: null,
                     validation: "",
                 },
@@ -255,9 +254,9 @@ export default {
         this.loadMainEmployee();
     },
     methods: {
-        addTag: function(newTag) {
-            console.log("newTag", newTag);
-        },
+        // addTag: function(newTag) {
+        //     console.log("newTag", newTag);
+        // },
         loadToSection: function(){
             this.$store.dispatch("loadSection")
             .then((response) => {
@@ -265,7 +264,7 @@ export default {
                 Object.keys(data).forEach((key) => {
                     this.to_section_options.push({
                         'id':data[key], 
-                        'section':data[key], 
+                        'name':data[key], 
                     })
                 });
             })
@@ -277,7 +276,7 @@ export default {
                 Object.keys(data).forEach((key) => {
                     this.cc_section_options.push({
                         'id':data[key], 
-                        'section':data[key], 
+                        'name':data[key], 
                     })
                 });
             })
@@ -289,7 +288,7 @@ export default {
                 Object.keys(data).forEach((key) => {
                     this.mr_section_options.push({
                         'id':data[key], 
-                        'section':data[key], 
+                        'name':data[key], 
                     })
                 });
             })
@@ -301,8 +300,8 @@ export default {
                 let data = response.data;
                 Object.keys(data).forEach((key) => {
                     this.to_employee_options.push({
-                        'employee_number':data[key].employee_number, 
-                        'full_name':data[key].first_name + '' + data[key].last_name
+                        'id':data[key].employee_number, 
+                        'name':data[key].first_name + ' ' + data[key].last_name
                     })
                 });
             })
@@ -313,8 +312,8 @@ export default {
                 let data = response.data;
                 Object.keys(data).forEach((key) => {
                     this.cc_employee_options.push({
-                        'employee_number':data[key].employee_number, 
-                        'full_name':data[key].first_name + '' + data[key].last_name
+                        'id':data[key].employee_number, 
+                        'name':data[key].first_name + ' ' + data[key].last_name
                     })
                 });
             })
@@ -325,13 +324,14 @@ export default {
                 let data = response.data;
                 Object.keys(data).forEach((key) => {
                     this.mr_employee_options.push({
-                        'employee_number':data[key].employee_number, 
-                        'full_name':data[key].first_name + '' + data[key].last_name
+                        'id':data[key].employee_number, 
+                        'name':data[key].first_name + ' ' + data[key].last_name
                     })
                 });
             })
         },
         updateForm: function(){
+            // console.log(this.get_data.id,);
             var formData = new FormData(document.getElementById("form-save-email"));
             var patchData = {
                 id: this.get_data.id,
