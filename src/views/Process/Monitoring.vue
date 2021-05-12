@@ -62,22 +62,116 @@
                 </b-card>
               </b-col>
               <b-col cols="6">
-                <SearchTemplate field_set='3'>
-                  <b-button 
-                    class="pb-1 mt-sm-1"
-                    variant="danger"
-                    block
-                    type="submit"
-                    id="button-submit">
-                    <b-icon 
-                      icon="search"></b-icon>
-                      &nbsp;Go!
-                  </b-button>
-                </SearchTemplate>
+                <b-card no-body class="p-3">
+                  <b-card-text>
+                    <b-row class="mb-2">
+                      <b-col>
+                        <b-form-group
+                          class="form_group_custom"
+                          id="filter_by"
+                          label-cols-sm="2"
+                          label="Filter:"
+                          label-align="left"
+                          label-size="sm"
+                          horizontal>
+                          <b-row>
+                            <b-col cols="4">
+                                <multiselect  
+                                    v-model="deviceValue"
+                                    name="searchTemplateDevice"
+                                    :options="this.deviceOptions" 
+                                    :searchable="true"
+                                    :show-labels="false"
+                                    placeholder="Device" 
+                                    label="name" 
+                                    track-by="id"
+                                    @input="load_filtered_device(deviceValue), loadModel()"
+                                   ></multiselect>
+                            </b-col>
+                            <b-col cols="4">
+                                <multiselect  
+                                    v-model="modelValue"
+                                    name="searchTemplateModel"
+                                    :options="modelOptions" 
+                                    :searchable="true"
+                                    :show-labels="false"
+                                    placeholder="Model" 
+                                    label="name" 
+                                    track-by="id"
+                                    @input="load_filtered_model(modelValue),loadUnit()"></multiselect>
+                            </b-col>
+                            <b-col cols="4">
+                                <multiselect  
+                                    v-model="unitValue" 
+                                    name="searchTemplateUnit"
+                                    :options="unitOptions"
+                                    :searchable="true"
+                                    :show-labels="false"
+                                    placeholder="Unit Name/Number" 
+                                    label="name" 
+                                    track-by="id" 
+                                    :max-height="50"
+                                    @input="load_filtered_unit(unitValue)"
+                                    ></multiselect>
+                            </b-col>
+                          </b-row>
+                        </b-form-group>
+                      </b-col>
+                    </b-row>
+                    <b-row>
+                      <b-col>
+                        <b-form-group
+                            class="form_group_custom"
+                            id="filter_by"
+                            label-cols-sm="2"
+                            label="Filter By:"
+                            label-align="left"
+                            label-size="sm"
+                            horizontal>
+                            <b-row>
+                                <!-- <b-col cols="4">
+                                    <multiselect  
+                                        v-model="filterBySelectValue" 
+                                        :options="filterByOptions"
+                                        :searchable="true"
+                                        :show-labels="false"
+                                        :multiple="false" 
+                                        :taggable="true" 
+                                        placeholder="Select one" 
+                                        label="name" 
+                                        track-by="id"
+                                        @input="clearFilter()"></multiselect>
+                                </b-col> -->
+                                <b-col cols="8">
+                                        <b-input block 
+                                        v-model="filterByValue" 
+                                        class="filterby_input" 
+                                        placeholder="ECO Number"
+                                        @input="search_eco_number()"
+                                        ></b-input>
+                                </b-col>
+                                <!-- <b-col cols="4">
+                                  <b-button 
+                                    class="pb-1 mt-sm-1"
+                                    variant="danger"
+                                    block
+                                    type="submit"
+                                    id="button-submit">
+                                    <b-icon 
+                                      icon="search"></b-icon>
+                                      &nbsp;Go!
+                                  </b-button>
+                                </b-col> -->
+                            </b-row>
+                        </b-form-group>
+                      </b-col>
+                    </b-row>
+                  </b-card-text>
+                </b-card>
               </b-col>
             </b-row>
             <b-row class="mt-4">
-                <ProcessContent :fields="this.for_application_list"/>
+                <ProcessContent :fields="this.for_application_list" :filter_data="filterByValue"/>
             </b-row>
           </vessel-body>
         </vessel>
@@ -101,11 +195,27 @@ export default {
      for_application_count: '',
      for_application_percentage: '',
      for_application_list: [],
+     fields_for_filter: [],
+     status: '',
+
+
+     deviceValue: [],
+     deviceOptions: [],
+
+      modelValue: [],
+      modelOptions: [],
+
+      unitValue: [],
+      unitOptions: [],
+      filterByValue: '',
+      filterBySelectValue: [],
+      filterByOptions: []
     }
   },
   mounted(){
    this.loadPercentage();
    this.loadContents('for_applied');
+   this.loadDevice();
   },
    methods:{
      loadPercentage()
@@ -121,13 +231,152 @@ export default {
      },
      loadContents(content)
      {
+       this.status = content;
        this.$store.dispatch("loadContents",content).then((response) => {
               let data = response.data.data;
-              // console.log(data);
-              this.for_application_list = data;
+            
+              this.for_application_list = data; 
+              this.fields_for_filter = data;
               // console.log(this.for_application_list);
           }); 
      },
+     loadDevice: function () {
+            this.deviceOptions=[];
+            this.clearFilterBy();
+            this.$store.dispatch("loadDevice")
+                .then((response) => {
+                this.modelOptions=[];
+                this.unitOptions=[];
+                let information = response.data.data;
+                    Object.keys(information).forEach((key) => {
+                        this.deviceOptions.push({
+                            'id':information[key].id, 
+                            'name':information[key].device_name
+                        })
+                    });
+            });  
+        },
+
+        loadModel: function () {
+            this.modelOptions=[];
+            this.clearFilterBy();
+            this.modelValue = [];
+            this.unitOptions=[];
+            this.unitValue = [];
+                this.$store.dispatch("loadModelPerDevice", this.deviceValue.id)
+                .then((response) => {
+                    let information = response.data;
+                        Object.keys(information).forEach((key) => {
+                            this.modelOptions.push({
+                                'id':information[key].id, 
+                                'name':information[key].name
+                            })
+                        });
+                });  
+        },
+
+        loadUnit: function () {
+            this.unitOptions=[];
+            this.clearFilterBy();
+            this.unitValue = [];
+                this.$store.dispatch("loadUnitPerModel", this.modelValue.id)
+                .then((response) => {
+                    let information = response.data;
+                        Object.keys(information).forEach((key) => {
+                            this.unitOptions.push({
+                                'id':information[key].id, 
+                                'name':information[key].unit_name + '/' + information[key].unit_number
+                            })
+                        });
+                });  
+        },
+        load_filtered_device: function(device)
+        {
+              let data = [];
+              for(let i = 0; i <this.fields_for_filter.length;i++)
+              {
+                if(this.fields_for_filter[i].device_name === device.name)
+                {
+                   data.push(
+                        this.fields_for_filter[i]
+                    )
+                }
+              }
+              this.for_application_list = data;
+        },
+        load_filtered_model: function(model)
+        {
+              let data = [];
+
+              for(let i = 0; i < this.fields_for_filter.length;i++)
+              {
+                if(this.fields_for_filter[i].model_name === model.name && this.fields_for_filter[i].device_name === this.deviceValue.name)
+                {
+                   data.push(
+                        this.fields_for_filter[i]
+                    )
+                }
+              }
+
+                 this.for_application_list = data;            
+        },
+        load_filtered_unit: function(unit)
+        {
+              let data = [];
+              for(let i = 0; i <this.fields_for_filter.length;i++)
+              {
+                if(this.fields_for_filter[i].model_name === this.modelValue.name && this.fields_for_filter[i].device_name === this.deviceValue.name && this.fields_for_filter[i].unit_name === unit.name)
+                {
+                   data.push(
+                      this.fields_for_filter[i]
+                    )
+                }
+              }
+                 this.for_application_list = data;
+        },
+        search_eco_number: function()
+        {
+         
+        },
+        setFieldSet: function () {
+            // console.log(this.field_set);
+           if(this.field_set == "1")
+           {
+               this.filterByOptions.push(
+                    {id: '1', name: 'ECO Number'},
+                    {id: '2', name: 'Batch No'},
+                    {id: '3', name: 'Supplier'}
+               );
+           }
+           else if(this.field_set == "2")
+           {
+               this.filterByOptions.push(
+                    {id: '1', name: 'ECO Number'},
+                    {id: '3', name: 'Supplier'}
+               );
+           }
+           else if(this.field_set == "3")
+           {
+               this.filterByOptions.push(
+                    {id: '1', name: 'ECO Number'}
+               );
+           }
+           else
+           {
+               this.filterByOptions=[];
+           }
+        },
+        clearFilter: function () {
+            this.deviceValue = [];
+            this.modelValue = [];
+            this.unitValue = [];
+
+            this.modelOptions=[];
+            this.unitOptions=[];
+        },
+        clearFilterBy: function () {
+            this.filterBySelectValue = [];
+        },
 
       toast: function (status, message){
         this.$toast(message, {
@@ -135,10 +384,17 @@ export default {
               position: "bottom-right",
         });
       }
-        
   }
 };
 </script>
 
 <style scoped>
+  .form_group_custom{
+        margin-bottom:0;
+    }
+
+    .filterby_input{
+        border-color: #e3e3e3;
+        height: 43px;
+    }
 </style>
