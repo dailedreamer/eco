@@ -17,73 +17,78 @@
                             alt="placeholder">
                         </b-img>
                     </template>
-                    <h5 class="mt-2">Simultaneous Application</h5>
+                    <h5 class="mt-2">Before ECO Parts</h5>
                 </b-media>
             </template>
             <b-row class="mt-3 ml-3 mr-3">
                 <b-col cols="12">
                     <b-card bg-variant="light">
-                        <b-form-group
-                            class="form_group_custom"
-                            id="filter"
-                            label-cols-sm="1"
-                            label="Filter:"
-                            label-align="left"
-                            label-size="sm"
-                            horizontal>
-                            <b-row>
-                                <b-col cols="3">
-                                    <multiselect  
-                                        v-model="deviceValue"
-                                        name="searchTemplateDevice"
-                                        :options="this.deviceOptions" 
-                                        :searchable="true"
-                                        :show-labels="false"
-                                        placeholder="Device" 
-                                        label="device_name" 
-                                        track-by="id"
-                                        @input="loadModel(deviceValue.id)"
-                                        ></multiselect>
-                                </b-col>
-                                <b-col cols="3">
-                                    <multiselect  
-                                        v-model="modelValue"
-                                        name="searchTemplateModel"
-                                        :options="modelOptions" 
-                                        :searchable="true"
-                                        :show-labels="false"
-                                        placeholder="Model" 
-                                        label="name" 
-                                        track-by="id"
-                                        @input="loadUnit(modelValue.id)"
-                                        ></multiselect>
-                                </b-col>
-                                <b-col cols="3">
-                                    <multiselect  
-                                        v-model="unitValue" 
-                                        name="searchTemplateUnit"
-                                        :options="unitOptions"
-                                        :searchable="true"
-                                        :show-labels="false"
-                                        placeholder="Unit Name/Number" 
-                                        label="unit_name" 
-                                        track-by="id" 
-                                        :max-height="50"
-                                        ></multiselect>
-                                </b-col>
-                                <b-col cols="3">
-                                <b-button 
-                                        class="pb-1 mt-sm-1"
-                                        block
-                                        variant="danger"
-                                        type="submit"
-                                        id="button-submit">
-                                        <b-icon 
-                                        icon="search"></b-icon> Go!
-                                    </b-button>
-                                </b-col>
-                            </b-row>   
-                        </b-form-group>   
+                        <b-form
+                            @submit.prevent="searchSimultaneous"
+                            method="get">
+                            <b-form-group
+                                class="form_group_custom"
+                                id="filter"
+                                label-cols-sm="1"
+                                label="Filter:"
+                                label-align="left"
+                                label-size="sm"
+                                horizontal>
+                                <b-row>
+                                    <b-col cols="3">
+                                        <multiselect  
+                                            v-model="deviceValue"
+                                            name="searchTemplateDevice"
+                                            :options="this.deviceOptions" 
+                                            :searchable="true"
+                                            :show-labels="false"
+                                            placeholder="Device" 
+                                            label="device_name" 
+                                            track-by="id"
+                                            @input="loadModel(deviceValue.id)"
+                                            ></multiselect>
+                                    </b-col>
+                                    <b-col cols="3">
+                                        <multiselect  
+                                            v-model="modelValue"
+                                            name="searchTemplateModel"
+                                            :options="modelOptions" 
+                                            :searchable="true"
+                                            :show-labels="false"
+                                            placeholder="Model" 
+                                            label="name" 
+                                            track-by="id"
+                                            @input="loadUnit(modelValue.id)"
+                                            ></multiselect>
+                                    </b-col>
+                                    <b-col cols="3">
+                                        <multiselect  
+                                            v-model="unitValue" 
+                                            name="searchTemplateUnit"
+                                            :options="unitOptions"
+                                            :searchable="true"
+                                            :show-labels="false"
+                                            placeholder="Unit Name/Number" 
+                                            label="unit_name" 
+                                            track-by="id" 
+                                            :max-height="50"
+                                            @input="loadUnitId(unitValue.id)"
+                                            ></multiselect>
+                                    </b-col>
+                                    <b-col cols="3">
+                                    <b-button 
+                                            class="pb-1 mt-sm-1"
+                                            block
+                                            variant="danger"
+                                            type="submit"
+                                            id="button-submit">
+                                            <b-icon 
+                                            icon="search"></b-icon> Go!
+                                        </b-button>
+                                    </b-col>
+                                </b-row>   
+                            </b-form-group>   
+                        </b-form>
                     </b-card>
                 </b-col>
             </b-row>
@@ -181,7 +186,7 @@
                                 </b-col>
                                 <b-col cols="4">
                                     <b-button
-                                        v-b-modal.modal_parts_simultaneous
+                                        v-b-modal.parts_after
                                         size="sm"
                                         variant="danger" 
                                         class="float-right">
@@ -250,6 +255,13 @@
                                                 Remove
                                             </b-link>
                                         </template>
+                                        <template #cell(quantity)="">
+                                            <b-form-input
+                                                style="width:75px;"
+                                                id="txt_quantity"
+                                                size="sm"
+                                                @keypress="isNumber($event)"></b-form-input>
+                                        </template>
                                     </b-table> 
                                 </b-row>  
                             </b-card>   
@@ -279,8 +291,9 @@
                 </b-col>
             </b-row>
          </b-modal>
-         <PartsSimultaneousApplicationModal />
-         <ProcessSimultaneousApplicationModal />
+         <PartsSimultaneousApplicationModal :items="this.beforeData" @clicked="transferredBefore"/>
+         <PartsSimultaneousApplicationModal :items="this.beforeData" @clicked="transferredAfter" id="parts_after"/>
+         <ProcessSimultaneousApplicationModal :items="this.processData" @clicked="transferredProcess"/>
     </b-container>
 </template>
 
@@ -295,53 +308,58 @@ export default {
     },
     data(){
         return{
+            device_id: null,
+            model_id: null,
+            unit_id: null,
             deviceValue: [],
             deviceOptions: [],
             modelValue: [],
             modelOptions: [],
             unitValue: [],
             unitOptions: [],
+            beforeData: [],
+            processData: [],
             parts_before_fields:
             [
                 {key: "action"},
                 {key: "part_number", label: "Part No. Before"},
-                {key: "part_number_revision", label: "Rev No."},
+                {key: "part_number_new_revision", label: "Rev No."},
                 {key: "quantity"},
-                {key: "details"}
+                {key: "revision_details"}
             ],
             parts_before_list: 
             [
-                {part_number: "KD02165-Y145", part_number_revision:"05", quantity: "", details:"sample"},
-                {part_number: "KD02165-Y148", part_number_revision:"05", quantity: "", details:"sample1"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", quantity: "", details:"sample2"}
+                // {part_number: "KD02165-Y145", part_number_revision:"05", quantity: "", details:"sample"},
+                // {part_number: "KD02165-Y148", part_number_revision:"05", quantity: "", details:"sample1"},
+                // {part_number: "KD02165-Y150", part_number_revision:"05", quantity: "", details:"sample2"}
             ],
             parts_after_fields:
             [
                 {key: "action"},
                 {key: "part_number", label: "Part No. Before"},
-                {key: "part_number_revision", label: "Rev No."},
+                {key: "part_number_new_revision", label: "Rev No."},
                 {key: "quantity"},
-                {key: "details"}
+                {key: "revision_details"}
             ],
             parts_after_list: 
             [
-                {part_number: "KD02165-Y160", part_number_revision:"01", quantity: "", details:"sample4"},
-                {part_number: "KD02166-Y175", part_number_revision:"03", quantity: "", details:"sample5"},
-                {part_number: "KD02169-Y200", part_number_revision:"05", quantity: "", details:"sample6"}
+                // {part_number: "KD02165-Y160", part_number_revision:"01", quantity: "", details:"sample4"},
+                // {part_number: "KD02166-Y175", part_number_revision:"03", quantity: "", details:"sample5"},
+                // {part_number: "KD02169-Y200", part_number_revision:"05", quantity: "", details:"sample6"}
             ],
             process_fields:
             [
                 {key: "action"},
-                {key: "drawing_number", label: "Part No. Before"},
+                {key: "parent_drawing_number", label: "Part No. Before"},
                 {key: "drawing_number_revision", label: "Rev No."},
                 {key: "quantity"},
-                {key: "details"}
+                {key: "revision_mark"}
             ],
             process_list: 
             [
-                {drawing_number: "KD02165-Y160", drawing_number_revision:"01", quantity: "150", details:"sample4"},
-                {drawing_number: "KD02166-Y175", drawing_number_revision:"03", quantity: "1000", details:"sample5"},
-                {drawing_number: "KD02169-Y200", drawing_number_revision:"05", quantity: "5", details:"sample6"}
+                // {drawing_number: "KD02165-Y160", drawing_number_revision:"01", quantity: "150", details:"sample4"},
+                // {drawing_number: "KD02166-Y175", drawing_number_revision:"03", quantity: "1000", details:"sample5"},
+                // {drawing_number: "KD02169-Y200", drawing_number_revision:"05", quantity: "5", details:"sample6"}
             ],
         }
     },
@@ -350,6 +368,50 @@ export default {
         this.loadDevice();
     },
     methods:{
+        transferredAfter: function(value)
+        {
+            this.$bvModal.hide("parts_after");
+            this.parts_after_list = value
+        },
+        transferredProcess: function(value)
+        {
+            this.$bvModal.hide("modal_process_simultaneous");
+            this.process_list = value
+        },
+        transferredBefore: function(value)
+        {
+            this.$bvModal.hide("modal_parts_simultaneous");
+            this.parts_before_list = value
+        },
+        searchSimultaneous: function()
+        {
+            let filtered_data = {
+                "device_id": this.device_id,
+                "model_name_id": this.model_id,
+                "unit_id": this.unit_id
+            };
+
+            this.$store.dispatch("loadEcoParts", filtered_data)
+                .then((response) =>
+                {
+                    this.beforeData = response.data.data;
+                    this.searchSimultaneousEcoProcess();
+                })
+        },
+        searchSimultaneousEcoProcess: function()
+        {
+            let filtered_data = {
+                "device_id": this.device_id,
+                "model_name_id": this.model_id,
+                "unit_id": this.unit_id
+            };
+
+            this.$store.dispatch("loadEcoProcess", filtered_data)
+                .then((response) =>
+                {
+                    this.processData = response.data.data;
+                })
+        },
         isNumber: function(evt) {
             evt = (evt) ? evt : window.event;
             var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -369,7 +431,7 @@ export default {
         },
         loadModel: function(device_id)
         {
-            // console.log(device_id);
+            this.device_id = device_id;
             this.modelOptions = [];     
             this.$store.dispatch("loadModelPerDevice", device_id).then((response) => {
                 let data = response.data;
@@ -379,13 +441,17 @@ export default {
         },
         loadUnit: function(model_id)
         {
+            this.model_id = model_id;
             this.unitOptions = [];
             this.$store.dispatch("loadUnitPerModel", model_id).then((response) => {
                 let data = response.data;
                 this.unitOptions = data;
-                console.log(data);
             });  
         },
+        loadUnitId: function(unit_id)
+        {
+            this.unit_id = unit_id;
+        }
     }
 }
 </script>
