@@ -145,6 +145,17 @@
                                 </b-col>
                                 <b-col cols="4">
                                     <b-button
+                                        v-if="device_id == null || model_id == null || unit_id == null"
+                                        disabled
+                                        v-b-modal.modal_parts_simultaneous
+                                        size="sm"
+                                        variant="danger" 
+                                        class="float-right">
+                                            <font-awesome-icon 
+                                                icon="plus" />
+                                    </b-button>
+                                    <b-button
+                                        v-else
                                         v-b-modal.modal_parts_simultaneous
                                         size="sm"
                                         variant="danger" 
@@ -186,6 +197,17 @@
                                 </b-col>
                                 <b-col cols="4">
                                     <b-button
+                                        v-if="device_id == null || model_id == null || unit_id == null"
+                                        disabled
+                                        v-b-modal.parts_after
+                                        size="sm"
+                                        variant="danger" 
+                                        class="float-right">
+                                            <font-awesome-icon 
+                                                icon="plus" />
+                                    </b-button>
+                                    <b-button
+                                        v-else
                                         v-b-modal.parts_after
                                         size="sm"
                                         variant="danger" 
@@ -233,6 +255,17 @@
                                 <b-row>
                                     <b-col cols="12">
                                         <b-button
+                                            v-if="device_id == null || model_id == null || unit_id == null"
+                                            disabled
+                                            v-b-modal.modal_process_simultaneous
+                                            size="sm"
+                                            variant="danger" 
+                                            class="float-right">
+                                                <font-awesome-icon 
+                                                    icon="plus" />
+                                        </b-button>
+                                        <b-button
+                                            v-else
                                             v-b-modal.modal_process_simultaneous
                                             size="sm"
                                             variant="danger" 

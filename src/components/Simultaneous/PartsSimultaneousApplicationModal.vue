@@ -46,7 +46,6 @@
                 </b-container>
             </b-row>
             <hr>
-            {{id}}
             <b-row class="mt-3">
                 <b-col cols="12">
                     <b-button 
