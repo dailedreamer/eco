@@ -3,13 +3,15 @@ import axios from "axios";
 export default {
     //properties
     //Reusable Data
-   state:{
-
-   },
-   //setter of state
-   mutations:{
-
-   },
+    state:{
+    parts_registration_unit: [],
+    },
+    //setter of state
+    mutations:{
+        SET_PARTS_REGISTRATION_UNIT(state, units_pe) {
+            state.parts_registration_unit = units_pe;
+        }
+    },
    //composed pf all methods and call the mutation
    actions:
    {
@@ -30,46 +32,27 @@ export default {
             });
         },
 
-        // async uploadExcel(state, payload)
-        // {
-        //     return new Promise((resolve, reject) => {
-		// 		axios
-		// 			.post("http://localhost/laravel_training01/public/api/testing", payload, {
-		// 				headers: {
-		// 					"Content-Type": "multipart/form-data",
-		// 				},
-		// 			})
-		// 			.then(function(response) {
-		// 				resolve(response);
-        //                 console.log('this is the payload; -> ');
-        //                 console.log(payload);					
-        //             })
-		// 			.catch(function(error) {
-		// 				reject(error);
-		// 			});
-		// 	});
-        // },
-        // async insertPartsRegistrationPe(state, payload)
-        // {
-        //     return new Promise((resolve, reject) => {
-        //         axios
-		// 			.post("http://localhost/laravel_training01/public/api/testing", payload, {
-		// 				headers: {
-		// 					"Content-Type": "multipart/form-data",
-		// 				},
-		// 			})
-		// 			.then(function(response) {
-		// 				resolve(response);
-        //                 console.log('this is the payload; -> ');
-        //                 console.log(payload);					
-        //             })
-		// 			.catch(function(error) {
-		// 				reject(error);
-		// 			});
-        //     });
-        // }
+        async loadUnitsPe({commit}){
+            return new Promise((resolve, reject) => {
+                axios
+                    .get("units-pe/load-parts-registration")
+                    .then(function(response){
+                        commit("SET_PARTS_REGISTRATION_UNIT", response.data);
+                        let result = {
+							code: response.data.code,
+							status: response.data.status,
+							message: response.data.message,
+							data: response.data.data,
+						};
+                        resolve(result);
+                    })
+                    .catch(function(error) {
+						reject(error.response);
+					});
+            })
+        }
    },
    getters:{
-
+        getUnitsPeRegistration: (state) => state.parts_registration_unit,
    },
 };
