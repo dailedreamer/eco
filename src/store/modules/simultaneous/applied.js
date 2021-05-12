@@ -48,6 +48,32 @@ export default {
 						reject(error);
 					});
 			});
+        },
+        async loadEcoParts(state, payload)
+        {
+            return new Promise((resolve, reject) => {
+				axios
+					.get(`simultaneous-application/load-eco-parts`, {params: payload})
+					.then(function(response) {
+						resolve(response);
+					})
+					.catch(function(error) {
+						reject(error);
+					});
+			});
+        },
+        async loadEcoProcess(state, payload)
+        {
+            return new Promise((resolve, reject) => {
+				axios
+					.get(`simultaneous-application/load-eco-process`, {params: payload})
+					.then(function(response) {
+						resolve(response);
+					})
+					.catch(function(error) {
+						reject(error);
+					});
+			});
         }
     },
 
