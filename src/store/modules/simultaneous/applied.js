@@ -35,6 +35,19 @@ export default {
                         reject(error);
                     });
             })
+        },
+        async removeSimultaneous(state, id)
+        {
+            return new Promise((resolve, reject) => {
+				axios
+					.delete(`simultaneous/${id}`)
+					.then(function(response) {
+						resolve(response);
+					})
+					.catch(function(error) {
+						reject(error);
+					});
+			});
         }
     },
 

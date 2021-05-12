@@ -23,7 +23,7 @@
                 <b-row>
                    <b-col xl="3" lg="6">
                         <b-card 
-                            class="custom_card_filter" @click="loadSimultaneousApplied()">
+                            class="custom_card_filter" @click="loadSimultaneousApplied('for_applied')">
                                     <b-row class="mt-0">
                                         <b-col cols="8">
                                            <b-media>
@@ -54,7 +54,7 @@
                         </b-col>
                         <b-col xl="3" lg="6">
                             <b-card 
-                            class="custom_card_filter" @click="loadSimultaneousForApplication()">
+                            class="custom_card_filter" @click="loadSimultaneousApplied('for_application')">
                                     <b-row class="mt-0">
                                         <b-col cols="8">
                                            <b-media>
@@ -85,7 +85,7 @@
                         </b-col>
                         <b-col xl="3" lg="6">
                             <b-card 
-                            class="custom_card_filter" @click="loadSimultaneousCancelled()">
+                            class="custom_card_filter" @click="loadSimultaneousApplied('cancelled')">
                                     <b-row class="mt-0">
                                         <b-col cols="8">
                                            <b-media>
@@ -144,7 +144,7 @@
                                                                 placeholder="Device" 
                                                                 label="device_name" 
                                                                 track-by="id"
-                                                                @input="loadModel(deviceValue.id)"
+                                                                @input="loadModel(deviceValue.id), load_filtered_device(deviceValue)"
                                                                 ></multiselect>
                                                         </b-col>
                                                         <b-col cols="3">
@@ -157,7 +157,7 @@
                                                                 placeholder="Model" 
                                                                 label="name" 
                                                                 track-by="id"
-                                                                @input="loadUnit(modelValue.id)"
+                                                                @input="loadUnit(modelValue.id), load_filtered_model()"
                                                             ></multiselect>
                                                         </b-col>
                                                         <b-col cols="3">
@@ -171,10 +171,10 @@
                                                                 label="unit_name" 
                                                                 track-by="id" 
                                                                 :max-height="50"
-                                                        
+                                                                @input="load_filtered_unit()"
                                                                 ></multiselect>
                                                         </b-col>
-                                                        <b-col cols="3">
+                                                        <!-- <b-col cols="3">
                                                             <b-button 
                                                                 class="pb-1 mt-sm-1"
                                                                 block
@@ -184,7 +184,7 @@
                                                                 <b-icon 
                                                                 icon="search"></b-icon> Go!
                                                             </b-button>
-                                                        </b-col>
+                                                        </b-col> -->
                                                     </b-row>
                                                 </b-form-group>
                                             </b-col>
@@ -209,7 +209,6 @@
                                     id="tbl_simultaneous_id"
                                     responsive 
                                     bordered small 
-                                  
                                     :per-page="perPage"
                                     :current-page="currentPage">
                                     <b-thead 
@@ -249,10 +248,10 @@
                                     </b-thead>
                                     <b-tbody>
                                         <b-tr 
-                                            v-for="item in items.data" 
-                                            :key="item.id">
+                                            v-for="item in items.slice((this.currentPage-1) * this.perPage, (this.currentPage) * this.perPage)" 
+                                            :key="item.simultaneous_details.id">
                                             
-                                            <b-td class="td_align">{{item.no}}</b-td>
+                                            <b-td class="td_align">{{item.id}}</b-td>
                                             <b-td class="td_align">
                                                 <b-link 
                                                     v-b-modal.simultaneous_update_modal_id
@@ -260,7 +259,9 @@
                                                     Edit
                                                 </b-link>
                                                 <label class="ml-1 mr-1 text-secondary">|</label>
-                                                <b-link >
+                                                <b-link 
+                                                    v-b-modal.modal-delete-id
+                                                    @click="deleteSimultaneous(item.simultaneous_details.id)">
                                                     Delete
                                                 </b-link>
                                                 <label class="ml-1 mr-1 text-secondary">|</label>
@@ -349,13 +350,14 @@
                                         :per-page="perPage"
                                         align="right"
                                         pills
-                                        aria-controls="tbl_simultaneous_id"></b-pagination>
+                                        ></b-pagination>
                             </b-col>
                         </b-row>
                     </b-card>
                         <SimultaneousUpdateModal :get_data="this.id"/>
                         <WithSimultaneousModal />
-                        <!-- .slice((this.currentPage-1) * this.perPage, (this.currentPage) * this.perPage) -->
+                        <DeleteModal :functionToCall="this.removeSimultaneous"/>
+                        
                     <!-- <b-row class="mt-3">
                         <b-col cols="12">
                             <b-card class="pl-2 pr-2">
@@ -377,19 +379,22 @@ import { mapGetters } from 'vuex';
 // import SimultaneousContent from "../components/Simultaneous/SimultaneousContent";
 import SimultaneousUpdateModal from '../components/Simultaneous/SimultaneousUpdateModal';
 import WithSimultaneousModal from '../components/Simultaneous/WithSimultaneousModal';
+import DeleteModal  from '../components/DeleteModal';
 export default {
     name: "Simultaneous",
     components: {
         SimultaneousUpdateModal,
-        WithSimultaneousModal
+        WithSimultaneousModal,
+        DeleteModal
         // SimultaneousContent
     },
     data() {
         return {
+            number: 0,
             value: 45,
             max: 100,
             status: "",
-            perPage: 10,
+            perPage: 5,
             currentPage: 1,
             deviceValue: [],
             deviceOptions: [],
@@ -397,6 +402,7 @@ export default {
             modelOptions: [],
             unitValue: [],
             unitOptions: [],
+            totalRows: null,
             items: [
                 // { no: 1, device_name:"device1", model_name: "model1", unit_name: "unit_name1", unit_number: "unit_no1",
                 // eco_number: "eco1", target_application: "2021-03-25", before_part_no:"KD0123", before_rev_no:"01",
@@ -414,57 +420,107 @@ export default {
                 // drawing_number: "KD0001", drawing_number_rev: "01", drawing_number_qty: "6", drawing_number_details: "sample",
                 // actual_application: "03-24-2021", carf: "01111", serial_number: "12554541"},
             ],
+            filtered_items: [],
             id: {},
+            deleteID: null,
         }
     },
     computed:{
         ...mapGetters(["getAllApplied"]),
-        totalRows(){
-            return this.items.length
-        },   
+        // totalRows(){
+        //     return this.items.length
+        // },   
     },
      mounted() {
         this.loadDevice();
-        // this.loadSimultaneousApplied();
-        // this.loadSimultaneousForApplication();
+        this.loadSimultaneousApplied();
         // console.log(this.loadModel('3'));
     },
     methods: {
-        loadSimultaneousApplied()
+        removeSimultaneous()
         {
-            this.status = "for_applied";
+            this.$store
+                .dispatch("removeSimultaneous", this.deleteID)
+                .then((response) => {
+                    let status = response.data.status;
+                    // console.log(status);
+                    if (status == "Success") {
+                        this.$bvModal.hide("modal-delete-id");
+                        this.toast(status, response.data.message);
+                        this.loadSimultaneousApplied();
+                    } else if (status == "Warning") {
+                        this.toast(status, "Please review your inputs.");
+                    } else if (status == "Error") {
+                        this.toast(status, response.data.message);
+                    }
+                    this.loaderSpinner = false;
+                    
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        deleteSimultaneous(id)
+        {
+            this.deleteID = id
+            console.log(id);
+        },
+        loadSimultaneousApplied(status_application = "for_application")
+        {
+            this.status = status_application;
 
             this.$store.dispatch("loadSimultaneousApplied", this.status)
                 .then((response) =>
                 {
-                    this.items=this.getAllApplied;
+                    // this.items=this.getAllApplied;
                     let data = response.data;
-                     console.log(data);
+
+                    this.items = data
+                    this.filtered_items = data;
+                   
+                    if(!this.items)
+                        this.totalRows = 1;
+                    else
+                        this.totalRows = this.items.length;
+
                 })
         },
-        loadSimultaneousForApplication()
+        load_filtered_device(device)
         {
-            this.status = "for_application";
+            let data = [];
+            
+            for (let i = 0; i < this.filtered_items.length; i++) 
+            {
+                if(this.filtered_items[i].simultaneous_details.device_name === device.device_name)
+                    data.push(this.filtered_items[i])
+            }
 
-            this.$store.dispatch("loadSimultaneousApplied", this.status)
-                .then((response) =>
-                {
-                    this.items=this.getAllApplied;
-                    let data = response.data;
-                     console.log(data);
-                })
+            this.items = data
         },
-        loadSimultaneousCancelled()
+        load_filtered_model()
         {
-            this.status = "cancelled";
+            let data = [];
 
-            this.$store.dispatch("loadSimultaneousApplied", this.status)
-                .then((response) =>
-                {
-                    this.items=this.getAllApplied;
-                    let data = response.data;
-                     console.log(data);
-                })
+            for (let i = 0; i < this.filtered_items.length; i++) 
+            {
+                if(this.filtered_items[i].simultaneous_details.device_name === this.deviceValue.device_name && this.filtered_items[i].simultaneous_details.model_name === this.modelValue.name)
+                    data.push(this.filtered_items[i])
+            }
+
+            this.items = data
+        },
+        load_filtered_unit()
+        {
+            let data = [];
+
+            for (let i = 0; i < this.filtered_items.length; i++) 
+            {
+                console.log(this.filtered_items[i].simultaneous_details.unit_name);
+                if(this.filtered_items[i].simultaneous_details.device_name === this.modelValue.name && this.filtered_items[i].simultaneous_details.model_name === this.modelValue.name && this.filtered_items[i].simultaneous_details.unit_name === this.unitValue.unit_name)
+                    data.push(this.filtered_items[i])
+            }
+
+            this.items = data
         },
         updateSimultaneous: function(id)
         {
@@ -498,6 +554,13 @@ export default {
                 console.log(data);
             });  
         },
+        toast: function (status, message){
+            this.$toast(message, {
+                type:status.toLowerCase().trim(),
+                position: "bottom-right",
+            });
+        }
+    
     },
 };
 </script>
