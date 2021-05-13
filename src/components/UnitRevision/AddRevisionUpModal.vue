@@ -40,7 +40,8 @@
                                         :show-labels="false"
                                         placeholder="Device" 
                                         label="name" 
-                                        track-by="id"></multiselect>
+                                        track-by="id"
+                                        @input="loadModel()"></multiselect>
                                 </b-col>
                                 <b-col cols="3">
                                     <multiselect  
@@ -51,7 +52,8 @@
                                         :show-labels="false"
                                         placeholder="Model" 
                                         label="name" 
-                                        track-by="id"></multiselect>
+                                        track-by="id"
+                                        @input="loadUnit()"></multiselect>
                                 </b-col>
                                 <b-col cols="3">
                                     <multiselect  
@@ -70,7 +72,8 @@
                                         block
                                         variant="danger"
                                         type="submit"
-                                        id="button-submit">
+                                        id="button-submit"
+                                        @click="searchRevision()">
                                         <b-icon 
                                         icon="search"></b-icon> Go!
                                     </b-button>
@@ -203,7 +206,7 @@
                                     </b-col>
                                     <b-col cols="4">
                                         <b-button
-                                            v-b-modal.modal_eco_parts
+                                            v-b-modal.parts_after
                                             size="sm"
                                             variant="danger" 
                                             class="float-right">
@@ -382,7 +385,8 @@
                 </b-col>
             </b-row>
         </b-modal>
-        <EcoPartsModal />
+        <EcoPartsModal :eco_parts_list="this.unit_revision_list" @clicked="transferredBefore"/>
+        <EcoPartsModal :eco_parts_list="this.unit_revision_list" @clicked="transferredAfter" id="parts_after"/>
         <EcoProcessModal />
         <SimultaneousApplicationModal />
     </b-container>
@@ -408,6 +412,8 @@ export default {
             modelOptions: [],
             unitValue: [],
             unitOptions: [],
+            unit_revision_list: [],
+
             parts_before_fields:
             [
                 {key: "action", class: 'text-center'},
@@ -416,12 +422,7 @@ export default {
                 {key: "quantity", class: 'text-center'},
                 {key: "details", class: 'text-center'}
             ],
-            parts_before_list: 
-            [
-                {part_number: "KD02165-Y145", part_number_revision:"05", quantity: "", details:"sample"},
-                {part_number: "KD02165-Y148", part_number_revision:"05", quantity: "", details:"sample1"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", quantity: "", details:"sample2"}
-            ],
+            parts_before_list: [],
             parts_after_fields:
             [
                 {key: "action", class: 'text-center'},
@@ -430,12 +431,7 @@ export default {
                 {key: "quantity", class: 'text-center'},
                 {key: "details", class: 'text-center'}
             ],
-            parts_after_list: 
-            [
-                {part_number: "KD02165-Y145", part_number_revision:"05", quantity: "", details:"sample"},
-                {part_number: "KD02165-Y148", part_number_revision:"05", quantity: "", details:"sample1"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", quantity: "", details:"sample2"}
-            ],
+            parts_after_list: [],
             process_before_fields:
             [
                 {key: "action", class: 'text-center'},
@@ -479,6 +475,9 @@ export default {
             ],
         }
     },
+    mounted(){
+        this.loadDevice();
+    },
     methods:{
         isNumber: function(evt) {
             evt = (evt) ? evt : window.event;
@@ -488,7 +487,107 @@ export default {
             } else {
                 return true;
             }
-        }
+        },
+        loadDevice: function () {
+            this.deviceOptions=[];
+            this.clearFilterBy();
+            this.$store.dispatch("loadDevice")
+                .then((response) => {
+                this.modelOptions=[];
+                this.unitOptions=[];
+                let information = response.data.data;
+                    Object.keys(information).forEach((key) => {
+                        this.deviceOptions.push({
+                            'id':information[key].id, 
+                            'name':information[key].device_name
+                        })
+                    });
+            });  
+        },
+        loadModel: function () {
+            this.modelOptions=[];
+            this.clearFilterBy();
+            this.modelValue = [];
+            this.unitOptions=[];
+            this.unitValue = [];
+                this.$store.dispatch("loadModelPerDevice", this.deviceValue.id)
+                .then((response) => {
+                    let information = response.data;
+                        Object.keys(information).forEach((key) => {
+                            this.modelOptions.push({
+                                'id':information[key].id, 
+                                'name':information[key].name
+                            })
+                        });
+                });  
+        },
+
+        loadUnit: function () {
+            this.unitOptions=[];
+            this.clearFilterBy();
+            this.unitValue = [];
+                this.$store.dispatch("loadUnitPerModel", this.modelValue.id)
+                .then((response) => {
+                    let information = response.data;
+                        Object.keys(information).forEach((key) => {
+                            this.unitOptions.push({
+                                'id':information[key].id, 
+                                'name':information[key].unit_name + '/' + information[key].unit_number
+                            })
+                        });
+                });  
+        },
+        clearFilter: function () {
+            this.deviceValue = [];
+            this.modelValue = [];
+            this.unitValue = [];
+
+            this.modelOptions=[];
+            this.unitOptions=[];
+        },
+        clearFilterBy: function () {
+            this.filterBySelectValue = [];
+        },
+        searchRevision: function ()
+        {
+            let unit_data = {
+                device_id     : this.deviceValue.id,
+                model_name_id : this.modelValue.id,
+                unit_id       : this.unitValue.id
+            };
+            this.$store.dispatch("loadUnitRevision", unit_data)
+                .then((response) => {
+                    let data = response.data;
+                    let status = response.status;
+                    this.unit_revision_list = data; 
+                    if (status == "Success") {
+                        this.toast(status, response.message);
+                    
+                    } else if (status == "Warning") {
+                    
+                        this.toast(status, "Please review your inputs.");
+                    } else if (status == "Error") {
+
+                        this.toast(status, response.message);
+                    }                 
+                });
+        },
+        transferredAfter: function(value)
+        {
+            this.$bvModal.hide("parts_after");
+            this.parts_after_list = value
+        },
+        transferredBefore: function(value)
+        {
+            this.$bvModal.hide("modal_eco_parts");
+            this.parts_before_list = value
+        },
+        toast: function (status, message){
+        this.$toast(message, {
+              type:status.toLowerCase().trim(),
+              position: "bottom-right",
+        });
+      }
     }
 }
 </script>

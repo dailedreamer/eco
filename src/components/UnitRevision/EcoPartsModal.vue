@@ -1,7 +1,7 @@
 <template>
     <b-container fluid>
         <b-modal
-            id="modal_eco_parts"
+            :id="id"
             hide-footer
             size="lg"
             :no-close-on-backdrop="true" 
@@ -16,7 +16,7 @@
                             alt="placeholder">
                         </b-img>
                     </template>
-                    <h5 class="mt-2">Unit Revision</h5>
+                    <h5 class="mt-2">Unit Revision Up</h5>
                 </b-media>
             </template>
             <b-row class="mt-3 ml-3 mr-3">
@@ -30,13 +30,15 @@
                         :fields="eco_parts_fields"
                         :per-page="perPage"
                         :current-page="currentPage">
-                        <template #cell(action)="">
-                            <b-form-checkbox></b-form-checkbox>
+                        <template #cell(action)="data">
+                            <b-form-checkbox 
+                            :value="data.item"
+                            v-model="selected"></b-form-checkbox>
                         </template>
                     </b-table>
                     <b-pagination class="alpha__table__pagination"
                         v-model="currentPage"
-                        :total-rows="totalRows"
+                        :total-rows="rows"
                         :per-page="perPage"
                         align="right"
                         pills></b-pagination>
@@ -53,14 +55,25 @@
                         <font-awesome-icon icon="times-circle" /> Clear
                     </b-button>
                     <b-button 
+                        v-if="id == 'modal_eco_parts'"
                         class="float-right mr-2"
                         id="btn_update" 
                         size="md" 
                         variant="danger" 
-                        type="submit"
-                        title="Click to save unit revision">
-                        <font-awesome-icon icon="save" /> Save Values
-                    </b-button> 
+                        @click="transferCheck"
+                        title="Click to update with simultaneous">
+                        <font-awesome-icon icon="save" /> Update Values
+                    </b-button>
+                    <b-button 
+                        v-else
+                        class="float-right mr-2"
+                        id="btn_update" 
+                        size="md" 
+                        variant="danger" 
+                        @click="transferCheckAfter"
+                        title="Click to update with simultaneous">
+                        <font-awesome-icon icon="save" /> Update Values
+                    </b-button>
                 </b-col>
             </b-row>
         </b-modal>
@@ -70,29 +83,53 @@
 <script>
 export default {
     name: 'EcoPartsModal',
+    props:{
+        eco_parts_list:Array,
+        id: {
+            type: String,
+            default: "modal_eco_parts"
+        }
+    },
     data(){
         return{
             perPage: 10,
             currentPage: 1,
+            selected: [],
+            selectBefore: [],
+            selectAfter: [],
             eco_parts_fields:
             [
-                {key: "action", class: 'text-center'},
-                {key: "part_number", label: "Part Number", class: 'text-center'},
-                {key: "part_number_revision", label: "Revision", class: 'text-center'},
-                {key: "details", class: 'text-center'}
-            ],
-            eco_parts_list: 
-            [
-                {part_number: "KD02165-Y145", part_number_revision:"05", details:"sample"},
-                {part_number: "KD02165-Y148", part_number_revision:"05", details:"sample1"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
+               {key: "action"},
+               {key: "part_number", sortable: true},
+               {key: "part_number_new_revision", sortable: true},
+               {key: "revision_details", sortable: true}, 
             ],
         }
     },
     computed:{
-        totalRows(){
+        rows(){
             return this.eco_parts_list.length
         }
+    },
+    methods:{
+        transferCheck()
+        {
+            this.selectBefore = this.selected;
+            this.$emit('clicked', this.selectBefore)
+            this.toast("Success", "Successfully Added");
+        },
+        transferCheckAfter()
+        {
+            this.selectAfter = this.selected;
+            this.$emit('clicked', this.selectAfter)
+            this.toast("Success", "Successfully Added");
+        },
+        toast: function (status, message){
+        this.$toast(message, {
+              type:status.toLowerCase().trim(),
+              position: "bottom-right",
+        });
+      }
     }
 }
 </script>
