@@ -28,7 +28,7 @@
                         label-align-sm="left">
                         <b-form-input 
                             id="txt_eco_number" 
-                            v-model="this.get_data.eco_number"
+                            v-model="this.items.eco_number"
                             disabled ></b-form-input>
                     </b-form-group>
                     <b-form-group
@@ -38,7 +38,7 @@
                         label-align-sm="left">
                         <b-form-input 
                             id="txt_device" 
-                            v-model="this.get_data.device_name"
+                            v-model="this.items.device_name"
                             disabled></b-form-input>
                     </b-form-group>
                     <b-form-group
@@ -48,7 +48,7 @@
                         label-align-sm="left">
                         <b-form-input 
                             id="txt_model" 
-                            v-model="this.get_data.model_name"
+                            v-model="this.items.model_name"
                             disabled></b-form-input>
                     </b-form-group>
                 </b-col>
@@ -60,7 +60,7 @@
                         label-align-sm="left">
                         <b-form-input 
                             id="txt_unit_number" 
-                            v-model="this.get_data.unit_number"
+                            v-model="this.items.unit_number"
                             disabled></b-form-input>
                     </b-form-group>
                     <b-form-group
@@ -70,7 +70,7 @@
                         label-align-sm="left">
                         <b-form-input 
                             id="txt_unit_name" 
-                             v-model="this.get_data.unit_name"
+                             v-model="this.items.unit_name"
                             disabled></b-form-input>
                     </b-form-group>
                 </b-col>
@@ -162,7 +162,7 @@
 export default {
     name: 'SimultaneousUpdate',
     props: {
-        get_data: Object
+        items: Object
     },
     data(){
         return{
@@ -187,15 +187,33 @@ export default {
     },
     methods:{
         submitForm: function(){
-            // var formData = new FormData(document.getElementById("form_update_simultaneous"));
-            // document.getElementById('btn_update').disabled.true;
-            // this.$store
-            // .dispatch("updateSimultaneous", formData)
-            // .then((response) => {
-            //     console.log(JSON.stringify(this.form));
-            //     console.log(response)
-            // });
-            alert(1);
+            let id = this.items.id
+            
+            var data = {
+                'actual_application' : this.form.slc_actual_application.value,
+                'carf_number' : this.form.txt_carf_number.value,
+                'serial_number' : this.form.txt_serial_number.value
+            };
+
+            this.$store
+                .dispatch("updateSimultaneousApplication", [data, id])
+                .then((response) => 
+                {
+                    let result = response.data.status;
+                    if(result == "Success")
+                    {
+                        // this.toast(status, response.data.message);
+                        this.$emit('clicked')
+                        this.clearForm();
+                    }
+                    else if(status == "Warning")
+                        this.toast(status, response.data.message);
+                    else
+                        this.toast(status, response.data.message);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
         },
         clearForm: function(){
             this.form = {
@@ -215,6 +233,12 @@ export default {
                     validation: "",
                 },
             }; 
+        },
+        toast: function (status, message){
+            this.$toast(message, {
+                type:status.toLowerCase().trim(),
+                position: "bottom-right",
+            });
         }
     }
 }

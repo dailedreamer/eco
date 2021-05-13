@@ -90,6 +90,38 @@ export default {
 						reject(error);
 					});
             })
+        },
+        async cancelledSimultaneous(state, id)
+        {
+            return new Promise((resolve, reject) =>
+            {
+                axios   
+                    .patch(`simultaneous-application/cancel-specific-simultaneous-application/${id}`)
+                    .then(function(response)
+                    {
+                        resolve(response);
+                    })
+                    .catch(function(error)
+                    {
+                        reject(error);
+                    })
+            })
+        },
+        async updateSimultaneousApplication(state, payload)
+        {
+            return new Promise((resolve, reject) =>
+            {
+                axios
+                    .patch(`simultaneous/${payload[1]}`, payload[0])
+                    .then(function(response)
+                    {
+                        resolve(response);
+                    })
+                    .catch(function(error)
+                    {
+                        reject(error);
+                    })
+            })
         }
     },
 

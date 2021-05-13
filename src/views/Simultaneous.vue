@@ -202,7 +202,7 @@
                                 </b-button>
                             </b-col>
                         </b-row>
-                       
+                      
                         <b-row class="mt-3">
                             <b-col cols="12">
                                 <b-table-simple 
@@ -248,14 +248,15 @@
                                     </b-thead>
                                     <b-tbody>
                                         <b-tr 
-                                            v-for="item in items.slice((this.currentPage-1) * this.perPage, (this.currentPage) * this.perPage)" 
+                                            v-for="(item, index) in items.slice((this.currentPage-1) * this.perPage, (this.currentPage) * this.perPage)" 
                                             :key="item.simultaneous_details.id">
                                             
-                                            <b-td class="td_align">{{item.id}}</b-td>
+                                            <b-td class="td_align" v-if="currentPage == 1">{{index + 1}}</b-td>
+                                            <b-td class="td_align" v-else>{{(index + 6)+ (currentPage*perPage) - 10}}</b-td>
                                             <b-td class="td_align">
                                                 <b-link 
                                                     v-b-modal.simultaneous_update_modal_id
-                                                    @click="updateSimultaneous(item.no)">
+                                                    @click="updateSimultaneous(item.simultaneous_details)">
                                                     Edit
                                                 </b-link>
                                                 <label class="ml-1 mr-1 text-secondary">|</label>
@@ -265,7 +266,9 @@
                                                     Delete
                                                 </b-link>
                                                 <label class="ml-1 mr-1 text-secondary">|</label>
-                                                <b-link >
+                                                <b-link 
+                                                    v-b-modal.cancel-id
+                                                    @click="cancelSimultaneous(item.simultaneous_details.id)">
                                                     Cancel
                                                 </b-link>
                                             </b-td>
@@ -354,10 +357,10 @@
                             </b-col>
                         </b-row>
                     </b-card>
-                        <SimultaneousUpdateModal :get_data="this.id"/>
+                        <SimultaneousUpdateModal :items="this.edit_data" @clicked="this.updated"/>
                         <WithSimultaneousModal />
                         <DeleteModal :functionToCall="this.removeSimultaneous"/>
-                        
+                        <DeleteModal :functionToCall="this.cancelledSimultaneous" id="cancel-id"/>
                     <!-- <b-row class="mt-3">
                         <b-col cols="12">
                             <b-card class="pl-2 pr-2">
@@ -429,6 +432,8 @@ export default {
             filtered_items: [],
             id: {},
             deleteID: null,
+            cancelId: null,
+            edit_data: {}
         }
     },
     computed:{
@@ -441,9 +446,40 @@ export default {
         this.loadDevice();
         this.loadSimultaneousApplied();
         this.load_percentage();
+        
         // console.log(this.loadModel('3'));
     },
     methods: {
+        updated()
+        {
+            let status = "Success"
+            this.$bvModal.hide("simultaneous_update_modal_id");
+            this.toast(status, "Simultaneous successfully updated");
+            this.loadSimultaneousApplied();
+        },
+        cancelledSimultaneous()
+        {
+            this.$store
+                .dispatch("cancelledSimultaneous", this.cancelId)
+                .then((response) =>
+                {
+                    let status = response.data.status;
+                   
+                    if (status == "Success") {
+                        this.$bvModal.hide("cancel-id");
+                        this.toast(status, response.data.message);
+                        this.loadSimultaneousApplied();
+                        this.load_percentage();
+                    } else if (status == "Warning") {
+                        this.toast(status, "Please review your inputs.");
+                    } else if (status == "Error") {
+                        this.toast(status, response.data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
         removeSimultaneous()
         {
             this.$store
@@ -460,8 +496,7 @@ export default {
                     } else if (status == "Error") {
                         this.toast(status, response.data.message);
                     }
-                    this.loaderSpinner = false;
-                    
+                    // this.loaderSpinner = false; 
                 })
                 .catch((error) => {
                     console.log(error);
@@ -471,8 +506,13 @@ export default {
         {
             this.deleteID = id
         },
+        cancelSimultaneous(id)
+        {
+            this.cancelId = id
+        },
         loadSimultaneousApplied(status_application = "for_application")
         {
+
             this.status = status_application;
 
             this.$store.dispatch("loadSimultaneousApplied", this.status)
@@ -480,7 +520,6 @@ export default {
                 {
                     // this.items=this.getAllApplied;
                     let data = response.data;
-
                     this.items = data
                     this.filtered_items = data;
                  
@@ -542,10 +581,11 @@ export default {
 
             this.items = data
         },
-        updateSimultaneous: function(id)
+        updateSimultaneous: function(value)
         {
-            this.id = {};
-            this.id = this.items[id-1];
+            this.edit_data = value
+            // this.id = {};
+            // this.id = this.items[id-1];
         },
         loadDevice: function()
         {
