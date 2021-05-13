@@ -54,7 +54,7 @@
                         <b-form-input 
                             id = "txt_revision_number" 
                             readonly
-                            v-model="this.get_data.revision"
+                            v-model="this.get_data.part_number_new_revision"
                         ></b-form-input>
                     </b-form-group>
                 </b-col>
@@ -67,7 +67,7 @@
                         <b-form-input 
                             id="txt_device" 
                             readonly
-                            v-model="this.get_data.device"
+                            v-model="this.get_data.device_name"
                         ></b-form-input>                                  
                     </b-form-group>
                     <b-form-group
@@ -78,7 +78,7 @@
                         <b-form-input 
                             id="txt_model" 
                             readonly
-                            v-model="this.get_data.device"
+                            v-model="this.get_data.model_name"
                         ></b-form-input>                                  
                     </b-form-group>
                     <b-form-group
@@ -117,6 +117,7 @@
                             <b-form-datepicker 
                                 id="txt_target_sending_date"
                                 placeholder="Choose a date"
+                                v-model="this.get_data.target_sending_date"
                                 class="vps_datepicker"
                                 hide-header
                                 reset-button
@@ -132,6 +133,7 @@
                             <b-form-datepicker 
                                 id="txt_received_date"
                                 placeholder="Choose a date"
+                                 v-model="this.get_data.date_received"
                                 class="vps_datepicker"
                                 hide-header
                                 reset-button
@@ -148,6 +150,7 @@
                                 id="txt_target_application"
                                 placeholder="Choose a date"
                                 class="vps_datepicker"
+                                 v-model="this.get_data.target_application"
                                 hide-header
                                 reset-button
                                 close-button
@@ -162,6 +165,7 @@
                             <b-form-datepicker 
                                 id="txt_date_applied"
                                 placeholder="Choose a date"
+                                v-model="this.get_data.date_applied"
                                 class="vps_datepicker"
                                 hide-header
                                 reset-button
@@ -193,13 +197,18 @@ export default {
     },
     data(){
        return {
-        part_number: this.get_data.part_number,
+        //part_number: this.get_data.part_number,
        } 
     },
 
     mounted(){
       
         // console.log(this.get_data);
+    },
+    methods: {
+
+
+
     }
    
 }
