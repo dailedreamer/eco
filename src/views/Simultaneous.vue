@@ -37,17 +37,17 @@
                                             </template>
                                                 <p class="mb-0">Applied</p>
                                                 <h4 class="text-secondary mt-1">
-                                                    36%
+                                                    {{percentage_applied}}%
                                                 </h4>
                                             </b-media>
                                         </b-col>
                                         <b-col cols="4">
-                                                <h1 class="text-muted ml-5">40</h1> 
+                                                <h1 class="text-muted ml-5">{{total_applied}}</h1> 
                                         </b-col>
                                     </b-row>
                                     <b-row class="mt-0">
                                         <b-col cols="12">
-                                           <b-progress class='mt-3' variant="primary" :value="value" :max="max" show-progress animated></b-progress>
+                                           <b-progress class='mt-3' variant="primary" :value="percentage_applied" :max="max" show-progress animated></b-progress>
                                         </b-col>
                                     </b-row>
                             </b-card>
@@ -68,17 +68,17 @@
                                             </template>
                                                 <p class="mb-0">For Application</p>
                                                 <h4 class="text-secondary mt-1">
-                                                    36%
+                                                    {{percentage_application}}%
                                                 </h4>
                                             </b-media>
                                         </b-col>
                                         <b-col cols="4">
-                                                <h1 class="text-muted ml-5">40</h1> 
+                                                <h1 class="text-muted ml-5">{{total_application}}</h1> 
                                         </b-col>
                                     </b-row>
                                     <b-row class="mt-0">
                                         <b-col cols="12">
-                                           <b-progress class='mt-3' variant="warning" :value="value" :max="max" show-progress animated></b-progress>
+                                           <b-progress class='mt-3' variant="warning" :value="percentage_application" :max="max" show-progress animated></b-progress>
                                         </b-col>
                                     </b-row>
                             </b-card>
@@ -99,17 +99,17 @@
                                             </template>
                                                 <p class="mb-0">Cancelled</p>
                                                 <h4 class="mt-1">
-                                                    36%
+                                                    {{percentage_cancelled}}%
                                                 </h4>
                                             </b-media>
                                         </b-col>
                                         <b-col cols="4">
-                                                <h1 class="text-muted ml-5">40</h1> 
+                                                <h1 class="text-muted ml-5">{{total_cancelled}}</h1> 
                                         </b-col>
                                     </b-row>
                                     <b-row class="mt-0">
                                         <b-col cols="12">
-                                           <b-progress class='mt-3' variant="danger" :value="value" :max="max" show-progress animated></b-progress>
+                                           <b-progress class='mt-3' variant="danger" :value="percentage_cancelled" :max="max" show-progress animated></b-progress>
                                         </b-col>
                                     </b-row>
                             </b-card>
@@ -403,6 +403,12 @@ export default {
             unitValue: [],
             unitOptions: [],
             totalRows: null,
+            total_application: null,
+            percentage_application: null,
+            total_applied: null,
+            percentage_applied: null,
+            total_cancelled: null,
+            percentage_cancelled: null,
             items: [
                 // { no: 1, device_name:"device1", model_name: "model1", unit_name: "unit_name1", unit_number: "unit_no1",
                 // eco_number: "eco1", target_application: "2021-03-25", before_part_no:"KD0123", before_rev_no:"01",
@@ -434,6 +440,7 @@ export default {
      mounted() {
         this.loadDevice();
         this.loadSimultaneousApplied();
+        this.load_percentage();
         // console.log(this.loadModel('3'));
     },
     methods: {
@@ -443,7 +450,7 @@ export default {
                 .dispatch("removeSimultaneous", this.deleteID)
                 .then((response) => {
                     let status = response.data.status;
-                    // console.log(status);
+                    
                     if (status == "Success") {
                         this.$bvModal.hide("modal-delete-id");
                         this.toast(status, response.data.message);
@@ -463,7 +470,6 @@ export default {
         deleteSimultaneous(id)
         {
             this.deleteID = id
-            console.log(id);
         },
         loadSimultaneousApplied(status_application = "for_application")
         {
@@ -477,12 +483,26 @@ export default {
 
                     this.items = data
                     this.filtered_items = data;
-                   
+                 
                     if(!this.items)
                         this.totalRows = 1;
                     else
                         this.totalRows = this.items.length;
 
+                })
+        },
+        load_percentage()
+        {
+            this.$store.dispatch("load_percentage")
+                .then((response) =>
+                {
+                    let data = response.data.data;
+                    this.total_application = data.application_count;
+                    this.percentage_application = data.application_percentage;
+                    this.total_applied = data.applied_count;
+                    this.percentage_applied = data.applied_percentage;
+                    this.total_cancelled = data.cancelled_count;
+                    this.percentage_cancelled = data.cancelled_percentage;
                 })
         },
         load_filtered_device(device)

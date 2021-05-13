@@ -442,7 +442,10 @@ export default {
             this.$store.dispatch("loadEcoProcess", filtered_data)
                 .then((response) =>
                 {
+                    let status = response.data.status;
+                
                     this.processData = response.data.data;
+                    this.toast(status, response.data.message);
                 })
         },
         isNumber: function(evt) {
@@ -484,6 +487,12 @@ export default {
         loadUnitId: function(unit_id)
         {
             this.unit_id = unit_id;
+        },
+        toast: function (status, message){
+            this.$toast(message, {
+                type:status.toLowerCase().trim(),
+                position: "bottom-right",
+            });
         }
     }
 }
