@@ -2,17 +2,20 @@ import axios from "axios";
 
 export default{
     state:{
-
+        management_email: [],
     },
     mutations:{
-
+        SET_EMAIL(state, email){
+            state.management_email = email;
+        }
     },
     actions:{
-        async loadEmailMasterlist(){
+        async loadEmailMasterlist({commit}){
             return new Promise((resolve, reject) => {
                 axios
                     .get("email")
                     .then(function(response){
+                        commit("SET_EMAIL", response.data);
                         let result = {
                             code: response.data.status_code,
                             status: response.data.status,
@@ -75,10 +78,10 @@ export default{
 						reject(error.response);
 					});
             });
-        }
+        },
 
     },
-    getters:{
-
-    }
-}
+    getters: {
+        getEmail: (state) => state.management_email,
+    },
+};

@@ -35,18 +35,39 @@
                                 hover 
                                 bordered
                                 head-variant="light" 
-                                :items="email_masterlists" 
+                                :items="getEmail.data" 
                                 :fields="email_fields"
                                 :per-page="perPage"
                                 :current-page="currentPage">
+                                <!-- :items="email_masterlists"  -->
+                                <template #cell(no)="data" v-if="currentPage == 1">
+                                    {{data.index+1}}
+                                </template>
+                                <template #cell(no)="data" v-else>
+                                    {{(data.index+1) + (currentPage*perPage) - 10}}
+                                </template>
                                 <template #cell(actions)="data">
                                     <b-link
                                         v-b-modal.email_modal_id 
                                         :disabled="disable" 
                                         :id="'btn_actions_'+data.item.id"
-                                        @click="updateEmailRecipient(data.item.id)">
+                                        @click="editEmailRecipient(
+                                            data.item.id, 
+                                            data.item.subject,
+                                            data.item.email_classification,
+                                            data.item.cc_recipient, 
+                                            data.item.to_recipient, 
+                                            data.item.main_recipient)">
                                         Edit
                                     </b-link>
+                                     <!-- <b-link
+                                        v-b-modal.email_modal_id 
+                                        :disabled="disable" 
+                                        :id="'btn_actions_'+data.item.id"
+                                        @click="editEmailRecipient(
+                                            data.item.id)">
+                                        Edit
+                                    </b-link> -->
                                 </template>
                                 <template #cell(status)="data">
                                     <toggle-button 
@@ -64,6 +85,7 @@
                             align="right"
                             pills></b-pagination>  
                         </b-card>
+                        {{getEmail.data}}
                     </b-card-body>   
                 </b-card>
             </b-col>  
@@ -74,6 +96,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import EmailUpdateModal from '../../components/Management/Email/EmailUpdateModal.vue';
 export default {
     components:{
@@ -85,7 +108,8 @@ export default {
         perPage: 10,
         email_masterlists: [],
         email_fields: [
-            { key: "id", label:"No", sortable: true, class: "text-center"},
+            // { key: "id", label:"No", sortable: true, class: "text-center"},
+            { key: "no", sortable: true, class: "text-center"},
             { key: "actions", class: "text-center"},
             { key: "subject", sortable: true, },
             { key: "email_classification", label: "Classification", sortable: true, class: "text-center"}, 
@@ -93,12 +117,14 @@ export default {
         ],
         disable: false,
         id: {},
+        // update_id: ''
       }
     },
     mounted(){
         this.loadEmailMasterlist();
     },
     computed:{
+        ...mapGetters(["getEmail"]),
         totalRows: function(){
             return this.email_masterlists.length
         }, 
@@ -123,10 +149,33 @@ export default {
                 document.getElementById(`btn_actions_${data}`).disabled = false;
             }
         },
-        updateEmailRecipient: function(id){
-            // console.log(id);
-            this.id = {};
-            this.id = this.email_masterlists[id-1];
+        editEmailRecipient: function(id, subject, email_classification, to_recipient , cc_recipient, main_recipient){
+            console.log(id);
+            // console.log(subject);
+            // console.log(classification);
+            // console.log(to);
+            // console.log(cc);
+            // console.log(main);
+            let to_recipient_value = 
+                {
+                    'id':to_recipient, 
+                    'name':to_recipient, 
+                }
+                
+
+            let email_modal_content = {
+                'subject' : subject,
+                'email_classification' : email_classification,
+                'to_recipient' : to_recipient_value,
+                'cc_recipient' : cc_recipient,
+                'main_recipient' : main_recipient
+            }
+
+            this.id = email_modal_content;
+            console.log(this.id);
+            // this.id = {};
+            // this.id = this.getEmail.data[id-1];
+
         },
         toast: function (status, message){
             this.$toast(message, {

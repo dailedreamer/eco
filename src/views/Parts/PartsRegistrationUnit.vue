@@ -3,7 +3,6 @@
     <b-row>
       <b-col cols="12">
         <vessel>
-          <!-- <vessel-header></vessel-header> -->
           <vessel-body>
             <div class="m-3 div_upload_data">
               <div class="media">
@@ -20,31 +19,38 @@
                   <small class="text-secondary">Upload Data Description</small>
                 </div>
               </div><br>
-              <b-col lg="12">
-                <b-row>
-                  <b-col lg="3" class="md-2">
-                    <b-form-file 
-                      id="file" 
-                      accept=".csv" 
-                      v-on:change="FileUpload()">
-                    </b-form-file>
-                  </b-col>
-                  <b-col lg="2" class="md-2">
-                    <b-button
-                      class="mt-1"
-                      id="button-submit"
-                      type="submit"
-                      title="Click to add budget"
-                      variant="danger">
-                      <font-awesome-icon 
-                        icon="upload" 
-                        size="sm" 
-                        class="icon"/> 
-                        Upload
-                    </b-button>
-                  </b-col>
-                </b-row>
-              </b-col>
+              <b-form
+                id="form-upload"
+                @submit.prevent="uploadFile"
+                method="post">
+                <b-col lg="12">
+                  <b-row>
+                    <b-col lg="3" class="md-2">
+                      <input
+                          class="alpha-input"
+                          id="input-file"
+                          name="file"
+                          type="file"
+                          required
+                        />
+                    </b-col>
+                    <b-col lg="2" class="md-2">
+                      <b-button
+                        class="mt-1"
+                        id="button-upload"
+                        type="submit"
+                        title="Click to Registered Parts"
+                        variant="danger">
+                        <font-awesome-icon 
+                          icon="upload" 
+                          size="sm" 
+                          class="icon"/> 
+                          Upload
+                      </b-button>
+                    </b-col>
+                  </b-row>
+                </b-col>
+              </b-form>
               <br>
               <b-col cols="12">
               <b-table 
@@ -58,8 +64,11 @@
                 :busy="isBusy" 
                 :per-page="perPage"
                 :current-page="currentPage">
-                <template #cell(No)="data">
-                  {{data.index + 1}}
+                <template #cell(no)="data" v-if="currentPage == 1">
+                    {{data.index+1}}
+                </template>
+                <template #cell(no)="data" v-else>
+                    {{(data.index+1) + (currentPage*perPage) - 10}}
                 </template>
                 <template #cell(device)="data"> 
                     <multiselect  
@@ -82,18 +91,17 @@
                       :options="data.item.model_options"
                       :show-labels="false"
                       :allow-empty="false"
-                      @input="loadUnit(data.item.model.id, data.index)"
-                      
-                    ></multiselect>
+                      @input="loadUnit(data.item.model.id, data.index)"></multiselect>
                 </template>
                 <template #cell(unit_name)="data"> 
                     <multiselect  
-                      v-model="data.item.unit"
+                      v-model="data.item.unit_name"
                       placeholder="Select Unit Name/Number" 
                       label="text" 
                       track-by="id" 
                       :options="data.item.unit_options"
                       :show-labels="false"
+                      :allow-empty="false"
                     ></multiselect>
                 </template>
                 <template #table-busy>
@@ -134,7 +142,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapGetters } from "vuex";
 export default {
   name: "partsRegistrationUnits",
@@ -148,64 +155,99 @@ export default {
         {key: "No", sortable: true, class: 'text-center field_style',},
         {key: "eco_number", sortable: true, class: 'text-center',},
         {key: "part_number", sortable: true, class: 'text-center',},
-        {key: "part_number_new_revision", sortable: true, class: 'text-center'},
+        {key: "new_revision", sortable: true, class: 'text-center'},
         {key: "device", sortable: true, class: 'text-center'},
         {key: "model", sortable: true, class: 'text-center'},
         {key: "unit_name", sortable: true, label: 'Unit Name/Unit Number', class: 'text-center'},
       ],
       device_options: [],
+      model_options: [],
+      unit_options: [],
       items: 
       [
-        {id: 1, eco_number: '111111111', part_number: 'KD021-132540', part_number_new_revision: '02', unit_options:[], model_options:[], device:[], model:[], unit:[]},
-        {id: 2, eco_number: '222222222', part_number: 'KD021-132541', part_number_new_revision: '04', unit_options:[], model_options:[], device:[], model:[], unit:[]},
-        {id: 3, eco_number: '333333333', part_number: 'KD021-132542', part_number_new_revision: '06', unit_options:[], model_options:[], device:[], model:[], unit:[]},
+        // {id: 1, eco_number: '111111111', part_number: 'KD021-132540', part_number_new_revision: '02', unit_options:[], model_options:[], device:[], model:[], unit:[]},
+        // {id: 2, eco_number: '222222222', part_number: 'KD021-132541', part_number_new_revision: '04', unit_options:[], model_options:[], device:[], model:[], unit:[]},
+        // {id: 3, eco_number: '333333333', part_number: 'KD021-132542', part_number_new_revision: '06', unit_options:[], model_options:[], device:[], model:[], unit:[]},
       ],
       isBusy: false,
+      totalRows: null
     }
   },
   mounted()
   {
     this.loadDevice();
+    this.loadUnitsPe();
   },
   computed: {
     ...mapGetters(["getPartsRegistrationUnits"]),
     ...mapGetters(["getDevice"]),
     ...mapGetters(["getModel"]),
     ...mapGetters(["getUnit"]),
-    totalRows(){
-      return this.items.length
-    }, 
+    ...mapGetters(["getUnitsPeRegistration"]),
   },
   methods: 
   {
-    loadTable: function () 
-    {
-        //  this.$store.dispatch("loadparts").then((result) => {
-        //  this.toast(result.status, result.message);
-        // });
-    },
-    submitFile()
-    {
-      let formData = new FormData();
-      formData.append('file', this.file);
+    uploadFile: function(){
+      var formData = new FormData();
+      var excelFile = document.querySelector("#input-file");
+      let fileType = excelFile.files[0].name.split('.')[1];
+      var token = "Zcz5Gagl6lz5ATQ71IWVGFwGZSMZQXcpDynsa7PKUETeq7xp1uPV8MNMd0MASOyk"
 
-      axios.post('/parts-registration-units',
-        formData,
-        {
-          headers: 
+      if((fileType !== 'csv') && (fileType !== 'xlsx')){
+        document.getElementById("input-file").value = "";
+        this.toast("Warning", "Please Upload a CSV or XLSX file type only.");
+      }
+      else{
+        document.getElementById("button-upload").disabled = true;
+        formData.append("file_name", excelFile.files[0]);
+
+        this.$store
+        .dispatch("uploadPartsRegistrationUnit", [formData, token])
+        .then((response)=>{
+          let status = response.data.status;
+          if(status == "Success")
           {
-            'Content-Type': 'multipart/form-data'
+            document.getElementById("input-file").value = "";
+            this.toast(status, response.data.message);
           }
-        }
-      ).then(function(){
-        console.log('success');
-      })
-      .catch(function() {
-        console.log('fail');
-      });
+          else if(status == "Warning")
+            this.toast(status, response.data.message);
+          else
+            this.toast(status, response.data.message);
+        })
+        .catch((error) => {
+          this.toast("error", "Something went wrong");
+          console.log(error);
+        })
+        .finally(() => {
+          location.reload();
+        });
+      }
     },
-    FileUpload(){
-      this.file = this.$refs.file.files[0];
+
+    loadUnitsPe: function () 
+    {
+      this.$store.dispatch("loadUnitsPe")
+      .then((response) =>{
+         for (let index = 0; index < response.data.length; index++) {
+          let obj = {};
+          obj["id"] = response.data[index].id;
+          obj["eco_number"] = response.data[index].eco_number;
+          obj["part_number"] = response.data[index].part_number;
+          obj["new_revision"] = response.data[index].new_revision;
+          obj["model"] = [];
+          obj["unit_name"] = [];
+          obj["model_options"] = [];
+          obj["unit_options"] = [];
+
+          this.items.push(obj);
+        }
+        this.toast(response.status, response.message);
+        if(!this.getUnitsPeRegistration.data)
+          this.totalRows = 0;
+        else
+          this.totalRows = this.getUnitsPeRegistration.data.length;
+      })
     },
     loadDevice: function()
     {
@@ -253,11 +295,17 @@ export default {
     changeDevice: function(index)
     {
         this.items[index].model=[];
-        this.items[index].unit=[];
+        this.items[index].unit_name=[];
     },
     updateSelected: function(){
       alert('Successfully Updated!')
-    }
+    },
+    toast: function (status, message){
+            this.$toast(message, {
+                type:status.toLowerCase().trim(),
+                position: "bottom-right",
+            });
+        }
   }
 };
 </script>
