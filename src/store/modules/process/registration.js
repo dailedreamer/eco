@@ -56,7 +56,8 @@ export default {
             {
                 axios   
                     .patch("update-process-details", payload)
-                    .then(function(response) {
+                    .then(function(response) 
+                    {
                         resolve(response);
                     })
                     .catch(function(error){

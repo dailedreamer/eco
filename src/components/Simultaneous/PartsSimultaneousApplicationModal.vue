@@ -1,7 +1,7 @@
 <template>
     <b-container fluid>
         <b-modal
-            id="modal_parts_simultaneous"
+            :id="id"
             hide-footer
             size="lg"
             :no-close-on-backdrop="true" 
@@ -19,19 +19,40 @@
                     <h5 class="mt-2">Simultaneous Application</h5>
                 </b-media>
             </template>
-            <b-row class="mt-3 ml-3 mr-3">
+            <b-form-group
+                class="form_group_custom"
+                id="filter_by"
+                label-cols-sm="2"
+                label="Filter By:"
+                label-align="left"
+                label-size="sm"
+                horizontal>
+                <b-row>
+                    <b-col cols="8">
+                        <b-input block 
+                        v-model="filterByValue" 
+                        class="filterby_input" 
+                        ></b-input>
+                    </b-col>
+                </b-row>
+            </b-form-group> 
+                <b-row class="mt-3 ml-3 mr-3">   
                 <b-container fluid>
                     <b-table 
                         head-variant="light"
                         outlined 
                         hover 
                         responsive 
-                        :items="eco_parts_list"
+                        :filter="this.filterByValue"
+                        :items="items"
                         :fields="eco_parts_fields"
                         :per-page="perPage"
                         :current-page="currentPage">
-                        <template #cell(action)="">
-                            <b-form-checkbox></b-form-checkbox>
+                        <template #cell(action)="data">
+                            <b-form-checkbox
+                                :value="data.item"
+                                v-model="selected"
+                                ></b-form-checkbox>
                         </template>
                     </b-table>
                     <b-pagination class="alpha__table__pagination"
@@ -53,11 +74,22 @@
                         <font-awesome-icon icon="times-circle" /> Clear
                     </b-button>
                     <b-button 
+                        v-if="id == 'modal_parts_simultaneous'"
                         class="float-right mr-2"
                         id="btn_update" 
                         size="md" 
                         variant="danger" 
-                        type="submit"
+                        @click="transferCheck"
+                        title="Click to update with simultaneous">
+                        <font-awesome-icon icon="save" /> Update Values
+                    </b-button>
+                    <b-button 
+                        v-else
+                        class="float-right mr-2"
+                        id="btn_update" 
+                        size="md" 
+                        variant="danger" 
+                        @click="transferCheckAfter"
                         title="Click to update with simultaneous">
                         <font-awesome-icon icon="save" /> Update Values
                     </b-button> 
@@ -70,31 +102,42 @@
 <script>
 export default {
     name: 'PartsSimultaneousApplicationModal',
+    props:{
+        items: Array,
+        id: {
+            type: String,
+            default: "modal_parts_simultaneous"
+    }
+    },
     data(){
         return{
+            filterByValue: '',
+            selected: [],
+            selectBefore: [],
+            selectAfter: [],
             perPage: 10,
             currentPage: 1,
             eco_parts_fields:
             [
                 {key: "action"},
                 {key: "part_number", label: "Part No."},
-                {key: "part_number_revision", label: "Rev No."},
-                {key: "details"}
+                {key: "part_number_new_revision", label: "Rev No."},
+                {key: "revision_details"}
             ],
             eco_parts_list: 
             [
-                {part_number: "KD02165-Y145", part_number_revision:"05", details:"sample"},
-                {part_number: "KD02165-Y148", part_number_revision:"05", details:"sample1"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
+                // {part_number: "KD02165-Y145", part_number_revision:"05", details:"sample"},
+                // {part_number: "KD02165-Y148", part_number_revision:"05", details:"sample1"},
+                // {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
+                // {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
+                // {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
+                // {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
+                // {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
+                // {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
+                // {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
+                // {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
+                // {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
+                // {part_number: "KD02165-Y150", part_number_revision:"05", details:"sample2"},
             ],
         }
     },
@@ -102,10 +145,35 @@ export default {
         totalRows(){
             return this.eco_parts_list.length
         }
+    },
+    methods:{
+        checkData()
+        {
+            this.selected = [];
+
+            for (let i in this.items) 
+            {
+                this.selected.push(this.items[i].id);
+            }
+            
+        },
+        transferCheck()
+        {
+            this.selectBefore = this.selected;
+            this.$emit('clicked', this.selectBefore)
+        },
+        transferCheckAfter()
+        {
+            this.selectAfter = this.selected;
+            this.$emit('clicked', this.selectAfter)
+        }
     }
 }
 </script>
 
 <style scoped>
-
+    .filterby_input{
+        border-color: #e3e3e3;
+        height: 43px;
+    }
 </style>

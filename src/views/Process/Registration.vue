@@ -362,7 +362,7 @@ export default {
             console.log(error);
           })
           .finally(() => {
-            location.reload();
+            this.loadAllProcess();
           });
       }
     },
