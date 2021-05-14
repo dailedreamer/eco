@@ -122,6 +122,22 @@ export default {
                         reject(error);
                     })
             })
+        },
+        async addSimultaneous(state, payload)
+        {
+            return new Promise((resolve, reject) =>
+            {
+                axios
+                    .post("simultaneous", payload)
+                    .then(function(response)
+                    {
+                        resolve(response);
+                    })
+                    .catch(function(error)
+                    {
+                        reject(error);
+                    })
+            })
         }
     },
 

@@ -358,7 +358,7 @@
                         </b-row>
                     </b-card>
                         <SimultaneousUpdateModal :items="this.edit_data" @clicked="this.updated"/>
-                        <WithSimultaneousModal />
+                        <WithSimultaneousModal @clicked="this.addedDone"/>
                         <DeleteModal :functionToCall="this.removeSimultaneous"/>
                         <DeleteModal :functionToCall="this.cancelledSimultaneous" id="cancel-id"/>
                     <!-- <b-row class="mt-3">
@@ -450,6 +450,11 @@ export default {
         // console.log(this.loadModel('3'));
     },
     methods: {
+        addedDone()
+        {
+            this.loadSimultaneousApplied();
+            this.load_percentage();
+        },
         updated()
         {
             let status = "Success"
