@@ -19,13 +19,31 @@
                     <h5 class="mt-2">Simultaneous Application</h5>
                 </b-media>
             </template>
-            <b-row class="mt-3 ml-3 mr-3">
+            <b-form-group
+                class="form_group_custom"
+                id="filter_by"
+                label-cols-sm="2"
+                label="Filter By:"
+                label-align="left"
+                label-size="sm"
+                horizontal>
+                <b-row>
+                    <b-col cols="8">
+                        <b-input block 
+                        v-model="filterByValue" 
+                        class="filterby_input" 
+                        ></b-input>
+                    </b-col>
+                </b-row>
+            </b-form-group> 
+                <b-row class="mt-3 ml-3 mr-3">   
                 <b-container fluid>
                     <b-table 
                         head-variant="light"
                         outlined 
                         hover 
                         responsive 
+                        :filter="this.filterByValue"
                         :items="items"
                         :fields="eco_parts_fields"
                         :per-page="perPage"
@@ -93,6 +111,7 @@ export default {
     },
     data(){
         return{
+            filterByValue: '',
             selected: [],
             selectBefore: [],
             selectAfter: [],
@@ -153,5 +172,8 @@ export default {
 </script>
 
 <style scoped>
-
+    .filterby_input{
+        border-color: #e3e3e3;
+        height: 43px;
+    }
 </style>
