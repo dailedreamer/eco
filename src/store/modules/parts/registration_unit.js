@@ -50,6 +50,20 @@ export default {
 						reject(error.response);
 					});
             })
+        },
+
+        async updateUnitsPe(state, payload){
+            return new Promise((resolve, reject) =>
+            {
+                axios   
+                    .patch("units-pe/update-parts-registration", payload)
+                    .then(function(response) {
+                        resolve(response);
+                    })
+                    .catch(function(error){
+                        reject(error);
+                    });
+            })
         }
    },
    getters:{

@@ -47,98 +47,137 @@
                           class="icon"/> 
                           Upload
                       </b-button>
+                      <b-button
+                        class="mt-1 ml-2"
+                        id="button-clear"
+                        @click="clearInput();"
+                        variant="outline-secondary"
+                        title="Click to Clear Inputs">
+                        <font-awesome-icon 
+                          icon="times-circle" 
+                          size="sm" 
+                          class="icon"/> 
+                          Clear
+                      </b-button>
                     </b-col>
                   </b-row>
                 </b-col>
               </b-form>
               <br>
-              <b-col cols="12">
-              <b-table 
-                class="alpha__table text-nowrap"
-                responsive 
-                hover 
-                bordered
-                head-variant="light"
-                :fields="fields"
-                :items="items"
-                :busy="isBusy" 
-                :per-page="perPage"
-                :current-page="currentPage">
-                <template #cell(no)="data" v-if="currentPage == 1">
-                    {{data.index+1}}
-                </template>
-                <template #cell(no)="data" v-else>
-                    {{(data.index+1) + (currentPage*perPage) - 10}}
-                </template>
-                <template #cell(device)="data"> 
-                    <multiselect  
-                      v-model="data.item.device"
-                      placeholder="Select Device Name" 
-                      label="text" 
-                      track-by="id" 
-                      :options="device_options"
-                      :show-labels="false"
-                      :allow-empty="false"
-                      @input="loadModel(data.item.device.id, data.index) ,changeDevice(data.index)"  
+              <b-form
+                id="form-update-units-pe"
+                @submit.prevent="updateUnitsPe"
+                method="post">
+                <b-col cols="12">
+                <b-table 
+                  class="alpha__table text-nowrap"
+                  responsive 
+                  hover 
+                  bordered
+                  head-variant="light"
+                  :fields="fields"
+                  :items="items"
+                  :busy="isBusy" 
+                  :per-page="perPage"
+                  :current-page="currentPage">
+                  <template #cell(no)="data" v-if="currentPage == 1">
+                      {{data.index+1}}
+                  </template>
+                  <template #cell(no)="data" v-else>
+                      {{(data.index+1) + (currentPage * perPage) - perPage}}
+                  </template>
+                  <template #cell(device)="data" v-if="currentPage == 1"> 
+                      <multiselect  
+                        v-model="data.item.device"
+                        placeholder="Select Device Name" 
+                        label="text" 
+                        track-by="id" 
+                        :options="device_options"
+                        :show-labels="false"
+                        :allow-empty="false"
+                        @input="loadModel(data.item.device.id, (data.index)) ,changeDevice(data.index)"  
+                        ></multiselect>
+                  </template>
+                  <template #cell(device)="data" v-else> 
+                      <multiselect  
+                        v-model="data.item.device"
+                        placeholder="Select Device Name" 
+                        label="text" 
+                        track-by="id" 
+                        :options="device_options"
+                        :show-labels="false"
+                        :allow-empty="false"
+                        @input="loadModel(data.item.device.id, (data.index) + (currentPage * perPage) - perPage) ,changeDevice((data.index) + (currentPage * perPage) - perPage)"  
+                        ></multiselect>
+                  </template>
+                  <template #cell(model)="data" v-if="currentPage == 1"> 
+                      <multiselect  
+                        id="slc_model_id"
+                        v-model="data.item.model"
+                        placeholder="Select Model Name" 
+                        label="text" 
+                        track-by="id" 
+                        :options="data.item.model_options"
+                        :show-labels="false"
+                        :allow-empty="false"
+                        @input="loadUnit(data.item.model.id, (data.index))"></multiselect>
+                  </template>
+                  <template #cell(model)="data" v-else> 
+                      <multiselect  
+                        v-model="data.item.model"
+                        placeholder="Select Model Name" 
+                        label="text" 
+                        track-by="id" 
+                        :options="data.item.model_options"
+                        :show-labels="false"
+                        :allow-empty="false"
+                        @input="loadUnit(data.item.model.id, (data.index) + (currentPage * perPage) - perPage)"></multiselect>
+                  </template>
+                  <template #cell(unit_name)="data"> 
+                      <multiselect  
+                        v-model="data.item.unit_name"
+                        placeholder="Select Unit Name/Number" 
+                        label="text" 
+                        track-by="id" 
+                        :options="data.item.unit_options"
+                        :show-labels="false"
                       ></multiselect>
-                </template>
-                <template #cell(model)="data"> 
-                    <multiselect  
-                      v-model="data.item.model"
-                      placeholder="Select Model Name" 
-                      label="text" 
-                      track-by="id" 
-                      :options="data.item.model_options"
-                      :show-labels="false"
-                      :allow-empty="false"
-                      @input="loadUnit(data.item.model.id, data.index)"></multiselect>
-                </template>
-                <template #cell(unit_name)="data"> 
-                    <multiselect  
-                      v-model="data.item.unit_name"
-                      placeholder="Select Unit Name/Number" 
-                      label="text" 
-                      track-by="id" 
-                      :options="data.item.unit_options"
-                      :show-labels="false"
-                      :allow-empty="false"
-                    ></multiselect>
-                </template>
-                <template #table-busy>
-                  <div class="text-center text-default my-2">
-                    <b-spinner class="align-middle"></b-spinner>
-                  </div>
-                </template>
-              </b-table>
-              <b-pagination 
-                class="alpha__table__pagination"
-                :total-rows="totalRows" 
-                v-model="currentPage"
-                :per-page="perPage"
-                align="right"
-                pills></b-pagination>
-              </b-col>
-              <div class = "mt-4">
-                <b-button
-                  class = "float-right mr-3"
-                  id="button-submit"
-                  type="submit"
-                  title="Click to Update"
-                  variant="danger"
-                  @click="updateSelected()">
-                  <font-awesome-icon 
-                    icon="save" 
-                    size="sm" 
-                    class="icon"/> 
-                    Update Selected
-                </b-button>
-              </div>
+                  </template>
+                  <template #table-busy>
+                    <div class="text-center text-default my-2">
+                      <b-spinner v-if="isBusy" class="align-middle"></b-spinner>
+                    </div>
+                  </template>
+                </b-table>
+                <b-pagination 
+                  class="alpha__table__pagination"
+                  :total-rows="totalRows" 
+                  v-model="currentPage"
+                  :per-page="perPage"
+                  align="right"
+                  pills></b-pagination>
+                </b-col>
+                <div class = "mt-4">
+                  <b-button
+                    class = "float-right mr-3"
+                    id="button-update"
+                    type="submit"
+                    title="Click to Update"
+                    variant="danger">
+                    <font-awesome-icon 
+                      icon="save" 
+                      size="sm" 
+                      class="icon"/> 
+                      Update Selected
+                  </b-button>
+                </div>
+              </b-form>
             </div>
           </vessel-body>
         </vessel>
       </b-col>
     </b-row>
-  </b-container>
+  </b-container> 
 </template>
 
 <script>
@@ -163,12 +202,8 @@ export default {
       device_options: [],
       model_options: [],
       unit_options: [],
-      items: 
-      [
-        // {id: 1, eco_number: '111111111', part_number: 'KD021-132540', part_number_new_revision: '02', unit_options:[], model_options:[], device:[], model:[], unit:[]},
-        // {id: 2, eco_number: '222222222', part_number: 'KD021-132541', part_number_new_revision: '04', unit_options:[], model_options:[], device:[], model:[], unit:[]},
-        // {id: 3, eco_number: '333333333', part_number: 'KD021-132542', part_number_new_revision: '06', unit_options:[], model_options:[], device:[], model:[], unit:[]},
-      ],
+      data: [],
+      items: [],
       isBusy: false,
       totalRows: null
     }
@@ -198,7 +233,6 @@ export default {
         this.toast("Warning", "Please Upload a CSV or XLSX file type only.");
       }
       else{
-        document.getElementById("button-upload").disabled = true;
         formData.append("file_name", excelFile.files[0]);
 
         this.$store
@@ -207,6 +241,8 @@ export default {
           let status = response.data.status;
           if(status == "Success")
           {
+            this.items=[];
+            this.loadUnitsPe();
             document.getElementById("input-file").value = "";
             this.toast(status, response.data.message);
           }
@@ -217,16 +253,16 @@ export default {
         })
         .catch((error) => {
           this.toast("error", "Something went wrong");
+          document.getElementById("input-file").value = "";
           console.log(error);
         })
         .finally(() => {
-          location.reload();
         });
       }
     },
-
     loadUnitsPe: function () 
     {
+      document.getElementById("button-update").disabled = false;
       this.$store.dispatch("loadUnitsPe")
       .then((response) =>{
          for (let index = 0; index < response.data.length; index++) {
@@ -239,10 +275,10 @@ export default {
           obj["unit_name"] = [];
           obj["model_options"] = [];
           obj["unit_options"] = [];
-
-          this.items.push(obj);
+           this.items.push(obj);
         }
         this.toast(response.status, response.message);
+        this.isBusy=false;
         if(!this.getUnitsPeRegistration.data)
           this.totalRows = 0;
         else
@@ -251,7 +287,7 @@ export default {
     },
     loadDevice: function()
     {
-      console.log(this.items);
+      // document.getElementById("slc_model_id").disabled = true;
       this.$store.dispatch("loadDevice")
       .then((response) => {
         let information = response.data.data;
@@ -279,7 +315,7 @@ export default {
       });   
     },
     loadUnit: function(model_id, index)
-    {  
+    { 
       this.items[index].unit_options=[];
       this.$store.dispatch("loadUnitPerModel", model_id)
       .then((response) => {
@@ -296,16 +332,81 @@ export default {
     {
         this.items[index].model=[];
         this.items[index].unit_name=[];
-    },
-    updateSelected: function(){
-      alert('Successfully Updated!')
+        this.data.push(this.items[index]);
     },
     toast: function (status, message){
-            this.$toast(message, {
-                type:status.toLowerCase().trim(),
-                position: "bottom-right",
-            });
+        this.$toast(message, {
+            type:status.toLowerCase().trim(),
+            position: "bottom-right",
+        });
+    },
+    updateUnitsPe: function(){
+      var data_value = [];
+      let action = 1;
+      let information = this.data;
+      if(information.length == 0){
+        this.toast("Warning", "Please Select Required Data")
+      }
+      else{
+        Object.keys(information).forEach((key) => 
+        {
+
+            if(information[key].model.length != 0 && information[key].unit_name.length != 0)
+            {
+              var main_id   = information[key].id;
+              var device_id = information[key].device.id;
+              var model_id  = information[key].model.id;
+              var unit_id   = information[key].unit_name.id;
+
+              let obj = {};
+
+              obj["id"] = main_id;
+              obj["device_id"] = device_id;
+              obj["model_id"] = model_id;
+              obj["unit_id"] = unit_id;
+
+              data_value.push(obj);
+            }
+            else{
+              action = 0;
+              return;
+            }
+          });
+          if(action === 1)
+          {
+               this.$store    
+              .dispatch("updateUnitsPe", data_value)
+              .then((response) => {
+                let status = response.data.status;
+                if(status == "Success")
+                {
+
+                  this.items=[];
+                  this.loadUnitsPe();
+                  this.toast(status, response.data.message);
+                }
+                else if(status == "Warning")
+                      this.toast(status, response.data.message);
+                else  
+                  this.toast(status, response.data.message);
+              })
+              .catch((error) => {
+                console.log(error)
+                  })
+              .finally(() => {
+              });
+          }
+          else
+          {
+            this.toast("Warning", "Please Select Required Data")
+          }
+         
+       
         }
+    },
+    clearInput: function(){
+        document.getElementById("input-file").value = "";
+    },
   }
 };
 </script>
@@ -337,5 +438,6 @@ export default {
   .table-responsive{
     overflow: inherit;
   }
+
 
 </style>
