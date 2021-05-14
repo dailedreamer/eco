@@ -532,7 +532,6 @@ export default {
                         this.totalRows = 1;
                     else
                         this.totalRows = this.items.length;
-
                 })
         },
         load_percentage()

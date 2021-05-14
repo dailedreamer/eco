@@ -179,8 +179,9 @@
                                     responsive 
                                     :items="parts_before_list"
                                     :fields="parts_before_fields">
-                                    <template #cell(action)="">
-                                        <b-link>
+                                    <template #cell(action)="data">
+                                        <b-link
+                                            @click="removeBefore(data.item)">
                                             Remove
                                         </b-link>
                                     </template>
@@ -233,8 +234,9 @@
                                     responsive 
                                     :items="parts_after_list"
                                     :fields="parts_after_fields">
-                                    <template #cell(action)="">
-                                        <b-link>
+                                    <template #cell(action)="data">
+                                        <b-link
+                                            @click="removeAfter(data.item)">
                                             Remove
                                         </b-link>
                                     </template>
@@ -293,8 +295,9 @@
                                         responsive 
                                         :items="process_list"
                                         :fields="process_fields">
-                                        <template #cell(action)="">
-                                            <b-link>
+                                        <template #cell(action)="data">
+                                            <b-link
+                                                @click="removeProcess(data.item)">
                                                 Remove
                                             </b-link>
                                         </template>
@@ -432,6 +435,45 @@ export default {
         this.loadDevice();
     },
     methods:{
+        removeAfter: function(value)
+        {
+            let id = value.id;
+
+            for (let x = 0; x < this.parts_after_list.length; x++) 
+            {
+                if(id == this.parts_after_list[x].id)
+                {
+                    let index = x;
+                    this.parts_after_list.splice(index, 1);
+                }
+            }
+        },
+        removeProcess: function(value)
+        {
+            let id = value.id;
+
+            for (let x = 0; x < this.process_list.length; x++) 
+            {
+                if(id == this.process_list[x].id)
+                {
+                    let index = x;
+                    this.process_list.splice(index, 1);
+                }
+            }
+        },
+        removeBefore: function(value)
+        {
+            let id = value.id;
+
+            for (let x = 0; x < this.parts_before_list.length; x++) 
+            {
+                if(id == this.parts_before_list[x].id)
+                {
+                    let index = x;
+                    this.parts_before_list.splice(index, 1);
+                }
+            }
+        },
         transferredAfter: function(value)
         {
             this.$bvModal.hide("parts_after");
@@ -530,7 +572,7 @@ export default {
                 'after_eco_parts' : after_eco_parts,
                 'eco_process'   : eco_process
             }
-           
+
             this.$store.dispatch("addSimultaneous", data)
                 .then((response) =>
                 {
