@@ -16,7 +16,7 @@
                             alt="placeholder">
                         </b-img>
                     </template>
-                    <h5 class="mt-2">Unit Revision</h5>
+                    <h5 class="mt-2">Simultaneous Application</h5>
                 </b-media>
             </template>
             <b-row class="mt-3 ml-3 mr-3">
@@ -24,22 +24,41 @@
                     <b-table 
                         head-variant="light"
                         outlined 
-                        hover 
                         responsive 
-                        :items="simultaneous_list"
+                        :items="simultaneous_application_list"
                         :fields="simultaneous_fields"
-                        :per-page="perPage"
-                        :current-page="currentPage">
-                        <template #cell(action)="">
-                            <b-form-checkbox></b-form-checkbox>
+                        :per-page="perPage_App"
+                        :current-page="currentPage_App">
+                        <template #cell(select)="data">
+                            <b-form-checkbox
+                            :value="data.item"
+                            v-model="selected">
+                            </b-form-checkbox>
+                        </template>
+                        
+                        <template #cell(action)="{ detailsShowing, item}">
+                            <b-button variant="danger" size="sm" @click="details(item, item.eco_number, detailsShowing)">
+                                 {{detailsShowing ? 'Hide' : 'Show'}} Details
+                            </b-button>
+                        </template>
+                        <template v-slot:row-details="{ }">
+                            <b-card>
+                                <b-table
+                                head-variant="light"
+                                outlined 
+                                responsive
+                                :items="sample"
+                                :fields="eco_details_fields">
+                                </b-table>
+                            </b-card>
                         </template>
                     </b-table>
                     <b-pagination class="alpha__table__pagination"
-                        v-model="currentPage"
-                        :total-rows="totalRows"
-                        :per-page="perPage"
+                        v-model="currentPage_App"
+                        :total-rows="totalRows_App"
+                        :per-page="perPage_App"
                         align="right"
-                        pills></b-pagination>
+                        pills></b-pagination>     
                 </b-container>
             </b-row>
             <hr>
@@ -58,7 +77,8 @@
                         size="md" 
                         variant="danger" 
                         type="submit"
-                        title="Click to save unit revision">
+                        title="Click to save unit revision"
+                        @click="transferCheck">
                         <font-awesome-icon icon="save" /> Save Values
                     </b-button> 
                 </b-col>
@@ -70,31 +90,84 @@
 <script>
 export default {
     name: 'SimultaneousApplicationModal',
+    props:{
+        simultaneous_application_list:Array,
+    },
     data(){
         return{
-            perPage: 10,
-            currentPage: 1,
+            perPage_App: 10,
+            currentPage_App: 1,
+            selected: [],
+            select_simultaneous: [],
             simultaneous_fields:[
-                {key: "action", class: 'text-center'},
+                {key: "select", class: 'text-center'},
                 {key: "eco_number", class: 'text-center'},
-                {key: "drawing_number", class: 'text-center'},
-                {key: "drawing_number_revision", label: "Revision", class: 'text-center'},
+                {key: "action", class: 'text-center'},
+            ],
+            simultaneous_list:[],
+            simultaneous_info_fields:[
+                {key: "column1", class: 'text-center'},
+                {key: "column2", class: 'text-center'},
+                {key: "column3", class: 'text-center'},
+            ],
+            simultaneous_parts_list:[],
+            sample:[],
+            eco_details_fields: [
+                {key: "parent_drawing_number", class: 'text-center'},
+                {key: "drawing_number_revision", class: 'text-center'},
                 {key: "part_number", class: 'text-center'},
-                {key: "part_number_revision", label: "Revision", class: 'text-center'},
+                {key: "part_number_new_revision", class: 'text-center'},
             ],
-            simultaneous_list:
-            [
-                {eco_number: "eco001", drawing_number: "KD02165-Y150", drawing_number_revision:"05", part_number: "KD02165-Y150", part_number_revision:"05"},
-                {eco_number: "eco002", drawing_number: "KD02165-Y150", drawing_number_revision:"05", part_number: "KD02165-Y150", part_number_revision:"05"},
-                {eco_number: "eco003", drawing_number: "KD02165-Y150", drawing_number_revision:"05", part_number: "KD02165-Y150", part_number_revision:"05"},
-            ],
+            
         }
     },
     computed:{
-        totalRows(){
-            return this.simultaneous_list.length
+        totalRows_App(){
+            return this.simultaneous_application_list.length
         }
+    },
+    methods:{
+        details(row, eco_number, a) {
+            console.log(row, eco_number, a);
+
+            this.$set(this.simultaneous_application_list, '_showDetails', false);
+
+                if(row._showDetails)
+                {
+                    this.$set(row, '_showDetails', false);
+                }
+                else
+                {
+                    this.simultaneous_application_list.forEach(item => {
+                    this.$set(item, '_showDetails', false);
+                }
+                    )
+
+                this.$nextTick(() => {
+                    this.$set(row, '_showDetails', true);
+                })
+            }
+
+            this.$store.dispatch("loadSimultaneousDetails", eco_number)
+            .then((response) => {
+                let data = response.data;
+                this.sample = data.data;
+            });          
+        },
+        transferCheck()
+        {
+            this.select_simultaneous = this.selected;
+            this.$emit('clicked', this.select_simultaneous)
+            this.toast("Success", "Successfully Added");
+        },
+        toast: function (status, message){
+        this.$toast(message, {
+              type:status.toLowerCase().trim(),
+              position: "bottom-right",
+        });
+      }
     }
+
 }
 </script>
 

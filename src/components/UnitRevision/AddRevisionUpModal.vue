@@ -210,6 +210,8 @@
                                             size="sm"
                                             variant="danger" 
                                             class="float-right">
+
+                                            
                                                 <font-awesome-icon 
                                                     icon="plus" />
                                         </b-button>
@@ -292,7 +294,7 @@
                                     </b-col>
                                     <b-col cols="4">
                                         <b-button
-                                            v-b-modal.modal_eco_process
+                                            v-b-modal.process_after
                                             size="sm"
                                             variant="danger" 
                                             class="float-right">
@@ -387,8 +389,9 @@
         </b-modal>
         <EcoPartsModal :eco_parts_list="this.unit_revision_list" @clicked="transferredBefore"/>
         <EcoPartsModal :eco_parts_list="this.unit_revision_list" @clicked="transferredAfter" id="parts_after"/>
-        <EcoProcessModal />
-        <SimultaneousApplicationModal />
+        <EcoProcessModal @clicked="transferredProcessBefore"/>
+        <EcoProcessModal @clicked="transferredProcessAfter" id="process_after"/>
+        <SimultaneousApplicationModal :simultaneous_application_list="this.simultaneous_app_list" @clicked="transferredSimultaneous" />
     </b-container>
 </template>
 
@@ -413,6 +416,7 @@ export default {
             unitValue: [],
             unitOptions: [],
             unit_revision_list: [],
+            simultaneous_app_list: [],
 
             parts_before_fields:
             [
@@ -442,9 +446,9 @@ export default {
             ],
             process_before_list: 
             [
-                {drawing_number: "KD02165-Y145", drawing_number_revision:"05", quantity: "100", details:"sample"},
-                {drawing_number: "KD02165-Y148", drawing_number_revision:"05", quantity: "150", details:"sample1"},
-                {drawing_number: "KD02165-Y150", drawing_number_revision:"05", quantity: "200", details:"sample2"}
+                // {drawing_number: "KD02165-Y145", drawing_number_revision:"05", quantity: "100", details:"sample"},
+                // {drawing_number: "KD02165-Y148", drawing_number_revision:"05", quantity: "150", details:"sample1"},
+                // {drawing_number: "KD02165-Y150", drawing_number_revision:"05", quantity: "200", details:"sample2"}
             ],
             process_after_fields:
             [
@@ -456,23 +460,15 @@ export default {
             ],
             process_after_list: 
             [
-                {drawing_number: "KD02165-Y145", drawing_number_revision:"05", quantity: "100", details:"sample"},
-                {drawing_number: "KD02165-Y148", drawing_number_revision:"05", quantity: "150", details:"sample1"},
-                {drawing_number: "KD02165-Y150", drawing_number_revision:"05", quantity: "200", details:"sample2"}
+                // {drawing_number: "KD02165-Y145", drawing_number_revision:"05", quantity: "100", details:"sample"},
+                // {drawing_number: "KD02165-Y148", drawing_number_revision:"05", quantity: "150", details:"sample1"},
+                // {drawing_number: "KD02165-Y150", drawing_number_revision:"05", quantity: "200", details:"sample2"}
             ],
             simultaneous_fields:[
                 {key: "action", class: 'text-center'},
                 {key: "eco_number", class: 'text-center'},
-                {key: "drawing_number", class: 'text-center'},
-                {key: "drawing_number_revision", label: "Revision", class: 'text-center'},
-                {key: "part_number", class: 'text-center'},
-                {key: "part_number_revision", label: "Revision", class: 'text-center'},
             ],
-            simultaneous_list:
-            [
-                {eco_number: "eco001", drawing_number: "KD02165-Y150", drawing_number_revision:"05", part_number: "KD02165-Y150", part_number_revision:"05"},
-                {eco_number: "eco002", drawing_number: "KD02165-Y150", drawing_number_revision:"05", part_number: "KD02165-Y150", part_number_revision:"05"},
-            ],
+            simultaneous_list:[],
         }
     },
     mounted(){
@@ -571,7 +567,32 @@ export default {
                         this.toast(status, response.message);
                     }                 
                 });
+
+            this.$store.dispatch("loadSimultaneousApplication", unit_data)
+                .then((response) => {
+                    let data = response.data;
+                    let status = response.status;
+                    this.simultaneous_app_list = data; 
+                    // let obj = 
+                    // {
+                    //      details: {},   
+                    // };
+
+                    // this.simultaneous_app_list.push(obj);
+
+                    if (status == "Success") {
+                        this.toast(status, response.message);
+                    
+                    } else if (status == "Warning") {
+                    
+                        this.toast(status, "Please review your inputs.");
+                    } else if (status == "Error") {
+
+                        this.toast(status, response.message);
+                    }                 
+                });
         },
+      
         transferredAfter: function(value)
         {
             this.$bvModal.hide("parts_after");
@@ -582,6 +603,22 @@ export default {
             this.$bvModal.hide("modal_eco_parts");
             this.parts_before_list = value
         },
+        transferredSimultaneous: function(value)
+        {
+            this.$bvModal.hide("modal_simultaneous_application");
+            this.simultaneous_list = value
+        },
+        transferredProcessAfter: function(value)
+        {
+            this.$bvModal.hide("process_after");
+            this.process_after_list = value
+        },
+        transferredProcessBefore: function(value)
+        {
+            this.$bvModal.hide("modal_process");
+            this.process_before_list = value
+        },
+
         toast: function (status, message){
         this.$toast(message, {
               type:status.toLowerCase().trim(),

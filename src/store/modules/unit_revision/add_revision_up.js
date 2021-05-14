@@ -3,12 +3,19 @@ import axios from "axios";
 export default{
     state:{
         load_unit_revision: [],
-        // load_contents: [],
+		load_simultaneous_app: [],
+        load_simultaneous_details: [],
 		// load_specific_id: []
     },
     mutations:{
-        SET_UNIT_REVISION(state, load_unit_revision) {
+		SET_UNIT_REVISION(state, load_unit_revision) {
 			state.load_unit_revision = load_unit_revision;
+        },
+        SET_SIMULTANEOUS(state, load_simultaneous_app) {
+			state.load_simultaneous_app = load_simultaneous_app;
+        },
+		SET_SIMULTANEOUS_DETAILS(state, load_simultaneous_details) {
+			state.load_simultaneous_details = load_simultaneous_details;
         },
         // SET_CONTENTS(state, load_contents) {
 		// 	state.load_contents = load_contents;
@@ -40,47 +47,51 @@ export default{
                         reject(error);
                     });
             });
-         
-					// .get("unit-rev-application/load-eco-parts",payload)
-					// .then(function(response) {
-                    //     // console.log(response);
-                    //     // console.log(payload);
-                    //     commit("SET_UNIT_REVISION", response.data);
-                       
-					// 	let result = {
-					// 		code: response.data.status_code,
-					// 		status: response.data.status,
-					// 		message: response.data.message,
-					// 		data: response.data.data,
-					// 	};
-                    //     resolve(result);
-					// })
-					// .catch(function(error) {
-					// 	reject(error);
-					// });
-		
         },
-        // async loadContents({ commit },content) {
-		// 	return new Promise((resolve, reject) => {
-		// 		axios
-		// 			.get(`load-process-monitoring/${content}`)
-		// 			.then(function(response) {
-        //                 commit("SET_CONTENTS", response.data);
+		async loadSimultaneousApplication({commit}, payload) {
+            return new Promise((resolve, reject) =>
+            {
+                axios
+                    .get("unit-rev-application/load-simultaneous-eco-number"
+                    ,{params:payload})
+                    .then(function(response)
+                    {
+                        commit("SET_SIMULTANEOUS", response);
+                        let result = 
+                        {
+                            code: response.data.status_code,
+                            status: response.data.status,
+                            message: response.data.message,
+                            data: response.data.data
+                        };
+                        resolve(result);
+                    })
+                    .catch(function(error){
+                        reject(error);
+                    });
+            });
+        },
+        async loadSimultaneousDetails({ commit },eco_number) {
+			return new Promise((resolve, reject) => {
+				axios
+					.get(`unit-rev-application/load-simultaneous-part-number/${eco_number}`)
+					.then(function(response) {
+                        commit("SET_SIMULTANEOUS_DETAILS", response.data);
 						
-		// 				let result = {
-		// 					code: response.status_code,
-		// 					status: response.status,
-		// 					message: response.message,
-		// 					data: response.data,
-		// 				};
+						let result = {
+							code: response.status_code,
+							status: response.status,
+							message: response.message,
+							data: response.data,
+						};
 						
-        //                 resolve(result);
-		// 			})
-		// 			.catch(function(error) {
-		// 				reject(error);
-		// 			});
-		// 	});
-        // },
+                        resolve(result);
+					})
+					.catch(function(error) {
+						reject(error);
+					});
+			});
+        },
 		// async loadSpecificID({ commit },id) {
 		// 	return new Promise((resolve, reject) => {
 		// 		axios

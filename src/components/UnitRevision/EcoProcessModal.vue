@@ -1,7 +1,7 @@
 <template>
     <b-container fluid>
          <b-modal
-            id="modal_eco_process"
+            :id="id"
             hide-footer
             size="md"
             :no-close-on-backdrop="true" 
@@ -16,7 +16,7 @@
                             alt="placeholder">
                         </b-img>
                     </template>
-                    <h5 class="mt-2">Unit Revision</h5>
+                    <h5 class="mt-2">ECO Process</h5>
                 </b-media>
             </template>
             <b-row class="mt-3 mr-2 ml-2 mb-4">
@@ -90,14 +90,25 @@
                         <font-awesome-icon icon="times-circle" /> Clear
                     </b-button>
                     <b-button 
+                        v-if="id == 'modal_eco_process'"
                         class="float-right mr-2"
                         id="btn_update" 
                         size="md" 
                         variant="danger" 
-                        type="submit"
-                        title="Click to save eco process">
-                        <font-awesome-icon icon="save" /> Save Values
-                    </b-button> 
+                        title="Click to update with simultaneous"
+                        @click="saveECOProcess()">
+                        <font-awesome-icon icon="save" /> Update Values
+                    </b-button>
+                    <b-button 
+                        v-else
+                        class="float-right mr-2"
+                        id="btn_update" 
+                        size="md" 
+                        variant="danger" 
+                        title="Click to update with simultaneous"
+                        @click="saveECOProcess()">
+                        <font-awesome-icon icon="save" /> Update Values
+                    </b-button>
                 </b-col>
             </b-row>
          </b-modal>
@@ -107,6 +118,12 @@
 <script>
 export default {
     name: 'EcoProcessModal',
+    props:{
+        id: {
+            type: String,
+            default: "modal_eco_process"
+        }
+    },
     data(){
         return{
             form: {
@@ -166,6 +183,11 @@ export default {
                     validation: "", 
                 },
             }; 
+        },
+        
+        saveECOProcess: function(){
+
+           console.log(this.id);
         }
     }
 }
