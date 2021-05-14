@@ -21,12 +21,50 @@
             </template>
             <b-row class="mt-3 ml-3 mr-3">
                 <b-container fluid>
+                    <b-card>
+                        <b-card-text>
+                            <b-row>
+                                <b-col>
+                                    <b-form-group
+                                        class="form_group_custom"
+                                        id="filter_by"
+                                        label-cols-sm="2"
+                                        label="Filter By:"
+                                        label-align="left"
+                                        label-size="sm"
+                                        horizontal>
+                                        <b-row>
+                                            <b-col cols="9">
+                                                    <b-input block 
+                                                    v-model="filterByValue" 
+                                                    size="sm"
+                                                    class="filterby_input" 
+                                                    placeholder="ECO Number"
+                                                    ></b-input>
+                                            </b-col>
+                                            <b-col cols="3">
+                                                <b-button 
+                                                    class="float-right mr-2"
+                                                    size="md" 
+                                                    variant="outline-secondary"
+                                                    title="Click to clear inputs">
+                                                    <font-awesome-icon icon="times-circle" /> Clear
+                                                </b-button>
+                                            </b-col>
+                                        </b-row>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+                        </b-card-text>
+                    </b-card>
+                    <br>
                     <b-table 
                         head-variant="light"
                         outlined 
                         responsive 
                         :items="simultaneous_application_list"
                         :fields="simultaneous_fields"
+                        :filter="filterByValue"
                         :per-page="perPage_App"
                         :current-page="currentPage_App">
                         <template #cell(select)="data">
@@ -95,9 +133,10 @@ export default {
     },
     data(){
         return{
-            perPage_App: 10,
+            perPage_App: 5,
             currentPage_App: 1,
             selected: [],
+            filterByValue: '',
             select_simultaneous: [],
             simultaneous_fields:[
                 {key: "select", class: 'text-center'},
@@ -139,9 +178,8 @@ export default {
                 else
                 {
                     this.simultaneous_application_list.forEach(item => {
-                    this.$set(item, '_showDetails', false);
-                }
-                    )
+                        this.$set(item, '_showDetails', false);
+                    })
 
                 this.$nextTick(() => {
                     this.$set(row, '_showDetails', true);

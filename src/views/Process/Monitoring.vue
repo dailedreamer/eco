@@ -129,39 +129,13 @@
                             label-size="sm"
                             horizontal>
                             <b-row>
-                                <!-- <b-col cols="4">
-                                    <multiselect  
-                                        v-model="filterBySelectValue" 
-                                        :options="filterByOptions"
-                                        :searchable="true"
-                                        :show-labels="false"
-                                        :multiple="false" 
-                                        :taggable="true" 
-                                        placeholder="Select one" 
-                                        label="name" 
-                                        track-by="id"
-                                        @input="clearFilter()"></multiselect>
-                                </b-col> -->
                                 <b-col cols="8">
                                         <b-input block 
                                         v-model="filterByValue" 
                                         class="filterby_input" 
                                         placeholder="ECO Number"
-                                        @input="search_eco_number()"
                                         ></b-input>
                                 </b-col>
-                                <!-- <b-col cols="4">
-                                  <b-button 
-                                    class="pb-1 mt-sm-1"
-                                    variant="danger"
-                                    block
-                                    type="submit"
-                                    id="button-submit">
-                                    <b-icon 
-                                      icon="search"></b-icon>
-                                      &nbsp;Go!
-                                  </b-button>
-                                </b-col> -->
                             </b-row>
                         </b-form-group>
                       </b-col>
@@ -333,10 +307,6 @@ export default {
                 }
               }
                  this.for_application_list = data;
-        },
-        search_eco_number: function()
-        {
-         
         },
         setFieldSet: function () {
             // console.log(this.field_set);

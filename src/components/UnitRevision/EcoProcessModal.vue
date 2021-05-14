@@ -96,7 +96,7 @@
                         size="md" 
                         variant="danger" 
                         title="Click to update with simultaneous"
-                        @click="saveECOProcess()">
+                        @click="transferCheck">
                         <font-awesome-icon icon="save" /> Update Values
                     </b-button>
                     <b-button 
@@ -106,7 +106,7 @@
                         size="md" 
                         variant="danger" 
                         title="Click to update with simultaneous"
-                        @click="saveECOProcess()">
+                        @click="transferCheckAfter">
                         <font-awesome-icon icon="save" /> Update Values
                     </b-button>
                 </b-col>
@@ -126,6 +126,8 @@ export default {
     },
     data(){
         return{
+            ECOProcessBefore:[],
+            ECOProcessAfter:[],
             form: {
                 txt_drawing_number:{
                     value: "",
@@ -184,11 +186,25 @@ export default {
                 },
             }; 
         },
-        
-        saveECOProcess: function(){
-
-           console.log(this.id);
-        }
+        transferCheck()
+            {
+                this.ECOProcessBefore = this.form;
+                console.log(this.ECOProcessBefore.txt_drawing_number);
+                this.$emit('clicked', this.ECOProcessBefore)
+                this.toast("Success", "Successfully Added");
+            },
+        transferCheckAfter()
+        {
+            this.ECOProcessAfter = this.form;
+            this.$emit('clicked', this.ECOProcessAfter)
+            this.toast("Success", "Successfully Added");
+        },
+        toast: function (status, message){
+        this.$toast(message, {
+              type:status.toLowerCase().trim(),
+              position: "bottom-right",
+        });
+      }
     }
 }
 </script>

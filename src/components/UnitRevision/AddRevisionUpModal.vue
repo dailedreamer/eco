@@ -210,8 +210,6 @@
                                             size="sm"
                                             variant="danger" 
                                             class="float-right">
-
-                                            
                                                 <font-awesome-icon 
                                                     icon="plus" />
                                         </b-button>
@@ -469,6 +467,8 @@ export default {
                 {key: "eco_number", class: 'text-center'},
             ],
             simultaneous_list:[],
+            eco_process_before:[],
+            eco_process_after:[],
         }
     },
     mounted(){
@@ -573,12 +573,6 @@ export default {
                     let data = response.data;
                     let status = response.status;
                     this.simultaneous_app_list = data; 
-                    // let obj = 
-                    // {
-                    //      details: {},   
-                    // };
-
-                    // this.simultaneous_app_list.push(obj);
 
                     if (status == "Success") {
                         this.toast(status, response.message);
@@ -609,14 +603,32 @@ export default {
             this.simultaneous_list = value
         },
         transferredProcessAfter: function(value)
-        {
+        {   
             this.$bvModal.hide("process_after");
-            this.process_after_list = value
+
+            var array_value = 
+                {drawing_number:value.txt_drawing_number.value,
+                drawing_number_revision:value.txt_revision_number.value,  
+                quantity:value.txt_quantity.value, 
+                details:value.txt_details.value};
+
+            this.eco_process_after.push(array_value);
+
+            this.process_after_list = this.eco_process_after;
         },
         transferredProcessBefore: function(value)
         {
-            this.$bvModal.hide("modal_process");
-            this.process_before_list = value
+            this.$bvModal.hide("modal_eco_process");
+
+            var array_value = 
+                {drawing_number:value.txt_drawing_number.value,
+                drawing_number_revision:value.txt_revision_number.value,  
+                quantity:value.txt_quantity.value, 
+                details:value.txt_details.value};
+
+            this.eco_process_before.push(array_value);
+
+            this.process_before_list = this.eco_process_before;
         },
 
         toast: function (status, message){
