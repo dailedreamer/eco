@@ -46,6 +46,7 @@ import vps_application_received from "./modules/vps_application/received";
 import vps_application_not_received from "./modules/vps_application/not_received";
 import vps_application_applied from "./modules/vps_application/applied";
 import vps_application_for_application from "./modules/vps_application/for_application";
+import vps_application from "./modules/vps_application/vps_application";
 
 //EC Action Item
 import ec_action_item_open from "./modules/ec_action_item/open";
@@ -110,6 +111,7 @@ export default new Vuex.Store({
     vps_application_not_received,
     vps_application_applied,
     vps_application_for_application,
+    vps_application,
 
     //EC Action Item
     ec_action_item_open,

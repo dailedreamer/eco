@@ -64,7 +64,8 @@ export default {
         },
         async loadEcoProcess(state, payload)
         {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => 
+            {
 				axios
 					.get(`simultaneous-application/load-eco-process`, {params: payload})
 					.then(function(response) {
@@ -74,6 +75,69 @@ export default {
 						reject(error);
 					});
 			});
+        },
+        async load_percentage(state, payload)
+        {
+            return new Promise((resolve, reject) =>
+            {
+                axios
+                    .get("simultaneous-application/load-simultaneous-percentage-count", payload)
+                    .then(function(response)
+                    {
+                        resolve(response);
+                    })
+                    .catch(function(error) {
+						reject(error);
+					});
+            })
+        },
+        async cancelledSimultaneous(state, id)
+        {
+            return new Promise((resolve, reject) =>
+            {
+                axios   
+                    .patch(`simultaneous-application/cancel-specific-simultaneous-application/${id}`)
+                    .then(function(response)
+                    {
+                        resolve(response);
+                    })
+                    .catch(function(error)
+                    {
+                        reject(error);
+                    })
+            })
+        },
+        async updateSimultaneousApplication(state, payload)
+        {
+            return new Promise((resolve, reject) =>
+            {
+                axios
+                    .patch(`simultaneous/${payload[1]}`, payload[0])
+                    .then(function(response)
+                    {
+                        resolve(response);
+                    })
+                    .catch(function(error)
+                    {
+                        reject(error);
+                    })
+            })
+        },
+        async addSimultaneous(state, payload)
+        {
+            return new Promise((resolve, reject) =>
+            {
+                axios
+                    .post("simultaneous", payload)
+                    .then(function(response)
+                    {
+                        resolve(response);
+                    })
+                    .catch(function(error)
+                    {
+                        reject(error);
+                    })
+            })
         }
     },
 
