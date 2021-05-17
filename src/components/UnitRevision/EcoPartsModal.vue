@@ -21,6 +21,43 @@
             </template>
             <b-row class="mt-3 ml-3 mr-3">
                 <b-container fluid>
+                    <b-card>
+                        <b-card-text>
+                            <b-row>
+                                <b-col>
+                                    <b-form-group
+                                        class="form_group_custom"
+                                        id="filter_by"
+                                        label-cols-sm="2"
+                                        label="Filter:"
+                                        label-align="left"
+                                        label-size="sm"
+                                        horizontal>
+                                        <b-row>
+                                            <b-col cols="9">
+                                                    <b-input block 
+                                                    v-model="filterByValue" 
+                                                    size="sm"
+                                                    class="filterby_input" 
+                                                    placeholder=""
+                                                    ></b-input>
+                                            </b-col>
+                                            <b-col cols="3">
+                                                <b-button 
+                                                    class="float-right mr-2"
+                                                    size="md" 
+                                                    variant="outline-secondary"
+                                                    title="Click to clear inputs">
+                                                    <font-awesome-icon icon="times-circle" /> Clear
+                                                </b-button>
+                                            </b-col>
+                                        </b-row>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+                        </b-card-text>
+                    </b-card>
+                    <br>
                     <b-table
                         head-variant="light"
                         outlined 
@@ -28,6 +65,7 @@
                         responsive 
                         :items="eco_parts_list"
                         :fields="eco_parts_fields"
+                        :filter="filterByValue"
                         :per-page="perPage"
                         :current-page="currentPage">
                         <template #cell(action)="data">
@@ -97,6 +135,7 @@ export default {
             selected: [],
             selectBefore: [],
             selectAfter: [],
+            filterByValue:'',
             eco_parts_fields:
             [
                {key: "action"},

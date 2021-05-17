@@ -189,7 +189,6 @@ export default {
         transferCheck()
             {
                 this.ECOProcessBefore = this.form;
-                console.log(this.ECOProcessBefore.txt_drawing_number);
                 this.$emit('clicked', this.ECOProcessBefore)
                 this.toast("Success", "Successfully Added");
             },

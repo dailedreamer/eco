@@ -92,43 +92,21 @@ export default{
 					});
 			});
         },
-		// async loadSpecificID({ commit },id) {
-		// 	return new Promise((resolve, reject) => {
-		// 		axios
-		// 			.get(`process-monitoring/${id}`)
-		// 			.then(function(response) {
-        //                 commit("SET_SPECIFIC_ID", response.data);
-		// 				// console.log(response);
-		// 				let result = {
-		// 					code: response.data.status_code,
-		// 					status: response.data.status,
-		// 					message: response.data.message,
-		// 					data: response.data.data,
-		// 				};
-						
-        //                 resolve(result);
-		// 			})
-		// 			.catch(function(error) {
-		// 				reject(error);
-		// 			});
-		// 	});
-        // },
-		// async updateProcess(state, payload) {
-		// 	return new Promise((resolve, reject) => {
-		// 		// payload["formData"].append("_method", "PATCH");
-		// 		axios
-		// 			.patch(
-		// 				`process-monitoring/${payload["id"]}`,
-		// 				payload
-		// 			)
-		// 			.then(function(response) {
-		// 				resolve(response);
-		// 			})
-		// 			.catch(function(error) {
-		// 				reject(error.response);
-		// 			});
-		// 	});
-		// },
+        async addRevisionUp(state, payload) {
+			// console.log(payload);
+			return new Promise((resolve, reject) => {
+				axios
+					.post("unit-rev", payload)
+					.then(function(response) {
+						// console.log(response);
+						resolve(response);
+					})
+					.catch(function(error) {
+						reject(error.response);
+					});
+			});
+		},
+		
     },
     getters:{
        getUnitRev: (state)=> state.load_unit_revision
