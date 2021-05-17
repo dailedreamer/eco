@@ -330,9 +330,11 @@ export default {
     },
     changeDevice: function(index)
     {
+      console.log(index);
         this.items[index].model=[];
         this.items[index].unit_name=[];
         this.data.push(this.items[index]);
+        // console.log(this.data);
     },
     toast: function (status, message){
         this.$toast(message, {
