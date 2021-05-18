@@ -629,8 +629,9 @@ export default {
             this.modelOptions = [];     
             this.$store.dispatch("loadModelPerDevice", device_id).then((response) => {
                 let data = response.data;
-                console.log(response);
                 this.modelOptions = data;
+                this.modelValue = null
+                this.unitValue = null
             });  
         },
         loadUnit: function(model_id)
@@ -640,6 +641,7 @@ export default {
             this.$store.dispatch("loadUnitPerModel", model_id).then((response) => {
                 let data = response.data;
                 this.unitOptions = data;
+                this.unitValue = null
             });  
         },
         loadUnitId: function(unit_id)

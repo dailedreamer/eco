@@ -36,6 +36,7 @@ faCopy,
 faPlus,
 faThumbsDown,
 faEye,
+faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -74,6 +75,7 @@ library.add(
 	faPlus,
 	faThumbsDown,
 	faEye,
+	faSearch,
 );
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);

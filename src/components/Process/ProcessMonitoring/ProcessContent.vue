@@ -102,19 +102,10 @@ export default {
     methods:{
         loadSpecificDetails(id)
         {
-            // console.log(id);
             this.$store.dispatch("loadSpecificID",id).then((response) => {
                 let data = response;
                 this.details = data.data.details[0];
                 this.details_change = data.data.part_numbers;
-
-                // console.log(this.details);
-                // console.log(this.details_change)
-
-                // console.log(response)
-
-                // this.id = id;
-                // console.log(data);
 
                 this.deviceValue =[];
                 let obj_device = {};

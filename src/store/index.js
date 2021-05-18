@@ -38,7 +38,7 @@ import simultaneous_cancelled from "./modules/simultaneous/cancelled";
 
 //Unit Rev
 import unit_revision_index from "./modules/unit_revision/index";
-import unit_revision_applied from "./modules/unit_revision/applied";
+import unit_revision_applied from "./modules/unit_revision/add_revision_up";
 import unit_revision_for_application from "./modules/unit_revision/for_application";
 
 //VPS Application

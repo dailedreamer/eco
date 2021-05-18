@@ -40,7 +40,8 @@
                                         :show-labels="false"
                                         placeholder="Device" 
                                         label="name" 
-                                        track-by="id"></multiselect>
+                                        track-by="id"
+                                        @input="loadModel()"></multiselect>
                                 </b-col>
                                 <b-col cols="3">
                                     <multiselect  
@@ -51,7 +52,8 @@
                                         :show-labels="false"
                                         placeholder="Model" 
                                         label="name" 
-                                        track-by="id"></multiselect>
+                                        track-by="id"
+                                        @input="loadUnit()"></multiselect>
                                 </b-col>
                                 <b-col cols="3">
                                     <multiselect  
@@ -70,7 +72,8 @@
                                         block
                                         variant="danger"
                                         type="submit"
-                                        id="button-submit">
+                                        id="button-submit"
+                                        @click="searchRevision()">
                                         <b-icon 
                                         icon="search"></b-icon> Go!
                                     </b-button>
@@ -90,10 +93,12 @@
                                     label-for="txt_revision_up"
                                     label-cols-sm="4"
                                     label-align-sm="left"
-                                    label-size="sm">
+                                    label-size="sm"
+                                    required>
                                     <b-form-input 
                                         id="txt_revision_up" 
                                         name="txt_revision_up"
+                                        v-model="revision_up"
                                         placeholder="Enter Revision Up"></b-form-input>
                                 </b-form-group>
                             </b-col>
@@ -107,6 +112,7 @@
                                     <b-form-datepicker 
                                         id="slc_target_application" 
                                         name="slc_target_application"
+                                        v-model="target_application"
                                         placeholder="Choose a date" 
                                         class="unit_rev_datepicker"
                                         hide-header
@@ -127,6 +133,7 @@
                                     <b-form-input 
                                         id="txt_eco_number" 
                                         name="txt_eco_number"
+                                        v-model="eco_number"
                                         placeholder="Enter ECO Number"></b-form-input>
                                 </b-form-group>
                             </b-col>
@@ -140,6 +147,7 @@
                                     <b-form-input 
                                         id="txt_next_ncr_no" 
                                         name="txt_next_ncr_no"
+                                        v-model="next_ncr_number"
                                         placeholder="Enter Next NCR Number"></b-form-input>
                             </b-form-group>
                         </b-col>
@@ -179,16 +187,18 @@
                                         responsive 
                                         :items="parts_before_list"
                                         :fields="parts_before_fields">
-                                        <template #cell(action)="">
-                                            <b-link class="link_style">
+                                        <template #cell(action)="data">
+                                            <b-link class="link_style"
+                                            @click="removeAfter(data.item,parts_before_list)">
                                                 Remove
                                             </b-link>
                                         </template>
-                                        <template #cell(quantity)="">
+                                        <template #cell(parts_before_quantity)="data">
                                             <b-form-input
                                                 style="width:75px;"
                                                 id="txt_quantity"
                                                 size="sm"
+                                                v-model="data.item.parts_before_quantity"
                                                 @keypress="isNumber($event)"></b-form-input>
                                         </template>
                                     </b-table>
@@ -203,7 +213,7 @@
                                     </b-col>
                                     <b-col cols="4">
                                         <b-button
-                                            v-b-modal.modal_eco_parts
+                                            v-b-modal.parts_after
                                             size="sm"
                                             variant="danger" 
                                             class="float-right">
@@ -221,16 +231,18 @@
                                         responsive 
                                         :items="parts_after_list"
                                         :fields="parts_after_fields">
-                                        <template #cell(action)="">
-                                            <b-link class="link_style">
+                                        <template #cell(action)="data">
+                                            <b-link class="link_style"
+                                            @click="removeAfter(data.item,parts_after_list)">
                                                 Remove
                                             </b-link>
                                         </template>
-                                        <template #cell(quantity)="">
+                                        <template #cell(parts_after_quantity)="data">
                                             <b-form-input
                                                 style="width:75px;"
                                                 id="txt_quantity"
                                                 size="sm"
+                                                v-model="data.item.parts_after_quantity"
                                                 @keypress="isNumber($event)"></b-form-input>
                                         </template>
                                     </b-table>
@@ -272,8 +284,9 @@
                                         responsive 
                                         :items="process_before_list"
                                         :fields="process_before_fields">
-                                        <template #cell(action)="">
-                                            <b-link class="link_style">
+                                        <template #cell(action)="data">
+                                            <b-link class="link_style"
+                                            @click="removeAfter(data.item,process_before_list)">
                                                 Remove
                                             </b-link>
                                         </template>
@@ -289,7 +302,7 @@
                                     </b-col>
                                     <b-col cols="4">
                                         <b-button
-                                            v-b-modal.modal_eco_process
+                                            v-b-modal.process_after
                                             size="sm"
                                             variant="danger" 
                                             class="float-right">
@@ -307,8 +320,9 @@
                                         responsive 
                                         :items="process_after_list"
                                         :fields="process_after_fields">
-                                        <template #cell(action)="">
-                                            <b-link class="link_style">
+                                        <template #cell(action)="data">
+                                            <b-link class="link_style"
+                                            @click="removeAfter(data.item,process_after_list)">
                                                 Remove
                                             </b-link>
                                         </template>
@@ -348,8 +362,9 @@
                                         responsive 
                                         :items="simultaneous_list"
                                         :fields="simultaneous_fields">
-                                        <template #cell(action)="">
-                                            <b-link class="link_style">
+                                        <template #cell(action)="data">
+                                            <b-link class="link_style"
+                                            @click="removeAfter(data.item,simultaneous_list)">
                                                 Remove
                                             </b-link>
                                         </template>
@@ -376,15 +391,18 @@
                         size="md" 
                         variant="danger" 
                         type="submit"
-                        title="Click to add revision up">
+                        title="Click to add revision up"
+                        @click="addRevisionUp">
                         <font-awesome-icon icon="save" /> Add Revision Up
                     </b-button> 
                 </b-col>
             </b-row>
         </b-modal>
-        <EcoPartsModal />
-        <EcoProcessModal />
-        <SimultaneousApplicationModal />
+        <EcoPartsModal :eco_parts_list="this.unit_revision_list" @clicked="transferredBefore"/>
+        <EcoPartsModal :eco_parts_list="this.unit_revision_list" @clicked="transferredAfter" id="parts_after"/>
+        <EcoProcessModal @clicked="transferredProcessBefore"/>
+        <EcoProcessModal @clicked="transferredProcessAfter" id="process_after"/>
+        <SimultaneousApplicationModal :simultaneous_application_list="this.simultaneous_app_list" @clicked="transferredSimultaneous" />
     </b-container>
 </template>
 
@@ -408,76 +426,63 @@ export default {
             modelOptions: [],
             unitValue: [],
             unitOptions: [],
+            unit_revision_list: [],
+            simultaneous_app_list: [],
+            revision_up: '',
+            target_application:'',
+            eco_number: '',
+            next_ncr_number:'',
+
             parts_before_fields:
             [
                 {key: "action", class: 'text-center'},
                 {key: "part_number", label: "Part No. Before", class: 'text-center'},
-                {key: "part_number_revision", label: "Rev No.", class: 'text-center'},
-                {key: "quantity", class: 'text-center'},
-                {key: "details", class: 'text-center'}
+                {key: "part_number_new_revision", label: "Rev No.", class: 'text-center'},
+                {key: "parts_before_quantity",label:"quantity", class: 'text-center'},
+                {key: "revision_details",label:"details", class: 'text-center'}
             ],
-            parts_before_list: 
-            [
-                {part_number: "KD02165-Y145", part_number_revision:"05", quantity: "", details:"sample"},
-                {part_number: "KD02165-Y148", part_number_revision:"05", quantity: "", details:"sample1"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", quantity: "", details:"sample2"}
-            ],
+            parts_before_list: [],
             parts_after_fields:
             [
                 {key: "action", class: 'text-center'},
                 {key: "part_number", label: "Part No. Before", class: 'text-center'},
-                {key: "part_number_revision", label: "Rev No.", class: 'text-center'},
-                {key: "quantity", class: 'text-center'},
-                {key: "details", class: 'text-center'}
+                {key: "part_number_new_revision", label: "Rev No.", class: 'text-center'},
+                {key: "parts_after_quantity",label:"quantity", class: 'text-center'},
+                {key: "revision_details",label:"details", class: 'text-center'}
             ],
-            parts_after_list: 
-            [
-                {part_number: "KD02165-Y145", part_number_revision:"05", quantity: "", details:"sample"},
-                {part_number: "KD02165-Y148", part_number_revision:"05", quantity: "", details:"sample1"},
-                {part_number: "KD02165-Y150", part_number_revision:"05", quantity: "", details:"sample2"}
-            ],
+            parts_after_list: [],
             process_before_fields:
             [
                 {key: "action", class: 'text-center'},
-                {key: "drawing_number", label: "Drawing No. Before", class: 'text-center'},
+                {key: "parent_drawing_number", label: "Drawing No. Before", class: 'text-center'},
                 {key: "drawing_number_revision", label: "Rev No.", class: 'text-center'},
                 {key: "quantity", class: 'text-center'},
                 {key: "details", class: 'text-center'}
             ],
             process_before_list: 
-            [
-                {drawing_number: "KD02165-Y145", drawing_number_revision:"05", quantity: "100", details:"sample"},
-                {drawing_number: "KD02165-Y148", drawing_number_revision:"05", quantity: "150", details:"sample1"},
-                {drawing_number: "KD02165-Y150", drawing_number_revision:"05", quantity: "200", details:"sample2"}
-            ],
+            [],
             process_after_fields:
             [
                 {key: "action", class: 'text-center'},
-                {key: "drawing_number", label: "Drawing No. After", class: 'text-center'},
+                {key: "parent_drawing_number", label: "Drawing No. After", class: 'text-center'},
                 {key: "drawing_number_revision", label: "Rev No.", class: 'text-center'},
                 {key: "quantity", class: 'text-center'},
                 {key: "details", class: 'text-center'}
             ],
             process_after_list: 
-            [
-                {drawing_number: "KD02165-Y145", drawing_number_revision:"05", quantity: "100", details:"sample"},
-                {drawing_number: "KD02165-Y148", drawing_number_revision:"05", quantity: "150", details:"sample1"},
-                {drawing_number: "KD02165-Y150", drawing_number_revision:"05", quantity: "200", details:"sample2"}
-            ],
+            [],
             simultaneous_fields:[
                 {key: "action", class: 'text-center'},
                 {key: "eco_number", class: 'text-center'},
-                {key: "drawing_number", class: 'text-center'},
-                {key: "drawing_number_revision", label: "Revision", class: 'text-center'},
-                {key: "part_number", class: 'text-center'},
-                {key: "part_number_revision", label: "Revision", class: 'text-center'},
             ],
-            simultaneous_list:
-            [
-                {eco_number: "eco001", drawing_number: "KD02165-Y150", drawing_number_revision:"05", part_number: "KD02165-Y150", part_number_revision:"05"},
-                {eco_number: "eco002", drawing_number: "KD02165-Y150", drawing_number_revision:"05", part_number: "KD02165-Y150", part_number_revision:"05"},
-            ],
+            simultaneous_list:[],
+            eco_process_before:[],
+            eco_process_after:[],
+            unit_rev_data: [],
         }
+    },
+    mounted(){
+        this.loadDevice();
     },
     methods:{
         isNumber: function(evt) {
@@ -488,7 +493,263 @@ export default {
             } else {
                 return true;
             }
-        }
+        },
+        loadDevice: function () {
+            this.deviceOptions=[];
+            this.clearFilterBy();
+            this.$store.dispatch("loadDevice")
+                .then((response) => {
+                this.modelOptions=[];
+                this.unitOptions=[];
+                let information = response.data.data;
+                    Object.keys(information).forEach((key) => {
+                        this.deviceOptions.push({
+                            'id':information[key].id, 
+                            'name':information[key].device_name
+                        })
+                    });
+            });  
+        },
+        loadModel: function () {
+            this.modelOptions=[];
+            this.clearFilterBy();
+            this.modelValue = [];
+            this.unitOptions=[];
+            this.unitValue = [];
+                this.$store.dispatch("loadModelPerDevice", this.deviceValue.id)
+                .then((response) => {
+                    let information = response.data;
+                        Object.keys(information).forEach((key) => {
+                            this.modelOptions.push({
+                                'id':information[key].id, 
+                                'name':information[key].name
+                            })
+                        });
+                });  
+        },
+
+        loadUnit: function () {
+            this.unitOptions=[];
+            this.clearFilterBy();
+            this.unitValue = [];
+                this.$store.dispatch("loadUnitPerModel", this.modelValue.id)
+                .then((response) => {
+                    let information = response.data;
+                        Object.keys(information).forEach((key) => {
+                            this.unitOptions.push({
+                                'id':information[key].id, 
+                                'name':information[key].unit_name + '/' + information[key].unit_number
+                            })
+                        });
+                });  
+        },
+        clearFilter: function () {
+            this.deviceValue = [];
+            this.modelValue = [];
+            this.unitValue = [];
+
+            this.modelOptions=[];
+            this.unitOptions=[];
+        },
+        clearFilterBy: function () {
+            this.filterBySelectValue = [];
+        },
+        searchRevision: function ()
+        {
+            if( typeof this.deviceValue.name === 'undefined' || 
+                typeof this.modelValue.name === 'undefined' || 
+                typeof this.unitValue.name === 'undefined')
+            {
+                this.toast("Error","Select Device/Model/Unit");
+            }
+            else
+            {
+                let unit_data = {
+                    device_id     : this.deviceValue.id,
+                    model_name_id : this.modelValue.id,
+                    unit_id       : this.unitValue.id
+                 };
+                 
+                this.unit_rev_data = unit_data
+
+                this.$store.dispatch("loadUnitRevision", unit_data)
+                .then((response) => {
+                    let data = response.data;
+                    let status = response.status;
+                    this.unit_revision_list = data; 
+                    if (status == "Success") {
+                        this.toast(status, response.message);
+                    
+                    } else if (status == "Warning") {
+                    
+                        this.toast(status, "Please review your inputs.");
+                    } else if (status == "Error") {
+
+                        this.toast(status, response.message);
+                    }                 
+                });
+
+                this.$store.dispatch("loadSimultaneousApplication", unit_data)
+                    .then((response) => {
+                        let data = response.data;
+                        let status = response.status;
+                        this.simultaneous_app_list = data; 
+
+                        if (status == "Success") {
+                            this.toast(status, response.message);
+                        
+                        } else if (status == "Warning") {
+                        
+                            this.toast(status, "Please review your inputs.");
+                        } else if (status == "Error") {
+
+                            this.toast(status, response.message);
+                        }                 
+                    });
+                }
+        },
+      
+        transferredAfter: function(value)
+        {
+            this.$bvModal.hide("parts_after");
+            this.parts_after_list = value
+        },
+        transferredBefore: function(value)
+        {
+            this.$bvModal.hide("modal_eco_parts");
+            this.parts_before_list = value
+        },
+        transferredSimultaneous: function(value)
+        {
+            this.$bvModal.hide("modal_simultaneous_application");
+            this.simultaneous_list = value
+        },
+        transferredProcessAfter: function(value)
+        {   
+            this.$bvModal.hide("process_after");
+
+            var array_value = 
+                {parent_drawing_number:value.txt_drawing_number.value,
+                revision:value.txt_revision_number.value,  
+                quantity:value.txt_quantity.value, 
+                details:value.txt_details.value};
+
+            this.eco_process_after.push(array_value);
+
+            this.process_after_list = this.eco_process_after;
+        },
+        transferredProcessBefore: function(value)
+        {
+            this.$bvModal.hide("modal_eco_process");
+
+            var array_value = 
+                {parent_drawing_number:value.txt_drawing_number.value,
+                revision:value.txt_revision_number.value,  
+                quantity:value.txt_quantity.value, 
+                details:value.txt_details.value};
+
+            this.eco_process_before.push(array_value);
+
+            this.process_before_list = this.eco_process_before;
+        },
+        addRevisionUp: function ()
+        {
+            let details =
+            {   'device_id' : this.deviceValue.id,
+                'model_name_id' : this.modelValue.id,
+                'unit_id' : this.unitValue.id,
+                'revision_up': this.revision_up,
+                'target_application': this.target_application,
+                'eco_number': this.eco_number,
+                'next_ncr_number': this.next_ncr_number
+            }
+
+            let before_process = this.process_before_list;
+            let after_process = this.process_after_list;
+
+            var before_eco_parts = [];
+
+            for (const index in this.parts_before_list)
+            {
+                var before_parts_data =
+                {
+                    'parts_monitoring_id' : this.parts_before_list[index].id,
+                    'quantity'            : this.parts_before_list[index].parts_before_quantity
+                }
+                before_eco_parts[index] = before_parts_data;
+            }
+
+            var after_eco_parts = [];
+
+            for (const index in this.parts_after_list)
+            {
+                var after_parts_data =
+                {
+                    'parts_monitoring_id' : this.parts_after_list[index].id,
+                    'quantity' : this.parts_after_list[index].parts_after_quantity
+                }
+                after_eco_parts[index] = after_parts_data;
+            }
+
+            var with_simultaneous = [];
+         
+            for (const index in this.simultaneous_list)
+            {
+                var simultaneous_data =
+                {
+                    'with_simultaneous_id' : this.simultaneous_list[index].id,
+                }
+                with_simultaneous[index] = simultaneous_data;
+            }
+
+           let revision = 
+            {
+                details,
+                before_eco_parts,
+                after_eco_parts,
+                before_process,
+                after_process,
+                with_simultaneous
+            }
+
+            this.$store.dispatch("addRevisionUp",revision).then((response) => {
+                let data = response;
+                let status = response.data.status;
+              console.log(data);
+
+              if (status == "Success") {
+                    this.toast(status, response.data.message);
+                    this.$bvModal.hide("modal_add_rev_up");
+                } else if (status == "Warning") {
+                    Object.keys(response.data.data).forEach((key) => {
+                    this.form[key]["state"] = false;
+                    this.form[key]["validation"] = response.data .data[key][0];
+                    });
+                    this.toast(status, "Please review your inputs.");
+                } else if (status == "Error") {
+                    this.toast(status, response.data.message);
+                }
+          }); 
+        },
+        removeAfter: function(value,list)
+        {
+            let id = value.id;
+
+            for (let x = 0; x < list.length; x++) 
+            {
+                if(id == list[x].id)
+                {
+                    let index = x;
+                    list.splice(index, 1);
+                }
+            }
+        }, 
+        toast: function (status, message){
+        this.$toast(message, {
+              type:status.toLowerCase().trim(),
+              position: "bottom-right",
+        });
+      }
     }
 }
 </script>

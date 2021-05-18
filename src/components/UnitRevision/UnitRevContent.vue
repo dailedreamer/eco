@@ -187,7 +187,9 @@
                                 </b-link>
                                 <label class="ml-1 mr-1 text-secondary">|</label>
                                 <b-link 
-                                    class="link_style">
+                                    v-b-modal.modal-delete-id
+                                    class="link_style"
+                                    @click="deleteUnitRev(item.id)">
                                     Delete
                                 </b-link>
                             </b-td>
@@ -231,16 +233,19 @@
         </b-row>
         <UnitRevUpdateModal :get_data="this.id"/>
         <AddRevisionUpModal />
+        <DeleteModal :functionToCall="this.removeUnitRev"/>
     </b-container>
 </template>
 <script>
 import UnitRevUpdateModal from "../UnitRevision/UnitRevUpdateModal";
 import AddRevisionUpModal from "../UnitRevision/AddRevisionUpModal";
+import DeleteModal from "../DeleteModal";
 export default {
     name: 'UnitRevContent',
     components: {
         UnitRevUpdateModal,
-        AddRevisionUpModal
+        AddRevisionUpModal,
+        DeleteModal
     },
     data(){
         return{
@@ -290,6 +295,7 @@ export default {
                 simultaneous_eco_number: "123456", parent_drawing_number:"KD0000", drawing_number_revision: "01", part_number: "KD0101", part_number_new_revision:"02"},
             ],
             id: {},
+            deleteID: null,
         }
     },
     computed:{
@@ -298,10 +304,42 @@ export default {
         }
     },
     methods:{
+        removeUnitRev: function()
+        {
+            this.$store
+                .dispatch("removeUnitRev", this.deleteID)
+                .then((response) => {
+                    let status = response.data.status;
+                    
+                    if (status == "Success") {
+                        this.$bvModal.hide("modal-delete-id");
+                        this.toast(status, response.data.message);
+                        // this.loadSimultaneousApplied();
+                    } else if (status == "Warning") {
+                        this.toast(status, "Please review your inputs.");
+                    } else if (status == "Error") {
+                        this.toast(status, response.data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        deleteUnitRev: function(id)
+        {
+            console.log(id)
+            this.deleteID = id
+        },
         updateUnitRev: function(id)
         {
             this.id = {};
             this.id = this.unit_rev_list[id-1];
+        },
+        toast: function (status, message){
+            this.$toast(message, {
+                type:status.toLowerCase().trim(),
+                position: "bottom-right",
+            });
         }
     }
 }

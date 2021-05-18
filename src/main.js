@@ -39,9 +39,13 @@ import "vue-toastification/dist/index.css";
 
 import axios from "axios";
 // axios.defaults.baseURL  = 'http://10.164.58.65/eco-cms-v2/server/public/api/';
+<<<<<<< HEAD
 // axios.defaults.baseURL  = 'http://10.164.58.95/ecocms-v2/server/public/api/';
 axios.defaults.baseURL  = 'http://10.164.58.95/ecocms-v2/server/public/api/';
 // axios.defaults.baseURL  = 'http://10.164.58.50/ECO/server/public/api/';
+=======
+axios.defaults.baseURL  = 'http://10.164.58.93/eco-cms-v2/server/public/api/';
+>>>>>>> develop
 // axios.defaults.baseURL  = 'http://10.164.58.95/ecocms-v2/server/public/api/';
 // axios.defaults.baseURL  = 'http://10.164.58.95/eco-cms-v2/server/public/api/';
 // axios.defaults.baseURL  = 'http://10.164.58.43/tms/server/public/api/';
