@@ -1,35 +1,71 @@
+import axios from "axios";
+
 // import axios from "axios";
 export default {
   state: {
     parts_registration_units:[],
   },
   mutations: {
-    SET_PARTS_REGISTRATION_UNITS(state, units) {
-        state.units = units;
-      },
+
   },
   actions: {
-      // async loadPartsRegistrationUnit({ commit }) {
-      //   return new Promise((resolve, reject) => {
-      //     // axios
-      //     //   .get("devices")
-      //     //   .then(function(response) {
-      //     //     commit("SET_PARTS_REGISTRATION_UNITS", response.data);
-      //     //     let result = {
-      //     //       code: response.data.code,
-      //     //       status: response.data.status,
-      //     //       message: response.data.message,
-      //     //       data: response.data.data,
-      //     //     };
-      //     //     resolve(result);
-      //     //   })
-      //     //   .catch(function(error) {
-      //     //     reject(error);
-      //     //   });
-      //   });
-      //   },
+      async uploadPartsRegistrationParts(state, payload){
+        return new Promise((resolve, reject)=>{
+          axios
+            .post(`parts-pe/file-upload/${payload[1]}`, payload[0], {
+              header: {
+                  "Content-Type": "multipart/form-data",
+              },
+            })
+            .then(function(response) {
+                resolve(response);
+            })
+            .catch(function(error){
+                reject(error);
+            });
+        }) 
+      },
+
+      async savePartsRegistrationParts(state, payload){
+        return new Promise((resolve, reject) =>{
+          axios 
+            .post("parts-details", payload)
+            .then(function(response){
+              resolve(response);
+            })
+            .catch(function(error) {
+              reject(error.response);
+            });
+        })
+      },
+
+      async loadSpecificDeviceName(state, payload){
+        return new Promise((resolve, reject) =>{
+          axios 
+            .get(`get-device-name/${payload}`)
+            .then(function(response){
+              resolve(response);
+            })
+            .catch(function(error) {
+              reject(error.response);
+            });
+        })
+      },
+
+      async loadSpecificModelName(state, payload){
+        return new Promise((resolve, reject) =>{
+          axios 
+            .get(`get-model-name/${payload}`)
+            .then(function(response){
+              resolve(response);
+            })
+            .catch(function(error) {
+              reject(error.response);
+            });
+        })
+      }
   },
   getters: {
-         getPartsRegistrationUnits: (state) => state.parts_registration_units,
+
   }
 }
