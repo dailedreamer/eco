@@ -390,7 +390,7 @@ export default {
       var excelFile = document.querySelector("#input-file");
       let fileType = excelFile.files[0].name.split('.')[1];
       // var token = this.userDetails.token 
-      var token = "Zcz5Gagl6lz5ATQ71IWVGFwGZSMZQXcpDynsa7PKUETeq7xp1uPV8MNMd0MASOyk"
+      var token = "KnHj9Fw2JpEJdNKo3NbGo7VC0C8MEYOO5Rwvhi9D7TCoNUOJy5gINN3IyqSUTykS"
 
       if(fileType !== 'xlsx')
       {

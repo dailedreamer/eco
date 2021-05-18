@@ -392,7 +392,7 @@
                         variant="danger" 
                         type="submit"
                         title="Click to add revision up"
-                        @click="addRevisionUp">
+                        @click="validateRevisionUp">
                         <font-awesome-icon icon="save" /> Add Revision Up
                     </b-button> 
                 </b-col>
@@ -651,6 +651,71 @@ export default {
             this.eco_process_before.push(array_value);
 
             this.process_before_list = this.eco_process_before;
+        },
+        validateRevisionUp: function()
+        {
+            if(this.unit_rev_data.length == 0 || this.simultaneous_app_list.length == 0)
+            {
+                this.toast("Error","Search Unit Revision");
+            }
+            else if(this.revision_up === '')
+            {
+                this.toast("Error","Enter Revision Up");
+            }
+            else if(this.target_application === '')
+            {
+                this.toast("Error","Choose Target Application");
+            }
+            else if(this.eco_number === '')
+            {
+                this.toast("Error","Enter ECO Number");
+            }
+            else if(this.next_ncr_number === '')
+            {
+                this.toast("Error","Enter Next NCR Number");
+            }
+            else if( this.parts_before_list.length == 0 && 
+                     this.parts_after_list.length == 0 && 
+                     this.process_before_list.length == 0 &&
+                     this.process_after_list.length == 0 &&
+                     this.simultaneous_list.length == 0)
+            {
+                this.toast("Error","Add ECO Parts and ECO Process or Add Simultaneous Application");
+            }
+            else if(this.simultaneous_list.length !=0 && (
+                (this.parts_before_list.length == 0 || this.parts_after_list.length == 0 ) ||
+                (this.process_before_list == 0 || this.process_after_list == 0 )))
+            {
+               this.addRevisionUp();
+            }
+            else if(this.parts_before_list.length != 0 && this.parts_after_list.length == 0)
+            {
+                this.toast("Error","Input parts after");
+            }
+            else if(this.parts_before_list.length == 0 && this.parts_after_list.length != 0)
+            {
+                this.toast("Error","Input parts before");
+            }
+            else if(this.process_before_list.length == 0 && this.process_after_list.length == 0)
+            {
+                this.toast("Error","Input ECO Process");
+            }
+            else if(this.process_before_list.length != 0 && this.process_after_list.length == 0)
+            {
+                 this.toast("Error","Input process after");
+            }
+            else if(this.process_before_list.length == 0 && this.process_after_list.length != 0)
+            {
+                 this.toast("Error","Input process before");
+            }
+            else if(this.parts_before_list.length == 0 && this.parts_after_list.length == 0)
+            {
+                this.toast("Error","Input ECO Parts");
+            }
+            else
+            {
+                this.addRevisionUp();
+            }
         },
         addRevisionUp: function ()
         {

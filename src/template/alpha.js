@@ -66,7 +66,7 @@ const options = {
   toastDefaults: {
     // ToastOptions object for each type of toast
     [TYPE.ERROR]: {
-        timeout: 10000,
+        timeout: 3000,
         closeButton: false,
     },
     [TYPE.SUCCESS]: {
