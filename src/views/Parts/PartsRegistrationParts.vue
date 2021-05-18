@@ -59,7 +59,6 @@
                       :state="form.txt_batch_number.state"
                       type="text"
                       placeholder="Enter Batch Number"
-                      required
                       autocomplete="off"/>
                   </b-form-group>
                   <b-form-group
@@ -75,23 +74,21 @@
                       :state="form.txt_parent_drawing_number.state"
                       type="text"
                       placeholder="Enter Parent Number"
-                      required
                       autocomplete="off"/>
                   </b-form-group>
                   <b-form-group
                     class = "mt-1"
                     id="input-group-batch-number"
-                    label="Revision:"
+                    label="Parent Number Revision:"
                     label-class="alpha__form__label"
-                    label-for="txt_drawing_number_current_revision">
+                    label-for="txt_drawing_number_new_revision">
                     <b-form-input
-                      id="txt_drawing_number_current_revision"
-                      name="txt_drawing_number_current_revision"
-                      v-model="form.txt_drawing_number_current_revision.value"
-                      :state="form.txt_drawing_number_current_revision.state"
+                      id="txt_drawing_number_new_revision"
+                      name="txt_drawing_number_new_revision"
+                      v-model="form.txt_drawing_number_new_revision.value"
+                      :state="form.txt_drawing_number_new_revision.state"
                       type="text"
-                      placeholder="Enter Revision"
-                      required
+                      placeholder="Enter Parent Number Revision"
                       autocomplete="off"/>
                   </b-form-group>
                   <b-form-group
@@ -107,23 +104,21 @@
                       :state="form.txt_part_number.state"
                       type="text"
                       placeholder="Enter Part Number"
-                      required
                       autocomplete="off"/>
                   </b-form-group>
                   <b-form-group
                     class = "mt-1"
                     id="input-group-part-number-revision"
-                    label="Revision:"
+                    label="Part Number Revision:"
                     label-class="alpha__form__label"
-                    label-for="txt_part_number_current_revision">
+                    label-for="txt_part_number_new_revision">
                     <b-form-input
-                      id="txt_part_number_current_revision"
-                      name="txt_part_number_current_revision"
-                      v-model="form.txt_part_number_current_revision.value"
-                      :state="form.txt_part_number_current_revision.state"
+                      id="txt_part_number_new_revision"
+                      name="txt_part_number_new_revision"
+                      v-model="form.txt_part_number_new_revision.value"
+                      :state="form.txt_part_number_new_revision.state"
                       type="text"
-                      placeholder="Enter Revision"
-                      required
+                      placeholder="Enter Part Number Revision"
                       autocomplete="off"/>
                   </b-form-group>
                   <b-form-group
@@ -167,7 +162,6 @@
                   <b-button
                     class="float-right"
                     id="button-submit"
-                    type="submit" 
                     title="Click to Clear Inputs"
                     variant="outline-secondary"
                     @click="clearInputs()">
@@ -225,7 +219,6 @@
                           id="input-file"
                           name="file"
                           type="file"
-                          required
                         />
                     </b-col>
                     <b-col cols="3">
@@ -254,12 +247,12 @@
                       </b-button>
                     </b-col>
                       <b-col cols="3" class="mt-2">
-                        <label>Device: </label>     
-                        <label id="lbl_device">{{items.device_name}}</label>
+                        <label class="mr-3">Device: </label>
+                        <label id="lbl_device"><b>{{device_name_value}}</b></label>
                       </b-col>
                       <b-col cols="3" class="mt-2">
-                        <label id="lbl_model">{{items.name}}</label>
-                        <label>Model: </label>
+                        <label class="mr-3">Model: </label>
+                        <label id="lbl_model"><b>{{model_name_value}}</b></label>
                       </b-col>
                     </b-row>
                 </b-col>
@@ -276,8 +269,11 @@
                   :items="items"
                   :per-page="perPage"
                   :current-page="currentPage">
-                  <template #cell(no)="data">
-                    {{data.index + 1}}
+                  <template #cell(no)="data" v-if="currentPage == 1">
+                      {{data.index+1}}
+                  </template>
+                  <template #cell(no)="data" v-else>
+                      {{(data.index+1) + (currentPage * perPage) - perPage}}
                   </template>
                 </b-table>
                 <b-pagination 
@@ -319,12 +315,12 @@ export default {
         ],
         form: {
           slc_device: {
-            value: 0,
+            value: "",
             state: null,
             validation:"",
           },
           slc_model: {
-            value: 0,
+            value: "",
             state: null,
             validation:"",
           },
@@ -338,7 +334,7 @@ export default {
             state: null,
             validation:"",
           },
-          txt_drawing_number_current_revision: {
+          txt_drawing_number_new_revision: {
             value: "",
             state: null,
             validation:"",
@@ -348,7 +344,7 @@ export default {
             state: null,
             validation:"",
           },
-          txt_part_number_current_revision: {
+          txt_part_number_new_revision: {
             value: "",
             state: null,
             validation:"",
@@ -366,23 +362,20 @@ export default {
         },
         fields: 
         [
-          {key: "no", sortable: true, class: 'text-center'},
+          {key: "no", class: 'text-center'},
           {key: "batch_number", sortable: true, class: 'text-center'},
           {key: "parent_drawing_number", label: "Parent Number", sortable: true, class: 'text-center'},
-          {key: "drawing_number_current_revision", label: "Revision", sortable: true, class: 'text-center'},
+          {key: "drawing_number_new_revision", label: "Parent Number Revision", sortable: true, class: 'text-center'},
           {key: "part_number", sortable: true, class: 'text-center'},
-          {key: "part_number_current_revision", label: "Revision", sortable: true, class: 'text-center'},
+          {key: "part_number_new_revision", label: "Part Number Revision", sortable: true, class: 'text-center'},
           {key: "class", sortable: true, class: 'text-center'},
           {key: "die_details", sortable: true, class: 'text-center'},
         ],
-        items: 
-        [
-          // {id: 1, batch_number: '123456', parent_drawing_number: 'KD111-123456', drawing_number_current_revision: '01', part_number: 'KD001-111111', part_number_current_revision: '01', class: 'A', die_details: 'sample' },
-          // {id: 2, batch_number: '234567', parent_drawing_number: 'KD222-123456', drawing_number_current_revision: '04', part_number: 'KD001-121212', part_number_current_revision: '05', class: 'B', die_details: 'sample' },
-          // {id: 3, batch_number: '234568', parent_drawing_number: 'KD333-123456', drawing_number_current_revision: '01', part_number: 'KD001-232323', part_number_current_revision: '02', class: 'C', die_details: 'sample' },
-          // {id: 4, batch_number: '234569', parent_drawing_number: 'KD444-123456', drawing_number_current_revision: '02', part_number: 'KD001-343434', part_number_current_revision: '03', class: 'D', die_details: 'sample' },
-          // {id: 5, batch_number: '234570', parent_drawing_number: 'KD555-123456', drawing_number_current_revision: '05', part_number: 'KD001-454545', part_number_current_revision: '06', class: 'E', die_details: 'sample' },
-        ]
+        items: [],
+        upload_device_id : '',
+        upload_model_id : '',
+        device_name_value: '',
+        model_name_value: ''
       }
     },
     mounted()
@@ -390,7 +383,6 @@ export default {
       this.loadDevice();
       this.form.slc_model.value = []; 
       this.form.slc_device.value = []; 
-     
     },
     computed:{
       totalRows: function(){
@@ -399,84 +391,142 @@ export default {
     },
     methods: 
     {
-        uploadFile: function()
-        {
-          var formData = new FormData();
-          var excelFile = document.querySelector("#input-file");
-          let fileType = excelFile.files[0].name.split('.')[1];
-          var token = "7MegNJKG3LgpU5rMxzGCKgyCm1nicLI7SnI1Q1HzWcviSTi6tyBfh79ereFrgOfr";
-        
-          if((fileType !== 'csv') && (fileType !== 'xlsx')){
-            document.getElementById("input-file").value = "";
-            this.toast("Warning", "Please Upload a CSV or XLSX file type only.");
-          }
-          else{
-            formData.append("file_name", excelFile.files[0]);
-
-            this.$store
-            .dispatch("uploadPartsRegistrationParts", [formData, token])
-            .then((response)=>{
-              this.items = response.data.result.inserted;
-              let status = response.data.status;
-              if(status == "Success")
-              {
-                document.getElementById("input-file").value = "";
-                this.toast(status, response.data.message);
-              }
-              else if(status == "Warning")
-                this.toast(status, response.data.message);
-              else
-                this.toast(status, response.data.message);
-              })
-              .catch((error) => {
-                this.toast("error", "Something went wrong");
-                document.getElementById("input-file").value = "";
-                console.log(error);
-              })
-              .finally(() => {
-              });
-          }
-        },
-        loadDevice: function()
-        {
+    uploadFile: function(){
+      if(document.getElementById("input-file").value == "")
+      {
+        this.toast("Warning", "Please select file to upload.");
+      }
+      else{
+        var formData = new FormData();
+        var excelFile = document.querySelector("#input-file");
+        let fileType = excelFile.files[0].name.split('.')[1];
+        var token = "6ppnQkNNbZW2BMKAGOLXVCDv2ZL76fLcXPyljmkzQkAMREJJldU8edCIfP7h88zx";
           
-          this.$store.dispatch("loadDevice").then((response) => {
-              // let data = response.data.data;
-              // this.deviceOptions = data;   
-              // console.log(this.deviceOptions); 
-              // console.log(response);
-              let information = response.data.data;
-              Object.keys(information).forEach((key) => {
-                  this.deviceOptions.push({
-                    'id':information[key].id, 
-                    'device_name':information[key].device_name
-                  })
-              });  
+        if((fileType !== 'csv') && (fileType !== 'xlsx')){
+          document.getElementById("input-file").value = "";
+          this.toast("Warning", "Please Upload a CSV or XLSX file type only.");
+        }
+        else{
+        formData.append("file_name", excelFile.files[0]);
+
+        this.$store
+        .dispatch("uploadPartsRegistrationParts", [formData, token])
+        .then((response)=>{
+          console.log(response);
+          this.upload_device_id = response.data.result.inserted[0].device_id;
+          this.upload_model_id = response.data.result.inserted[0].model_name_id;
+          this.items = response.data.result.inserted;
+          let status = response.data.status;
+          if(status == "Success"){
+            document.getElementById("input-file").value = "";
+            this.toast(status, response.data.message);
+            this.loadDeviceName();
+            this.loadModelName();
+          }
+          else if(status == "Warning")
+            this.toast(status, response.data.message);
+          else
+            this.toast(status, response.data.message);
+          })
+          .catch((error) => {
+            this.toast("error", "Something went wrong");
+            document.getElementById("input-file").value = "";
+            console.log(error);
+          })
+          .finally(() => {
+          });
+        }
+      }
+    },
+    loadDeviceName: function(){
+        this.$store
+        .dispatch("loadSpecificDeviceName", this.upload_device_id)
+        .then((response) => {
+          this.device_name_value = response.data.device_name;
+        });
+    },
+    loadModelName: function(){
+        this.$store
+        .dispatch("loadSpecificModelName", this.upload_model_id)
+        .then((response) => {
+          this.model_name_value = response.data.name;
+        });
+    },
+    loadDevice: function()
+    {
+      this.$store.dispatch("loadDevice").then((response) => {
+          let information = response.data.data;
+          Object.keys(information).forEach((key) => {
+              this.deviceOptions.push({
+                'id':information[key].id, 
+                'device_name':information[key].device_name
+              })
           });  
-        },
-        loadModel: function(device_id)
-        {
-          // console.log(device_id);
-          this.modelOptions = [];     
-          this.$store.dispatch("loadModelPerDevice", device_id).then((response) => {
-              // let data = response.data;
-              // this.modelOptions = data;
-              // console.log(data);
-              let information = response.data;
-              Object.keys(information).forEach((key) => {
-                this.modelOptions.push({
-                    'id':information[key].id, 
-                    'model_name':information[key].name
-                })
+      });  
+    },
+    loadModel: function(device_id)
+    {
+      this.modelOptions = [];     
+      this.$store.dispatch("loadModelPerDevice", device_id).then((response) => {
+          let information = response.data;
+          Object.keys(information).forEach((key) => {
+            this.modelOptions.push({
+                'id':information[key].id, 
+                'model_name':information[key].name
+            })
+        });
+      });  
+    },
+    clearFilter: function(){
+        this.form.slc_model.value = []; 
+    },
+    submitForm: function(){
+      var formData = {
+        "device_id"                       : this.form.slc_device.value.id,
+        "model_name_id"                   : this.form.slc_model.value.id,
+        "batch_number"                    : document.getElementById("txt_batch_number").value,
+        "parent_drawing_number"           : document.getElementById("txt_parent_drawing_number").value,
+        "drawing_number_new_revision"     : document.getElementById("txt_drawing_number_new_revision").value, 
+        "part_number"                     : document.getElementById("txt_part_number").value,
+        "part_number_new_revision"        : document.getElementById("txt_part_number_new_revision").value, 
+        "class"                           : this.form.slc_class.value.name,
+        "die_details"                     : this.form.slc_die_details.value.name,
+        "emp_id"                          : 161822
+      }
+      document.getElementById("button-submit").disabled = true;
+      this.$store
+      .dispatch("savePartsRegistrationParts", formData)
+      .then((response) =>{
+        let status = response.data.status;
+        if (status == "Success") {
+        this.toast(status, response.data.message);
+          this.clearInputs();
+        this.getUnit;
+        } else if (status == "Warning") {
+            Object.keys(response.data.data).forEach((key) => {
+            this.form[key]["state"] = false;
+            this.form[key]["validation"] = response.data.data[key][0];
             });
-            });  
-            
-        },
-        clearFilter: function(){
-           this.form.slc_model.value = []; 
-            // this.form.slc_device.value = []; 
-        },
-        clearInputs: function(){
+            this.toast(status, "Please review your inputs.");
+        } else if (status == "Error") {
+            this.toast(status, response.data.message);
+        }
+      })
+      .catch((error) => {
+            let error_data = error.data;
+            let status = error.data.status;
+            console.log(error_data.error);
+            for(const[key] of Object.entries(error_data.error))
+            {
+                this.toast(status,error_data.error[key][0]);
+            };
+            this.clearInputs();
+        })
+        .finally(() => {
+            document.getElementById("button-submit").disabled = false;
+        });
+    },
+    clearInputs: function(){
           this.form = {
             slc_device: {
               value: '',
@@ -498,7 +548,7 @@ export default {
               state: null,
               validation:"",
             },
-            txt_drawing_number_current_revision: {
+            txt_drawing_number_new_revision: {
               value: "",
               state: null,
               validation:"",
@@ -508,7 +558,7 @@ export default {
               state: null,
               validation:"",
             },
-            txt_part_number_current_revision: {
+            txt_part_number_new_revision: {
               value: "",
               state: null,
               validation:"",
@@ -534,7 +584,7 @@ export default {
     clearUpload: function(){
         document.getElementById("input-file").value = "";
     },
-}
+  }
 }
 </script>
 

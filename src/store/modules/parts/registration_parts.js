@@ -24,9 +24,48 @@ export default {
                 reject(error);
             });
         }) 
+      },
+
+      async savePartsRegistrationParts(state, payload){
+        return new Promise((resolve, reject) =>{
+          axios 
+            .post("parts-details", payload)
+            .then(function(response){
+              resolve(response);
+            })
+            .catch(function(error) {
+              reject(error.response);
+            });
+        })
+      },
+
+      async loadSpecificDeviceName(state, payload){
+        return new Promise((resolve, reject) =>{
+          axios 
+            .get(`get-device-name/${payload}`)
+            .then(function(response){
+              resolve(response);
+            })
+            .catch(function(error) {
+              reject(error.response);
+            });
+        })
+      },
+
+      async loadSpecificModelName(state, payload){
+        return new Promise((resolve, reject) =>{
+          axios 
+            .get(`get-model-name/${payload}`)
+            .then(function(response){
+              resolve(response);
+            })
+            .catch(function(error) {
+              reject(error.response);
+            });
+        })
       }
   },
   getters: {
-    
+
   }
 }
