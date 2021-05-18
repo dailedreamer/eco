@@ -31,7 +31,6 @@
                           id="input-file"
                           name="file"
                           type="file"
-                          required
                         />
                     </b-col>
                     <b-col lg="2" class="md-2">
@@ -223,41 +222,47 @@ export default {
   methods: 
   {
     uploadFile: function(){
-      var formData = new FormData();
-      var excelFile = document.querySelector("#input-file");
-      let fileType = excelFile.files[0].name.split('.')[1];
-      var token = "Zcz5Gagl6lz5ATQ71IWVGFwGZSMZQXcpDynsa7PKUETeq7xp1uPV8MNMd0MASOyk"
-
-      if((fileType !== 'csv') && (fileType !== 'xlsx')){
-        document.getElementById("input-file").value = "";
-        this.toast("Warning", "Please Upload a CSV or XLSX file type only.");
+      if(document.getElementById("input-file").value == "")
+      {
+        this.toast("Warning", "Please select file to upload.");
       }
       else{
-        formData.append("file_name", excelFile.files[0]);
+        var formData = new FormData();
+        var excelFile = document.querySelector("#input-file");
+        let fileType = excelFile.files[0].name.split('.')[1];
+        var token = "6ppnQkNNbZW2BMKAGOLXVCDv2ZL76fLcXPyljmkzQkAMREJJldU8edCIfP7h88zx"
 
-        this.$store
-        .dispatch("uploadPartsRegistrationUnit", [formData, token])
-        .then((response)=>{
-          let status = response.data.status;
-          if(status == "Success")
-          {
-            this.items=[];
-            this.loadUnitsPe();
-            document.getElementById("input-file").value = "";
-            this.toast(status, response.data.message);
-          }
-          else if(status == "Warning")
-            this.toast(status, response.data.message);
-          else
-            this.toast(status, response.data.message);
-        })
-        .catch((error) => {
-          this.toast("error", "Something went wrong");
+        if((fileType !== 'csv') && (fileType !== 'xlsx')){
           document.getElementById("input-file").value = "";
-          console.log(error);
-        })
-        .finally(() => {
-        });
+          this.toast("Warning", "Please Upload a CSV or XLSX file type only.");
+        }
+        else{
+          formData.append("file_name", excelFile.files[0]);
+
+          this.$store
+          .dispatch("uploadPartsRegistrationUnit", [formData, token])
+          .then((response)=>{
+            let status = response.data.status;
+            if(status == "Success")
+            {
+              this.items=[];
+              this.loadUnitsPe();
+              document.getElementById("input-file").value = "";
+              this.toast(status, response.data.message);
+            }
+            else if(status == "Warning")
+              this.toast(status, response.data.message);
+            else
+              this.toast(status, response.data.message);
+          })
+          .catch((error) => {
+            this.toast("error", "Something went wrong");
+            document.getElementById("input-file").value = "";
+            console.log(error);
+          })
+          .finally(() => {
+          });
+        }
       }
     },
     loadUnitsPe: function () 
