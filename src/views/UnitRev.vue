@@ -168,8 +168,8 @@
                                         </b-col>
                                     </b-row>
                                     <b-row class="mt-3">
-                                        <b-col cols="5">
-                                            <b-table-simple
+                                        <!-- <b-col cols="5"> -->
+                                            <!-- <b-table-simple
                                                 class="text-nowrap"
                                                 id="tbl_unit_rev_up"
                                                 responsive
@@ -188,26 +188,23 @@
                                                         <b-th class="th_align" >Current NCR Number Per Revision</b-th>
                                                     </b-tr>
                                                 </b-thead>
-                                                <!-- <b-tbody  
-                                                    v-for="(draft, index) in item_list"
+                                                <b-tbody  
+                                                    v-for="(draft, index) in unit_rev_list"
                                                     :key="index">
                                                     <b-tr>
-                                                        <b-td class="td_align" :rowspan="draft.data.length+1">{{draft.unit_name}}</b-td>
-                                                        <b-td class="td_align" :rowspan="draft.data.length+1">{{draft.unit_number}}</b-td>
+                                                        <b-td class="td_align" >{{draft.details_table1.unit_name}}</b-td>
+                                                        <b-td class="td_align" >{{draft.details_table1.unit_number}}</b-td>
+                                
+                                                        <b-td class="td_align" style="height:44px">{{draft.details_table1.serial_number}}</b-td>
+                                                        <b-td class="td_align">{{draft.details_table1.date_applied}}</b-td>
+                                                        <b-td class="td_align">{{draft.details_table1.carf_number}}</b-td>
+                                                        <b-td class="td_align">{{draft.details_table1.current_revision}}</b-td>
+                                                        <b-td class="td_align">{{draft.details_table1.current_ncr_number}}</b-td>
                                                     </b-tr>
-                                                    <b-tr 
-                                                    v-for="item in draft.data"
-                                                    :key="item.id">
-                                                        <b-td class="td_align" style="height:44px">{{item.serial_number}}</b-td>
-                                                        <b-td class="td_align">{{item.date_applied}}</b-td>
-                                                        <b-td class="td_align">{{item.carf_number}}</b-td>
-                                                        <b-td class="td_align">{{item.rev_up}}</b-td>
-                                                        <b-td class="td_align">{{item.current_ncr_no}}</b-td>
-                                                    </b-tr>
-                                                </b-tbody> -->
-                                            </b-table-simple>
-                                        </b-col>
-                                        <b-col cols="7">
+                                                </b-tbody>
+                                            </b-table-simple> -->
+                                        <!-- </b-col> -->
+                                        <b-col cols="12">
                                             <b-table-simple 
                                                 class="text-nowrap"
                                                 id="tbl_unit_rev"
@@ -218,6 +215,14 @@
                                                 :current-page="currentPage">
                                                 <b-thead class="thead-light custom_thead">
                                                     <b-tr>
+                                                        <b-th bgcolor="#00ff00" class="th_align" rowspan="3" >Unit Name</b-th>
+                                                        <b-th class="th_align" rowspan="3" >Unit Number</b-th>
+                                                        <b-th class="th_align" rowspan="3" >Start Serial Number</b-th>
+                                                        <b-th class="th_align" rowspan="3" >Date Applied</b-th>
+                                                        <b-th class="th_align" rowspan="3" >CARF Number</b-th>
+                                                        <b-th class="th_align" rowspan="3" >Current Revision</b-th>
+                                                        <b-th class="th_align" rowspan="3" >Current NCR Number Per Revision</b-th>
+
                                                         <b-th class="th_align" rowspan="3" >Action</b-th>
                                                         <b-th class="th_align" rowspan="3">Pending Revision Up</b-th>
                                                         <b-th class="th_align" rowspan="3">Next NCR Number</b-th>
@@ -261,6 +266,13 @@
                                                     <b-tr
                                                         v-for="item in unit_rev_list.slice((this.currentPage-1) * this.perPage, (this.currentPage) * this.perPage)"
                                                         :key="item.id">
+                                                        <b-td class="td_align" >{{item.details_table1.unit_name}}</b-td>
+                                                        <b-td class="td_align" >{{item.details_table1.unit_number}}</b-td>
+                                                        <b-td class="td_align" >{{item.details_table1.serial_number}}</b-td>
+                                                        <b-td class="td_align" >{{item.details_table1.date_applied}}</b-td>
+                                                        <b-td class="td_align" >{{item.details_table1.carf_number}}</b-td>
+                                                        <b-td class="td_align" >{{item.details_table1.current_revision}}</b-td>
+                                                        <b-td class="td_align" >{{item.details_table1.current_ncr_number}}</b-td>
                                                         <b-td class="td_align">
                                                             <b-link 
                                                                 v-b-modal.modal_add_rev_up
@@ -286,14 +298,49 @@
                                                         <b-td class="td_align">{{item.details_table2.next_ncr_number}}</b-td> 
                                                         <b-td class="td_align">{{item.details_table2.target_application}}</b-td> 
                                                         <b-td class="td_align">{{item.details_table2.eco_number}}</b-td> 
-                                                        <b-td class="td_align">{{item.before_parts_unit_revisions.part_number}}</b-td>
-                                                        <b-td class="td_align">{{item.before_parts_unit_revisions.part_number_new_revision}}</b-td>
-                                                        <b-td class="td_align">{{item.before_parts_unit_revisions.before_quantity}}</b-td>
-                                                        <b-td class="td_align">{{item.before_parts_unit_revisions.revision_details}}</b-td>
-                                                        <b-td class="td_align">{{item.after_parts_unit_revisions.part_number}}</b-td>
-                                                        <b-td class="td_align">{{item.after_parts_unit_revisions.part_number_new_revision}}</b-td>
-                                                        <b-td class="td_align">{{item.after_parts_unit_revisions.before_quantity}}</b-td>
-                                                        <b-td class="td_align">{{item.after_parts_unit_revisions.revision_details}}</b-td>
+                                                        <!-- ECO PARTS BEFORE -->
+                                                        <b-td nowrap style="width:100%;" align="center">
+                                                            <b-tr v-for="item_before in item.before_parts_unit_revisions" :key="item_before.id">
+                                                                {{item_before.part_number}}
+                                                            </b-tr>
+                                                        </b-td>
+                                                        <b-td nowrap style="width:100%;" align="center">
+                                                            <b-tr v-for="item_before in item.before_parts_unit_revisions" :key="item_before.id">
+                                                                {{item_before.part_number_new_revision}}
+                                                            </b-tr>
+                                                        </b-td>
+                                                        <b-td nowrap style="width:100%;" align="center">
+                                                            <b-tr v-for="item_before in item.before_parts_unit_revisions" :key="item_before.id">
+                                                                {{item_before.before_quantity}}
+                                                            </b-tr>
+                                                        </b-td>
+                                                        <b-td nowrap style="width:100%;" align="center">
+                                                            <b-tr v-for="item_before in item.before_parts_unit_revisions" :key="item_before.id">
+                                                                {{item_before.revision_details}}
+                                                            </b-tr>
+                                                        </b-td>
+                                                        <!-- ECO PARTS AFTER -->
+                                                        <b-td nowrap style="width:100%;" align="center">
+                                                            <b-tr v-for="item_after in item.after_parts_unit_revisions" :key="item_after.id">
+                                                                {{item_after.part_number}}
+                                                            </b-tr>
+                                                        </b-td>
+                                                        <b-td nowrap style="width:100%;" align="center">
+                                                            <b-tr v-for="item_after in item.after_parts_unit_revisions" :key="item_after.id">
+                                                                {{item_after.part_number_new_revision}}
+                                                            </b-tr>
+                                                        </b-td>
+                                                        <b-td nowrap style="width:100%;" align="center">
+                                                            <b-tr v-for="item_after in item.after_parts_unit_revisions" :key="item_after.id">
+                                                                {{item_after.before_quantity}}
+                                                            </b-tr>
+                                                        </b-td>
+                                                        <b-td nowrap style="width:100%;" align="center">
+                                                            <b-tr v-for="item_after in item.after_parts_unit_revisions" :key="item_after.id">
+                                                                {{item_after.revision_details}}
+                                                            </b-tr>
+                                                        </b-td>
+
                                                         <b-td class="td_align">{{item.before_parent_drawing_no}}</b-td>
                                                         <b-td class="td_align">{{item.before_revision}}</b-td>
                                                         <b-td class="td_align">{{item.before_quantity}}</b-td>
