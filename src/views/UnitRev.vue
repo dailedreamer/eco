@@ -23,6 +23,7 @@
                 <b-row>
                     <b-col cols="3">
                         <b-card 
+                            @click="loadUnitRev('for_application')"
                             class="custom_card_filter">
                             <b-row class="mt-0">
                                 <b-col cols="8">
@@ -54,6 +55,7 @@
                     </b-col>
                     <b-col cols="3">
                         <b-card 
+                            @click="loadUnitRev('for_applied')"
                             class="custom_card_filter">
                             <b-row class="mt-0">
                                 <b-col cols="8">
@@ -215,13 +217,13 @@
                                                 :current-page="currentPage">
                                                 <b-thead class="thead-light custom_thead">
                                                     <b-tr>
-                                                        <b-th bgcolor="#00ff00" class="th_align" rowspan="3" >Unit Name</b-th>
-                                                        <b-th class="th_align" rowspan="3" >Unit Number</b-th>
-                                                        <b-th class="th_align" rowspan="3" >Start Serial Number</b-th>
-                                                        <b-th class="th_align" rowspan="3" >Date Applied</b-th>
-                                                        <b-th class="th_align" rowspan="3" >CARF Number</b-th>
-                                                        <b-th class="th_align" rowspan="3" >Current Revision</b-th>
-                                                        <b-th class="th_align" rowspan="3" >Current NCR Number Per Revision</b-th>
+                                                        <b-th class="th_align_table1" rowspan="3" >Unit Name</b-th>
+                                                        <b-th class="th_align_table1" rowspan="3" >Unit Number</b-th>
+                                                        <b-th class="th_align_table1" rowspan="3" >Start Serial Number</b-th>
+                                                        <b-th class="th_align_table1" rowspan="3" >Date Applied</b-th>
+                                                        <b-th class="th_align_table1" rowspan="3" >CARF Number</b-th>
+                                                        <b-th class="th_align_table1" rowspan="3" >Current Revision</b-th>
+                                                        <b-th class="th_align_table1" rowspan="3" >Current NCR Number Per Revision</b-th>
 
                                                         <b-th class="th_align" rowspan="3" >Action</b-th>
                                                         <b-th class="th_align" rowspan="3">Pending Revision Up</b-th>
@@ -265,9 +267,10 @@
                                                 <b-tbody>
                                                     <b-tr
                                                         v-for="item in unit_rev_list.slice((this.currentPage-1) * this.perPage, (this.currentPage) * this.perPage)"
-                                                        :key="item.id">
-                                                        <b-td class="td_align" >{{item.details_table1.unit_name}}</b-td>
+                                                        :key="item.id">                                           
+                                                        <b-td class="td_align">{{item.details_table1.unit_name}}</b-td>
                                                         <b-td class="td_align" >{{item.details_table1.unit_number}}</b-td>
+
                                                         <b-td class="td_align" >{{item.details_table1.serial_number}}</b-td>
                                                         <b-td class="td_align" >{{item.details_table1.date_applied}}</b-td>
                                                         <b-td class="td_align" >{{item.details_table1.carf_number}}</b-td>
@@ -290,7 +293,7 @@
                                                             <b-link 
                                                                 v-b-modal.modal-delete-id
                                                                 class="link_style"
-                                                                @click="deleteUnitRev(item.id)">
+                                                                @click="deleteUnitRev(item.details_table2.id)">
                                                                 Delete
                                                             </b-link>
                                                         </b-td>
@@ -340,20 +343,48 @@
                                                                 {{item_after.revision_details}}
                                                             </b-tr>
                                                         </b-td>
+                                                        <!-- ECO PROCESS BEFORE -->
+                                                        <b-td class="td_align">
 
-                                                        <b-td class="td_align">{{item.before_parent_drawing_no}}</b-td>
-                                                        <b-td class="td_align">{{item.before_revision}}</b-td>
-                                                        <b-td class="td_align">{{item.before_quantity}}</b-td>
-                                                        <b-td class="td_align">{{item.before_details}}</b-td>
-                                                        <b-td class="td_align">{{item.after_parent_drawing_no}}</b-td>
-                                                        <b-td class="td_align">{{item.after_revision}}</b-td>
-                                                        <b-td class="td_align">{{item.after_quantity}}</b-td>
-                                                        <b-td class="td_align">{{item.after_details}}</b-td>
-                                                        <b-td class="td_align">{{item.simultaneous_eco_number}}</b-td>
-                                                        <b-td class="td_align">{{item.parent_drawing_number}}</b-td>
-                                                        <b-td class="td_align">{{item.drawing_number_revision}}</b-td>
-                                                        <b-td class="td_align">{{item.part_number}}</b-td>
-                                                        <b-td class="td_align">{{item.part_number_new_revision}}</b-td>
+                                                        </b-td>
+                                                        <b-td class="td_align">
+
+                                                        </b-td>
+                                                        <b-td class="td_align">
+
+                                                        </b-td>
+                                                        <b-td class="td_align">
+
+                                                        </b-td>
+                                                        <!-- ECO PROCESS AFTER -->
+                                                        <b-td class="td_align">
+
+                                                        </b-td>
+                                                        <b-td class="td_align">
+
+                                                        </b-td>
+                                                        <b-td class="td_align">
+
+                                                        </b-td>
+                                                        <b-td class="td_align">
+
+                                                        </b-td>
+                                                        <!-- SIMULTANEOUS APPLICATION -->
+                                                        <b-td class="td_align">
+
+                                                        </b-td>
+                                                        <b-td class="td_align">
+
+                                                        </b-td>
+                                                        <b-td class="td_align">
+
+                                                        </b-td>
+                                                        <b-td class="td_align">
+
+                                                        </b-td>
+                                                        <b-td class="td_align">
+
+                                                        </b-td>
                                                     </b-tr>
                                                 </b-tbody>
                                             </b-table-simple>
@@ -416,13 +447,11 @@ export default {
             id: {},
             deleteID: null,
             status: "",
+            totalRows: null,
         }
     },
     computed: {
-        totalRows(){
-            // return this.unit_rev_list.length
-            return 1
-        }
+    
     },
     mounted() {
         this.load_percentage();
@@ -442,17 +471,16 @@ export default {
             this.$store.dispatch("loadUnitRev", this.status)
                 .then((response) =>
                 {
-                    // this.items=this.getAllApplied;
                     let data = response.data;
                     console.log(data)
                     this.unit_rev_list = data;
                     this.item_list = data;
-                    // this.filtered_items = data;
-                 
-                    // if(!this.items)
-                    //     this.totalRows = 1;
-                    // else
-                    //     this.totalRows = this.items.length;
+                    this.filtered_items = data;
+                    this.load_percentage();
+                    if(!this.unit_rev_list)
+                        this.totalRows = 1;
+                    else
+                        this.totalRows = this.unit_rev_list.length;
                 })
         },
         load_percentage: function()
@@ -479,6 +507,8 @@ export default {
                     if (status == "Success") {
                         this.$bvModal.hide("modal-delete-id");
                         this.toast(status, response.data.message);
+                        this.load_percentage();
+                        this.loadUnitRev();
                     } else if (status == "Warning") {
                         this.toast(status, "Please review your inputs.");
                     } else if (status == "Error") {
@@ -491,7 +521,6 @@ export default {
         },
         deleteUnitRev: function(id)
         {
-            console.log(id)
             this.deleteID = id
         },
         updateUnitRev: function(id)
@@ -526,6 +555,14 @@ export default {
         padding-left:10px;
         padding-right:10px;
         padding-top: 10px;
+    }
+    #tbl_unit_rev .th_align_table1{
+        vertical-align:middle;
+        text-align:center!important;
+        padding-left:10px;
+        padding-right:10px;
+        padding-top: 10px;
+        background-color: rgb(233, 211, 179);
     }
 
     .td_align{
