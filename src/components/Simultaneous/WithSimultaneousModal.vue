@@ -17,7 +17,7 @@
                             alt="placeholder">
                         </b-img>
                     </template>
-                    <h5 class="mt-2">Before ECO Parts</h5>
+                    <h5 class="mt-2">With Simultaneous</h5>
                 </b-media>
             </template>
             <b-row class="mt-3 ml-3 mr-3">
@@ -332,7 +332,7 @@
                         id="btn_update" 
                         size="md" 
                         variant="danger" 
-                        @click="addSimultaneous"
+                        @click="addValidation"
                         title="Click to update with simultaneous">
                         <font-awesome-icon icon="save" /> Add Values
                     </b-button> 
@@ -520,6 +520,28 @@ export default {
                     this.processData = response.data.data;
                     this.toast(status, response.data.message);
                 })
+        },
+        addValidation: function()
+        {
+            if(this.device_id == null)
+                this.toast("Error","Choose Device");
+            else if(this.model_id == null)
+                this.toast("Error","Choose Model");
+            else if(this.unit_id == null)
+                this.toast("Error","Choose Unit");
+            else if(this.form.slc_target_application.value == "")
+                this.toast("Error","Choose Target Application");
+            else if(this.form.txt_eco_number.value == "")
+                this.toast("Error","Input ECO Number");
+            else if(this.parts_before_list.length == 0) 
+                this.toast("Error","Add ECO Parts Before");
+            else if(this.parts_after_list.length == 0)
+                this.toast("Error","Add ECO Parts After");
+            else if(this.process_list.length == 0)
+                this.toast("Error","Add ECO Process");
+            else
+                this.addSimultaneous()
+            
         },
         addSimultaneous: function()
         {
