@@ -232,7 +232,7 @@
                                     router-link to="/new_ecas" 
                                     class="pt-4 pb-4 pr-5 custom_button custom_inactive custom_size" 
                                     variant="outline-secondary"
-                                    @click="show_label('file-alt','New ECAS','Status: For Verification'), setActive('new_ecas')"
+                                    @click="show_label('file-alt','New ECAS','For Verification'), setActive('new_ecas'), buttonLabel('New ECAS', 'Done ECAS')"
                                     :class="{ active: isActive('new_ecas')}">
                                     <b-media>
                                         <template #aside>
@@ -262,7 +262,7 @@
                                     router-link to="/for_revision" 
                                     class="pt-4 pb-4 pr-5 custom_button custom_inactive custom_size" 
                                     variant="outline-secondary"
-                                     @click="show_label('redo','For Revision','Status: For Verification'), setActive('for_revision')"
+                                     @click="show_label('redo','For Revision','For Revision'), setActive('for_revision'), buttonLabel('For Revision', 'Done Revision')"
                                         :class="{ active: isActive('for_revision')}">
                                     <b-media>
                                         <template #aside>
@@ -292,7 +292,7 @@
                                     router-link to="/for_checking" 
                                     class="pt-4 pb-4 pr-5 custom_button custom_inactive custom_size" 
                                     variant="outline-secondary"
-                                    @click="show_label('check-double','For Checking','Status: For Verification'), setActive('for_checking')"
+                                    @click="show_label('check-double','For Checking','For Checking'), setActive('for_checking'), buttonLabel('For Checking', 'Done Checking')"
                                     :class="{ active: isActive('for_checking')}">
                                     <b-media>
                                         <template #aside>
@@ -322,7 +322,7 @@
                                     router-link to="/for_approval" 
                                     class="pt-4 pb-4 pr-5 custom_button custom_inactive custom_size" 
                                     variant="outline-secondary"
-                                    @click="show_label('thumbs-up','For Approval','Status: For Verification'), setActive('for_approval')"
+                                    @click="show_label('thumbs-up','For Approval','For Approval'), setActive('for_approval'), buttonLabel('For Approval', 'Done Approval')"
                                     :class="{ active: isActive('for_approval')}">
                                     <b-media>
                                         <template #aside>
@@ -352,7 +352,7 @@
                                     router-link to="/for_pc" 
                                     class="pt-4 pb-4 pr-5 custom_button custom_inactive custom_size" 
                                     variant="outline-secondary"
-                                    @click="show_label('pallet','For PC','Status: For Verification'), setActive('for_pc')"
+                                    @click="show_label('pallet','For PC','For PC'), setActive('for_pc'), buttonLabel('For PC', 'Done PC')"
                                     :class="{ active: isActive('for_pc')}">
                                     <b-media>
                                         <template #aside>
@@ -382,7 +382,7 @@
                                     router-link to="/for_purchasing" 
                                     class="pt-4 pb-4 pr-5 custom_button custom_inactive custom_size" 
                                     variant="outline-secondary"
-                                    @click="show_label('hand-holding-usd','For Purchasing','Status: For Verification'), setActive('for_purchasing')"
+                                    @click="show_label('hand-holding-usd','For Purchasing','For Purchasing'), setActive('for_purchasing'), buttonLabel('For Purchasing', 'Done Purchasing')"
                                     :class="{ active: isActive('for_purchasing')}">
                                     <b-media>
                                         <template #aside>
@@ -412,7 +412,7 @@
                                     router-link to="/finished_ecas" 
                                     class="pt-4 pb-4 pr-5 custom_button custom_inactive custom_size" 
                                     variant="outline-secondary"
-                                    @click="show_label('flag-checkered','Finished ECAS','Status: Finished ECAS'), setActive('finished_ecas')"
+                                    @click="show_label('flag-checkered','Finished ECAS','Finished ECAS'), setActive('finished_ecas')"
                                     :class="{ active: isActive('finished_ecas')}">
                                     <b-media>
                                         <template #aside>
@@ -435,10 +435,16 @@
                         </b-row>
                     </b-col>
                     <b-col cols="10">
-                        <router-view 
+                        <!-- <router-view 
                             :content_icon="content_icon" 
                             :content_label="content_label"
-                            :content_sub_label="content_sub_label"/>
+                            :content_sub_label="content_sub_label"/> -->
+                            <ECASContent 
+                            :content_icon="content_icon" 
+                            :content_label="content_label"
+                            :content_sub_label="content_sub_label"
+                            :button1="button1"
+                            :button2="button2"/>
                     </b-col>
                 </b-row>
               </b-card-body>
@@ -449,8 +455,12 @@
 </template>
 
 <script>
+import ECASContent from '../views/ECASList/ECASListContent';
 export default {
     name:"ECASList",
+    components:{
+        ECASContent
+    },
     data()
     {
         return{
@@ -458,7 +468,13 @@ export default {
             content_label:'',
             content_sub_label:'',
             activeItem: 'new_ecas',
+            button1: '',
+            button2: '',
         }
+    },
+    created(){
+        this.set_new_ecas();
+        // this.buttonLabel();
     },
     methods:{
         show_label(icon, label, sub_label)
@@ -470,7 +486,14 @@ export default {
         set_new_ecas()
         {
             this.content_icon = "file-alt"
-            this.content_label = "New ECAS";
+            this.content_label = "New ECAS"
+            this.content_sub_label = "For Verification";
+            this.button1 = "New ECAS";
+            this.button2 = "Done ECAS";
+        },
+        buttonLabel(button1, button2){
+            this.button1 = button1;
+            this.button2 = button2;
         },
         // set_for_revision()
         // {
@@ -510,9 +533,6 @@ export default {
             this.activeItem = menuItem 
         },
     },
-    created(){
-        this.set_new_ecas();
-    }
 }
 </script>
 
