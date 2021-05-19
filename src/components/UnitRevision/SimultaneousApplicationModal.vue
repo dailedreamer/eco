@@ -130,6 +130,7 @@ export default {
     name: 'SimultaneousApplicationModal',
     props:{
         simultaneous_application_list:Array,
+
     },
     data(){
         return{

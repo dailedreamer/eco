@@ -5,7 +5,7 @@ export default{
         load_unit_revision: [],
 		load_simultaneous_app: [],
         load_simultaneous_details: [],
-		// load_specific_id: []
+		load_update_revision: []
     },
     mutations:{
 		SET_UNIT_REVISION(state, load_unit_revision) {
@@ -17,9 +17,9 @@ export default{
 		SET_SIMULTANEOUS_DETAILS(state, load_simultaneous_details) {
 			state.load_simultaneous_details = load_simultaneous_details;
         },
-        // SET_CONTENTS(state, load_contents) {
-		// 	state.load_contents = load_contents;
-        // },
+        SET_UPDATE_REVISION(state, load_update_revision) {
+			state.load_update_revision = load_update_revision;
+        },
 		// SET_SPECIFIC_ID(state, load_specific_id) {
 		// 	state.load_specific_id = load_specific_id;
         // },
@@ -99,6 +99,44 @@ export default{
 					.post("unit-rev", payload)
 					.then(function(response) {
 						// console.log(response);
+						resolve(response);
+					})
+					.catch(function(error) {
+						reject(error.response);
+					});
+			});
+		},
+        async loadUpdateRevision({ commit },id) {
+			return new Promise((resolve, reject) => {
+				axios
+					.get(`unit-rev-application/show-unit-revision/${id}`)
+					.then(function(response) {
+                        commit("SET_UPDATE_REVISION", response.data);
+					
+						let result = {
+							code: response.status_code,
+							status: response.status,
+							message: response.message,
+							data: response.data,
+						};
+						
+                        resolve(result);
+					})
+					.catch(function(error) {
+						reject(error);
+					});
+			});
+        },
+        async UpdateUnitRevisionUp(state, payload) {
+			// console.log(payload);
+			return new Promise((resolve, reject) => {
+				// payload["formData"].append("_method", "PATCH");
+				axios
+					.patch(
+						`unit-rev-application/update-unit-revision/${payload["id"]}`,
+                        payload
+                    )
+					.then(function(response) {
 						resolve(response);
 					})
 					.catch(function(error) {

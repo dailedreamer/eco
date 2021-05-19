@@ -2,79 +2,78 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 // import auth from './middleware/auth';
 // Main Layout Component
-const TheContainer = () =>
-	import(/*webpackChunkName: "layout"*/ "@/template/layout/TheContainer");
+const TheContainer = () =>import(/*webpackChunkName: "layout"*/ "@/template/layout/TheContainer");
 
 // Splash Screen/ Others
-const LoadLocalStorage = () =>import("@/views/SplashScreen/LoadLocalStorage");
-const LoggedOut        = () =>import("@/views/SplashScreen/LoggedOut");
+const LoadLocalStorage = () =>import(/*webpackChunkName: "layout"*/  "@/views/SplashScreen/LoadLocalStorage");
+const LoggedOut        = () =>import(/*webpackChunkName: "layout"*/  "@/views/SplashScreen/LoggedOut");
 // Pages
-const Dashboard = () =>import("@/views/Dashboard");
-const Parts     = () =>import("@/views/Parts");
+const Dashboard = () =>import(/*webpackChunkName: "layout"*/  "@/views/Dashboard");
+const Parts     = () =>import(/*webpackChunkName: "layout"*/  "@/views/Parts");
 
-const PartsRegistrationUnit  = () =>import("@/views/Parts/PartsRegistrationUnit");
-const PartsRegistrationParts = () =>import("@/views/Parts/PartsRegistrationParts");
-const RegisteredECOParts     = () =>import("@/views/Parts/RegisteredECOParts");
-const PartsMonitoring        = () =>import("@/views/Parts/PartsMonitoring");
+const PartsRegistrationUnit  = () =>import( /*webpackChunkName: "layout"*/ "@/views/Parts/PartsRegistrationUnit");
+const PartsRegistrationParts = () =>import( /*webpackChunkName: "layout"*/ "@/views/Parts/PartsRegistrationParts");
+const RegisteredECOParts     = () =>import(/*webpackChunkName: "layout"*/  "@/views/Parts/RegisteredECOParts");
+const PartsMonitoring        = () =>import(/*webpackChunkName: "layout"*/  "@/views/Parts/PartsMonitoring");
 
 //Parts Monitoring Modal Contents
-const AssemblyApplication = () =>import("@/views/Parts/PartsMonitoring/ModalContents/AssemblyApplication");
-const DieDFM              = () =>import("@/views/Parts/PartsMonitoring/ModalContents/DieDFM");
-const DieQuotationDetails = () =>import("@/views/Parts/PartsMonitoring/ModalContents/DieQuotationDetails");
-const DieSample           = () =>import("@/views/Parts/PartsMonitoring/ModalContents/DieSample");
-const DieTrialDetails     = () =>import("@/views/Parts/PartsMonitoring/ModalContents/DieTrialDetails");
-const DrawingIssuance     = () =>import("@/views/Parts/PartsMonitoring/ModalContents/DrawingIssuance");
-const ECODetails          = () =>import("@/views/Parts/PartsMonitoring/ModalContents/ECODetails");
-const LotDelivery         = () =>import("@/views/Parts/PartsMonitoring/ModalContents/LotDelivery");
-const LotPOIssuance       = () =>import("@/views/Parts/PartsMonitoring/ModalContents/LotPOIssuance");
-const Meeting             = () =>import("@/views/Parts/PartsMonitoring/ModalContents/Meeting");
-const PartsAllocation     = () =>import("@/views/Parts/PartsMonitoring/ModalContents/PartsAllocation");
-const PartsDetails        = () =>import("@/views/Parts/PartsMonitoring/ModalContents/PartsDetails");
-const ProductAudit        = () =>import("@/views/Parts/PartsMonitoring/ModalContents/ProductAudit");
-const QCIGM               = () =>import("@/views/Parts/PartsMonitoring/ModalContents/QCIGM");
+const AssemblyApplication = () =>import(/*webpackChunkName: "layout"*/  "@/views/Parts/PartsMonitoring/ModalContents/AssemblyApplication");
+const DieDFM              = () =>import(/*webpackChunkName: "layout"*/  "@/views/Parts/PartsMonitoring/ModalContents/DieDFM");
+const DieQuotationDetails = () =>import(/*webpackChunkName: "layout"*/  "@/views/Parts/PartsMonitoring/ModalContents/DieQuotationDetails");
+const DieSample           = () =>import(/*webpackChunkName: "layout"*/  "@/views/Parts/PartsMonitoring/ModalContents/DieSample");
+const DieTrialDetails     = () =>import(/*webpackChunkName: "layout"*/ "@/views/Parts/PartsMonitoring/ModalContents/DieTrialDetails");
+const DrawingIssuance     = () =>import(/*webpackChunkName: "layout"*/ "@/views/Parts/PartsMonitoring/ModalContents/DrawingIssuance");
+const ECODetails          = () =>import(/*webpackChunkName: "layout"*/ "@/views/Parts/PartsMonitoring/ModalContents/ECODetails");
+const LotDelivery         = () =>import(/*webpackChunkName: "layout"*/ "@/views/Parts/PartsMonitoring/ModalContents/LotDelivery");
+const LotPOIssuance       = () =>import(/*webpackChunkName: "layout"*/ "@/views/Parts/PartsMonitoring/ModalContents/LotPOIssuance");
+const Meeting             = () =>import(/*webpackChunkName: "layout"*/ "@/views/Parts/PartsMonitoring/ModalContents/Meeting");
+const PartsAllocation     = () =>import(/*webpackChunkName: "layout"*/ "@/views/Parts/PartsMonitoring/ModalContents/PartsAllocation");
+const PartsDetails        = () =>import(/*webpackChunkName: "layout"*/ "@/views/Parts/PartsMonitoring/ModalContents/PartsDetails");
+const ProductAudit        = () =>import(/*webpackChunkName: "layout"*/ "@/views/Parts/PartsMonitoring/ModalContents/ProductAudit");
+const QCIGM               = () =>import(/*webpackChunkName: "layout"*/ "@/views/Parts/PartsMonitoring/ModalContents/QCIGM");
 
 
-const ECASList = () =>import("@/views/ECASList");
-const NewECAS = () =>import("@/views/ECASList/NewEcas");
-const NewECASContent = () =>import("@/views/ECASList/NewECASTab/NewECASContent");
-const DoneECASContent = () =>import("../views/ECASList/NewECASTab/DoneECASContent");
-const ForRevision = () =>import("@/views/ECASList/ForRevision");
-const ForRevisionContent = () =>import("@/views/ECASList/ForRevisionTab/ForRevisionContent");
-const DoneRevisionContent = () =>import("../views/ECASList/ForRevisionTab/DoneRevisionContent");
-const ForChecking = () =>import("@/views/ECASList/ForChecking");
-const ForCheckingContent = () =>import("@/views/ECASList/ForCheckingTab/ForCheckingContent");
-const DoneCheckingContent = () =>import("../views/ECASList/ForCheckingTab/DoneCheckingContent");
-const ForApproval = () =>import("@/views/ECASList/ForApproval");
-const ForApprovalContent = () =>import("@/views/ECASList/ForApprovalTab/ForApprovalContent");
-const DoneApprovalContent = () =>import("../views/ECASList/ForApprovalTab/DoneApprovalContent");
-const ForPC = () =>import("@/views/ECASList/ForPC");
-const ForPCContent = () =>import("@/views/ECASList/ForPCTab/ForPCContent");
-const DonePCContent = () =>import("../views/ECASList/ForPCTab/DonePCContent");
-const ForPurchasing = () =>import("@/views/ECASList/ForPurchasing");
-const ForPurchasingContent = () =>import("@/views/ECASList/ForPurchasingTab/ForPurchasingContent");
-const DonePurchasingContent = () =>import("../views/ECASList/ForPurchasingTab/DonePurchasingContent");
-const FinishedECAS = () =>import("@/views/ECASList/FinishedECAS");
-const ProductionEngineering = () =>import("@/views/ECASList/Modal/ProductionEngineeringContent");
-const ProductionControl = () =>import("@/views/ECASList/Modal/ProductionControlContent");
-const Purchasing = () =>import('@/views/ECASList/Modal/PurchasingContent');
+const ECASList = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList");
+const NewECAS = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/NewEcas");
+const NewECASContent = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/NewECASTab/NewECASContent");
+const DoneECASContent = () =>import(/*webpackChunkName: "layout"*/ "../views/ECASList/NewECASTab/DoneECASContent");
+const ForRevision = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/ForRevision");
+const ForRevisionContent = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/ForRevisionTab/ForRevisionContent");
+const DoneRevisionContent = () =>import(/*webpackChunkName: "layout"*/ "../views/ECASList/ForRevisionTab/DoneRevisionContent");
+const ForChecking = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/ForChecking");
+const ForCheckingContent = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/ForCheckingTab/ForCheckingContent");
+const DoneCheckingContent = () =>import(/*webpackChunkName: "layout"*/ "../views/ECASList/ForCheckingTab/DoneCheckingContent");
+const ForApproval = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/ForApproval");
+const ForApprovalContent = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/ForApprovalTab/ForApprovalContent");
+const DoneApprovalContent = () =>import(/*webpackChunkName: "layout"*/ "../views/ECASList/ForApprovalTab/DoneApprovalContent");
+const ForPC = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/ForPC");
+const ForPCContent = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/ForPCTab/ForPCContent");
+const DonePCContent = () =>import(/*webpackChunkName: "layout"*/ "../views/ECASList/ForPCTab/DonePCContent");
+const ForPurchasing = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/ForPurchasing");
+const ForPurchasingContent = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/ForPurchasingTab/ForPurchasingContent");
+const DonePurchasingContent = () =>import(/*webpackChunkName: "layout"*/ "../views/ECASList/ForPurchasingTab/DonePurchasingContent");
+const FinishedECAS = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/FinishedECAS");
+const ProductionEngineering = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/Modal/ProductionEngineeringContent");
+const ProductionControl = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/Modal/ProductionControlContent");
+const Purchasing = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECASList/Modal/PurchasingContent");
 
 
-const Process             = () =>import("@/views/Process");
-const ProcessRegistration = () =>import("@/views/Process/Registration");
-const ProcessMonitoring   = () =>import("@/views/Process/Monitoring");
+const Process             = () =>import(/*webpackChunkName: "layout"*/ "@/views/Process");
+const ProcessRegistration = () =>import(/*webpackChunkName: "layout"*/ "@/views/Process/Registration");
+const ProcessMonitoring   = () =>import(/*webpackChunkName: "layout"*/ "@/views/Process/Monitoring");
 
-const Simultaneous   = () =>import("@/views/Simultaneous");
-const UnitRev        = () =>import("@/views/UnitRev");
-const VPSApplication = () =>import("@/views/VPSApplication");
-const ECOActionItems = () =>import("@/views/ECOActionItems");
+const Simultaneous   = () =>import(/*webpackChunkName: "layout"*/ "@/views/Simultaneous");
+const UnitRev        = () =>import(/*webpackChunkName: "layout"*/ "@/views/UnitRev");
+const VPSApplication = () =>import(/*webpackChunkName: "layout"*/ "@/views/VPSApplication");
+const ECOActionItems = () =>import(/*webpackChunkName: "layout"*/ "@/views/ECOActionItems");
 
-const ManagementParts       = () =>import("@/views/Management/Parts");
-const ManagementPartsDevice = () =>import("@/views/Management/Parts/Device");
-const ManagementPartsModel  = () =>import("@/views/Management/Parts/Model");
-const ManagementPartsUnit   = () =>import("@/views/Management/Parts/Unit");
+const ManagementParts       = () =>import(/*webpackChunkName: "layout"*/ "@/views/Management/Parts");
+const ManagementPartsDevice = () =>import(/*webpackChunkName: "layout"*/ "@/views/Management/Parts/Device");
+const ManagementPartsModel  = () =>import(/*webpackChunkName: "layout"*/ "@/views/Management/Parts/Model");
+const ManagementPartsUnit   = () =>import(/*webpackChunkName: "layout"*/ "@/views/Management/Parts/Unit");
 
-const ManagementUsers = () =>import("@/views/Management/Users");
-const ManagementEmail = () =>import("@/views/Management/Email");
+const ManagementUsers = () =>import(/*webpackChunkName: "layout"*/ "@/views/Management/Users");
+const ManagementEmail = () =>import(/*webpackChunkName: "layout"*/ "@/views/Management/Email");
 
 Vue.use(VueRouter);
 

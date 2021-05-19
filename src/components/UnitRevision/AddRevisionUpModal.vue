@@ -417,6 +417,11 @@ export default {
         EcoProcessModal,
         SimultaneousApplicationModal
     },
+    props:{
+        loadUnitRev: {
+            type: Function,
+        },
+    },
     data(){
         return{
             status: true,
@@ -785,6 +790,8 @@ export default {
               if (status == "Success") {
                     this.toast(status, response.data.message);
                     this.$bvModal.hide("modal_add_rev_up");
+                    this.loadUnitRev;
+                    this.$emit("clicked");
                 } else if (status == "Warning") {
                     Object.keys(response.data.data).forEach((key) => {
                     this.form[key]["state"] = false;

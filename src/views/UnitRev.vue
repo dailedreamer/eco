@@ -283,7 +283,7 @@
                                                             <b-link 
                                                                 class="link_style"
                                                                 v-b-modal.modal_unit_rev_update
-                                                                @click="updateUnitRev(item.id)">
+                                                                @click="loadUpdateUnitRevision(item.details_table1.id)">
                                                                 Update
                                                             </b-link>
                                                             <label class="ml-1 mr-1 text-secondary">|</label>
@@ -367,8 +367,8 @@
                                                 aria-controls="tbl_unit_rev"></b-pagination>
                                         </b-col>
                                     </b-row>
-                                    <UnitRevUpdateModal :get_data="this.id"/>
-                                    <AddRevisionUpModal />
+                                    <UnitRevUpdateModal :update_revision_data="this.load_update_revision" @clicked="load_data" />
+                                    <AddRevisionUpModal @clicked="load_data"/>
                                     <DeleteModal :functionToCall="this.removeUnitRev"/>
                                 </b-container>
                                 <!-- <UnitRevContent /> -->
@@ -410,43 +410,9 @@ export default {
             modelOptions: [],
             unitValue: [],
             unitOptions: [],
-            item_list: [
-                // {
-                //     unit_name: "sample unit", 
-                //     unit_number: "unit002", 
-                //     data:
-                //     [
-                //         {
-                //             serial_number: "KS12452", 
-                //             date_applied: "2021-03-30", 
-                //             carf_number: "1111", 
-                //             rev_up: "01", 
-                //             current_ncr_no: "02"
-                //         },
-                //         {
-                //             serial_number: "KS12453", 
-                //             date_applied: "2021-04-01", 
-                //             carf_number: "2222", 
-                //             rev_up: "02", 
-                //             current_ncr_no: "03"
-                //         },
-                //     ]
-                // },
-            ],
-            unit_rev_list:[
-                // {id: "1", rev_up:"02", next_ncr_no: "08", target_application: "2021-04-05", eco_number: "eco01", 
-                // before_part_number:"KD0123", before_part_number_new_revision:"01", before_parts_quantity: "45", before_revision_details:"sample", 
-                // after_part_number:"KD011", after_part_number_new_revision:"02", after_parts_quantity: "50", after_revision_details:"sample only",
-                // before_parent_drawing_no:"KD0123", before_revision:"01", before_quantity: "45", before_details:"sample",
-                // after_parent_drawing_no:"KD0123", after_revision:"01", after_quantity: "45", after_details:"sample",
-                // simultaneous_eco_number: "123456", parent_drawing_number:"KD0000", drawing_number_revision: "01", part_number: "KD0101", part_number_new_revision:"02"},
-                // {id: "2", rev_up:"02", next_ncr_no: "08", target_application: "2021-04-06", eco_number: "eco02", 
-                // before_part_number:"KD0123", before_part_number_new_revision:"01", before_parts_quantity: "45", before_revision_details:"sample", 
-                // after_part_number:"KD011", after_part_number_new_revision:"02", after_parts_quantity: "50", after_revision_details:"sample only",
-                // before_parent_drawing_no:"KD0123", before_revision:"01", before_quantity: "45", before_details:"sample",
-                // after_parent_drawing_no:"KD0123", after_revision:"01", after_quantity: "45", after_details:"sample",
-                // simultaneous_eco_number: "123456", parent_drawing_number:"KD0000", drawing_number_revision: "01", part_number: "KD0101", part_number_new_revision:"02"},
-            ],
+            item_list: [],
+            unit_rev_list:[],
+            load_update_revision:{},
             id: {},
             deleteID: null,
             status: "",
@@ -464,6 +430,11 @@ export default {
     },
     methods:
     {
+        load_data: function()
+        {
+
+            this.loadUnitRev();
+        },
         loadUnitRev: function(status_application = "for_application")
         {
             this.status = status_application
@@ -508,7 +479,6 @@ export default {
                     if (status == "Success") {
                         this.$bvModal.hide("modal-delete-id");
                         this.toast(status, response.data.message);
-                        // this.loadSimultaneousApplied();
                     } else if (status == "Warning") {
                         this.toast(status, "Please review your inputs.");
                     } else if (status == "Error") {
@@ -528,6 +498,16 @@ export default {
         {
             this.id = {};
             this.id = this.unit_rev_list[id-1];
+        },
+        loadUpdateUnitRevision: function($id)
+        {
+            this.$store.dispatch("loadUpdateRevision", $id)
+                .then((response) =>
+                {    
+                    let data = response.data.data;
+                    this.load_update_revision = data;
+                    console.log(this.load_update_revision);
+                })
         },
         toast: function (status, message){
             this.$toast(message, {
