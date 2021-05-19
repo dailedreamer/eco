@@ -23,6 +23,7 @@
                 <b-row>
                     <b-col cols="3">
                         <b-card 
+                            @click="loadUnitRev('for_application')"
                             class="custom_card_filter">
                             <b-row class="mt-0">
                                 <b-col cols="8">
@@ -54,6 +55,7 @@
                     </b-col>
                     <b-col cols="3">
                         <b-card 
+                            @click="loadUnitRev('for_applied')"
                             class="custom_card_filter">
                             <b-row class="mt-0">
                                 <b-col cols="8">
