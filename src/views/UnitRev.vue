@@ -85,7 +85,7 @@
                                 </b-row>
                         </b-card>
                     </b-col>
-                            </b-row>
+                </b-row>
                 <b-row class="mt-3">
                     <b-col cols="12">
                         <b-card>
@@ -278,7 +278,8 @@
                                                         <b-td class="td_align" >{{item.details_table1.current_ncr_number}}</b-td>
                                                         <b-td class="td_align">
                                                             <b-link 
-                                                                v-b-modal.modal_add_rev_up
+                                                                @click="loadEditUnitRevisionUp(item.details_table1.id)"
+                                                                v-b-modal.modal_edit_rev_up
                                                                 class="link_style">
                                                                 Edit
                                                             </b-link>
@@ -398,9 +399,14 @@
                                                 aria-controls="tbl_unit_rev"></b-pagination>
                                         </b-col>
                                     </b-row>
-                                    <UnitRevUpdateModal :update_revision_data="this.load_update_revision" @clicked="load_data" />
-                                    <AddRevisionUpModal @clicked="load_data"/>
-                                    <DeleteModal :functionToCall="this.removeUnitRev"/>
+                                    <UnitRevUpdateModal 
+                                        :update_revision_data="this.load_update_revision" 
+                                        @clicked="load_data" />
+                                    <AddRevisionUpModal  
+                                        @clicked="load_data" 
+                                        :edit_id="this.table_id"/>
+                                    <EditRevisionUpModal :editId="this.table_id" />
+                                    <DeleteModal :functionToCall="this.removeUnitRev"/> 
                                 </b-container>
                                 <!-- <UnitRevContent /> -->
                             </b-card-body>
@@ -413,17 +419,22 @@
 </template>
 
 <script>
-// import UnitRevContent from "../components/UnitRevision/UnitRevContent";
 import UnitRevUpdateModal from "../components/UnitRevision/UnitRevUpdateModal";
 import AddRevisionUpModal from "../components/UnitRevision/AddRevisionUpModal";
+import EditRevisionUpModal from "../components/UnitRevision/EditRevisionUpModal";
 import DeleteModal from "../components/DeleteModal";
 export default {
     name: "UnitRev",
     components:{
-        //   UnitRevContent,
         UnitRevUpdateModal,
         AddRevisionUpModal,
+        EditRevisionUpModal,
         DeleteModal
+    },
+    props:{
+        loadEditUnitRevision: {
+            type: Function,
+        },
     },
     data() {
         return {
@@ -443,10 +454,12 @@ export default {
             unitOptions: [],
             item_list: [],
             unit_rev_list:[],
+            load_edit_revision: {},
             load_update_revision:{},
             id: {},
+            table_id: null,
             deleteID: null,
-            status: "",
+            status: '',
             totalRows: null,
         }
     },
@@ -472,7 +485,6 @@ export default {
                 .then((response) =>
                 {
                     let data = response.data;
-                    console.log(data)
                     this.unit_rev_list = data;
                     this.item_list = data;
                     this.filtered_items = data;
@@ -528,14 +540,13 @@ export default {
             this.id = {};
             this.id = this.unit_rev_list[id-1];
         },
-        loadUpdateUnitRevision: function($id)
+        loadUpdateUnitRevision: function(id)
         {
-            this.$store.dispatch("loadUpdateRevision", $id)
+            this.$store.dispatch("loadUpdateRevision", id)
                 .then((response) =>
                 {    
                     let data = response.data.data;
                     this.load_update_revision = data;
-                    console.log(this.load_update_revision);
                 })
         },
         toast: function (status, message){
@@ -543,6 +554,19 @@ export default {
                 type:status.toLowerCase().trim(),
                 position: "bottom-right",
             });
+        },
+        loadEditUnitRevisionUp: function (id)
+        {
+            this.table_id = id;
+            alert(id);
+            // console.log(this.table_id);
+            // this.$store.dispatch("loadEditRevision", id)
+            //     .then((response) =>
+            //     {    
+            //         let data = response.data.data;
+            //         this.load_edit_revision = data;
+            //         // console.log(this.load_edit_revision);
+            //     })
         }
     }
 };

@@ -233,18 +233,21 @@
         </b-row>
         <UnitRevUpdateModal :get_data="this.id"/>
         <AddRevisionUpModal />
+        <EditRevisionUpModal />
         <DeleteModal :functionToCall="this.removeUnitRev"/>
     </b-container>
 </template>
 <script>
 import UnitRevUpdateModal from "../UnitRevision/UnitRevUpdateModal";
 import AddRevisionUpModal from "../UnitRevision/AddRevisionUpModal";
+import EditRevisionUpModal from "../UnitRevision/EditRevisionUpModal";
 import DeleteModal from "../DeleteModal";
 export default {
     name: 'UnitRevContent',
     components: {
         UnitRevUpdateModal,
         AddRevisionUpModal,
+        EditRevisionUpModal,
         DeleteModal
     },
     data(){

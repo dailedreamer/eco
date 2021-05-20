@@ -5,7 +5,8 @@ export default{
         load_unit_revision: [],
 		load_simultaneous_app: [],
         load_simultaneous_details: [],
-		load_update_revision: []
+		load_update_revision: [],
+        load_edit_revision:[]
     },
     mutations:{
 		SET_UNIT_REVISION(state, load_unit_revision) {
@@ -19,6 +20,9 @@ export default{
         },
         SET_UPDATE_REVISION(state, load_update_revision) {
 			state.load_update_revision = load_update_revision;
+        },
+        SET_EDIT_REVISION(state, load_edit_revision) {
+			state.load_edit_revision = load_edit_revision;
         },
 		// SET_SPECIFIC_ID(state, load_specific_id) {
 		// 	state.load_specific_id = load_specific_id;
@@ -144,9 +148,31 @@ export default{
 					});
 			});
 		},
+        async loadEditRevision({ commit },id) {
+			return new Promise((resolve, reject) => {
+				axios
+					.get(`unit-rev/${id}`)
+					.then(function(response) {
+                        commit("SET_EDIT_REVISION", response.data);
+                        // console.log(response.data);
+						let result = {
+							code: response.status_code,
+							status: response.status,
+							message: response.message,
+							data: response.data,
+						};
+						
+                        resolve(result);
+					})
+					.catch(function(error) {
+						reject(error);
+					});
+			});
+        },
 		
     },
     getters:{
-       getUnitRev: (state)=> state.load_unit_revision
+       getUnitRev: (state)=> state.load_unit_revision,
+	   getUnitRevEdit: (state) => state.load_edit_revision
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <b-container fluid>
         <b-modal  
-            id="modal_add_rev_up"
+            id="modal_edit_rev_up"
             size="xl"
             hide-footer
             :no-close-on-backdrop="true" 
@@ -90,29 +90,30 @@
                             <b-col cols="6">
                                 <b-form-group
                                     label="Revision Up:"
-                                    label-for="txt_revision_up"
+                                    label-for="txt_revision_up1"
                                     label-cols-sm="4"
                                     label-align-sm="left"
                                     label-size="sm"
                                     required>
                                     <b-form-input 
-                                        id="txt_revision_up" 
-                                        name="txt_revision_up"
-                                        v-model="revision_up"
+                                        id="txt_revision_up1" 
+                                        name="txt_revision_up1"
+                                      
                                         placeholder="Enter Revision Up"></b-form-input>
                                 </b-form-group>
+                                <!-- {{load_edit_revision_data.details_data.revision_up}} -->
                             </b-col>
                             <b-col cols="6">
                                 <b-form-group
                                     label="Target Application:"
-                                    label-for="slc_target_application"
+                                    label-for="slc_target_application1"
                                     label-cols-sm="4"
                                     label-align-sm="left"
                                     label-size="sm">
                                     <b-form-datepicker 
-                                        id="slc_target_application" 
-                                        name="slc_target_application"
-                                        v-model="target_application"
+                                        id="slc_target_application1" 
+                                        name="slc_target_application1"
+                                     
                                         placeholder="Choose a date" 
                                         class="unit_rev_datepicker"
                                         hide-header
@@ -133,7 +134,7 @@
                                     <b-form-input 
                                         id="txt_eco_number" 
                                         name="txt_eco_number"
-                                        v-model="eco_number"
+                          
                                         placeholder="Enter ECO Number"></b-form-input>
                                 </b-form-group>
                             </b-col>
@@ -147,7 +148,7 @@
                                     <b-form-input 
                                         id="txt_next_ncr_no" 
                                         name="txt_next_ncr_no"
-                                        v-model="next_ncr_number"
+                                    
                                         placeholder="Enter Next NCR Number"></b-form-input>
                             </b-form-group>
                         </b-col>
@@ -185,7 +186,7 @@
                                         outlined 
                                         hover 
                                         responsive 
-                                        :items="parts_before_list"
+                                     
                                         :fields="parts_before_fields">
                                         <template #cell(action)="data">
                                             <b-link class="link_style"
@@ -229,7 +230,7 @@
                                         outlined 
                                         hover 
                                         responsive 
-                                        :items="parts_after_list"
+                                   
                                         :fields="parts_after_fields">
                                         <template #cell(action)="data">
                                             <b-link class="link_style"
@@ -252,7 +253,7 @@
                     </b-row>
                 </b-col>
             </b-row>
-             <b-row class="ml-3 mt-4 mr-3">
+            <b-row class="ml-3 mt-4 mr-3">
                 <b-col cols="12">
                     <b-row>
                         <label class="ml-3 font-weight-bold pt-0" for="">ECO Process</label>
@@ -282,7 +283,7 @@
                                         outlined 
                                         hover 
                                         responsive 
-                                        :items="process_before_list"
+                                    
                                         :fields="process_before_fields">
                                         <template #cell(action)="data">
                                             <b-link class="link_style"
@@ -318,7 +319,7 @@
                                         outlined 
                                         hover 
                                         responsive 
-                                        :items="process_after_list"
+                                     
                                         :fields="process_after_fields">
                                         <template #cell(action)="data">
                                             <b-link class="link_style"
@@ -333,7 +334,7 @@
                     </b-row>
                 </b-col>
             </b-row>
-             <b-row class="ml-3 mt-4 mr-3">
+            <b-row class="ml-3 mt-4 mr-3">
                 <b-col cols="12">
                     <b-row>
                         <label class="ml-3 font-weight-bold pt-0" for="">Simultaneous Application</label>
@@ -360,7 +361,7 @@
                                         outlined 
                                         hover 
                                         responsive 
-                                        :items="simultaneous_list"
+                                     
                                         :fields="simultaneous_fields">
                                         <template #cell(action)="data">
                                             <b-link class="link_style"
@@ -372,6 +373,7 @@
                                 </b-row>
                             </b-card>
                         </b-col>
+                    
                     </b-row>
                 </b-col>
             </b-row>
@@ -392,13 +394,18 @@
                         variant="danger" 
                         type="submit"
                         title="Click to add revision up"
-                        @click="validateRevisionUp">
-                        <font-awesome-icon icon="save" /> Add Revision Up
-                    </b-button> 
-                    {{edit_id}}
+                        @click="sample_allan()"
+                       >
+                        <!-- @click="validateRevisionUp" -->
+                        <font-awesome-icon icon="save" /> Edit Revision Up
+                    </b-button>
+                 
                 </b-col>
             </b-row>
+            <input type="text" id="malupetsample" :value="editId" >
+           // {{editId}} /// {{selected_edit}} //
         </b-modal>
+       
         <EcoPartsModal :eco_parts_list="this.unit_revision_list" @clicked="transferredBefore"/>
         <EcoPartsModal :eco_parts_list="this.unit_revision_list" @clicked="transferredAfter" id="parts_after"/>
         <EcoProcessModal @clicked="transferredProcessBefore"/>
@@ -408,6 +415,7 @@
 </template>
 
 <script>
+// import { mapGetters } from "vuex";
 import EcoPartsModal from "../UnitRevision/EcoPartsModal";
 import EcoProcessModal from "../UnitRevision/EcoProcessModal";
 import SimultaneousApplicationModal from "../UnitRevision/SimultaneousApplicationModal";
@@ -419,11 +427,7 @@ export default {
         SimultaneousApplicationModal
     },
     props:{
-        loadUnitRev: {
-            type: Function,
-        },
-        edit_id:Number
-        
+        editId: Number
     },
     data(){
         return{
@@ -440,6 +444,7 @@ export default {
             target_application:'',
             eco_number: '',
             next_ncr_number:'',
+           
 
             parts_before_fields:
             [
@@ -477,8 +482,7 @@ export default {
                 {key: "quantity", class: 'text-center'},
                 {key: "details", class: 'text-center'}
             ],
-            process_after_list: 
-            [],
+            process_after_list: [],
             simultaneous_fields:[
                 {key: "action", class: 'text-center'},
                 {key: "eco_number", class: 'text-center'},
@@ -487,12 +491,23 @@ export default {
             eco_process_before:[],
             eco_process_after:[],
             unit_rev_data: [],
+
+            selected_edit: this.editId,
         }
     },
     mounted(){
         this.loadDevice();
+        // this.loadEditUnitRevision();
+        
+        
+    },
+    computed: {
+        // ...mapGetters(["getUnitRevEdit"]),
     },
     methods:{
+        sample_allan(vall){
+            alert(vall);
+        },
         isNumber: function(evt) {
             evt = (evt) ? evt : window.event;
             var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -727,86 +742,86 @@ export default {
         },
         addRevisionUp: function ()
         {
-            let details =
-            {   'device_id' : this.deviceValue.id,
-                'model_name_id' : this.modelValue.id,
-                'unit_id' : this.unitValue.id,
-                'revision_up': this.revision_up,
-                'target_application': this.target_application,
-                'eco_number': this.eco_number,
-                'next_ncr_number': this.next_ncr_number
-            }
+        //     let details =
+        //     {   'device_id' : this.deviceValue.id,
+        //         'model_name_id' : this.modelValue.id,
+        //         'unit_id' : this.unitValue.id,
+        //         'revision_up': this.revision_up,
+        //         'target_application': this.target_application,
+        //         'eco_number': this.eco_number,
+        //         'next_ncr_number': this.next_ncr_number
+        //     }
 
-            let before_process = this.process_before_list;
-            let after_process = this.process_after_list;
+        //     let before_process = this.process_before_list;
+        //     let after_process = this.process_after_list;
 
-            var before_eco_parts = [];
+        //     var before_eco_parts = [];
 
-            for (const index in this.parts_before_list)
-            {
-                var before_parts_data =
-                {
-                    'parts_monitoring_id' : this.parts_before_list[index].id,
-                    'quantity'            : this.parts_before_list[index].parts_before_quantity
-                }
-                before_eco_parts[index] = before_parts_data;
-            }
+        //     for (const index in this.parts_before_list)
+        //     {
+        //         var before_parts_data =
+        //         {
+        //             'parts_monitoring_id' : this.parts_before_list[index].id,
+        //             'quantity'            : this.parts_before_list[index].parts_before_quantity
+        //         }
+        //         before_eco_parts[index] = before_parts_data;
+        //     }
 
-            var after_eco_parts = [];
+        //     var after_eco_parts = [];
 
-            for (const index in this.parts_after_list)
-            {
-                var after_parts_data =
-                {
-                    'parts_monitoring_id' : this.parts_after_list[index].id,
-                    'quantity' : this.parts_after_list[index].parts_after_quantity
-                }
-                after_eco_parts[index] = after_parts_data;
-            }
+        //     for (const index in this.parts_after_list)
+        //     {
+        //         var after_parts_data =
+        //         {
+        //             'parts_monitoring_id' : this.parts_after_list[index].id,
+        //             'quantity' : this.parts_after_list[index].parts_after_quantity
+        //         }
+        //         after_eco_parts[index] = after_parts_data;
+        //     }
 
-            var with_simultaneous = [];
+        //     var with_simultaneous = [];
          
-            for (const index in this.simultaneous_list)
-            {
-                var simultaneous_data =
-                {
-                    'with_simultaneous_id' : this.simultaneous_list[index].id,
-                }
-                with_simultaneous[index] = simultaneous_data;
-            }
+        //     for (const index in this.simultaneous_list)
+        //     {
+        //         var simultaneous_data =
+        //         {
+        //             'with_simultaneous_id' : this.simultaneous_list[index].id,
+        //         }
+        //         with_simultaneous[index] = simultaneous_data;
+        //     }
 
-           let revision = 
-            {
-                details,
-                before_eco_parts,
-                after_eco_parts,
-                before_process,
-                after_process,
-                with_simultaneous
-            }
+        //    let revision = 
+        //     {
+        //         details,
+        //         before_eco_parts,
+        //         after_eco_parts,
+        //         before_process,
+        //         after_process,
+        //         with_simultaneous
+        //     }
 
-            this.$store.dispatch("addRevisionUp",revision).then((response) => {
-                let data = response;
-                let status = response.data.status;
-              console.log(data);
+        //     this.$store.dispatch("addRevisionUp",revision).then((response) => {
+        //         let data = response;
+        //         let status = response.data.status;
+        //       console.log(data);
 
-              if (status == "Success") {
-                    this.toast(status, response.data.message);
-                    this.$bvModal.hide("modal_add_rev_up");
-                    this.loadUnitRev;
-                    this.clearFilter();
-                    this.clearRevision();
-                    this.$emit("clicked");
-                } else if (status == "Warning") {
-                    Object.keys(response.data.data).forEach((key) => {
-                    this.form[key]["state"] = false;
-                    this.form[key]["validation"] = response.data .data[key][0];
-                    });
-                    this.toast(status, "Please review your inputs.");
-                } else if (status == "Error") {
-                    this.toast(status, response.data.message);
-                }
-          }); 
+        //       if (status == "Success") {
+        //             this.toast(status, response.data.message);
+        //             this.$bvModal.hide("modal_add_rev_up");
+        //             this.loadUnitRev;
+        //             this.clearFilter();
+        //             this.clearRevision();
+        //             this.$emit("clicked");
+        //         } else if (status == "Warning") {
+        //             Object.keys(response.data.data).forEach((key) => {
+        //             this.form[key]["state"] = false;
+        //             this.form[key]["validation"] = response.data .data[key][0];
+        //             });
+        //             this.toast(status, "Please review your inputs.");
+        //         } else if (status == "Error") {
+        //             this.toast(status, response.data.message);
+        //         }
+        //   }); 
         },
         removeAfter: function(value,list)
         {
@@ -821,17 +836,39 @@ export default {
                 }
             }
         }, 
-        clearRevision: function(){
-            this.revision_up = ""
-            this.target_application = ""
-            this.eco_number = ""
-            this.next_ncr_number = ""
 
-            this.parts_after_list = [];
-            this.parts_before_list = [];
-            this.simultaneous_list = [];
-            this.process_after_list = [];
-            this.process_before_list = [];
+        
+        // clearRevision: function(){
+        //     this.revision_up = ""
+        //     this.target_application = ""
+        //     this.eco_number = ""
+        //     this.next_ncr_number = ""
+
+        //     this.parts_after_list = [];
+        //     this.parts_before_list = [];
+        //     this.simultaneous_list = [];
+        //     this.process_after_list = [];
+        //     this.process_before_list = [];
+        // },
+        loadEditUnitRevision:function()
+        {
+            // old codes
+
+   
+            var allan = document.getElementById('malupetsample').value;
+            console.log(allan);
+            console.log(this.selected_edit);
+            alert(allan);
+            // this.$emit("clicked");
+            //  this.$store.dispatch("loadEditRevision", allan)
+            //     .then((response) =>
+            //     {    
+            //         let data = response.data.data;
+            //         this.load_edit_revision = data;
+            //         console.log(this.load_edit_revision);
+            //     })
+
+
         },
         toast: function (status, message){
         this.$toast(message, {
